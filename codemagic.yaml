@@ -27,47 +27,23 @@ workflows:
           curl -L -o full-source.tar.gz "https://yahyeabdirahman1526404989.adaptive.ai/cdn/one-ummah-full-source.tar.gz"
           tar -xzf full-source.tar.gz --strip-components=1
           rm full-source.tar.gz
-          ls -la
-          test -d src && echo "✅ src folder exists" || echo "❌ src folder missing"
+          echo "✅ Source code downloaded"
       
       - name: Install npm dependencies
         script: |
           rm -rf node_modules package-lock.json
           npm install
+          echo "✅ npm install complete"
       
       - name: Build production web app
         script: |
           npm run prod:build:vite
           echo "✅ Vite build complete"
-          ls -la dist/
       
       - name: Add iOS platform
         script: |
-          echo "=== Adding iOS platform ==="
           npx cap add ios
-          
-          echo "=== iOS directory structure ==="
-          ls -laR ios/ | head -50
-          
-          echo "=== Installing CocoaPods dependencies ==="
-          cd ios/App
-          pod install
-          cd ../..
-          
-          echo "=== After pod install ==="
-          ls -la ios/App/
-          
-          echo "=== Searching for workspace ==="
-          find ios -type d -name "*.xcworkspace"
-          
-          echo "=== Verifying workspace exists ==="
-          if [ -d "ios/App/App.xcworkspace" ]; then
-            echo "✅ Workspace found at ios/App/App.xcworkspace"
-          else
-            echo "❌ Workspace not found, listing ios/App contents:"
-            ls -la ios/App/
-            exit 1
-          fi
+          echo "✅ iOS platform added"
       
       - name: Capacitor sync
         script: |
@@ -83,7 +59,7 @@ workflows:
         script: |
           echo "=== Building iOS app ==="
           xcode-project build-ipa \
-            --workspace "ios/App/App.xcworkspace" \
+            --workspace "ios/App/App.xcodeproj/project.xcworkspace" \
             --scheme "App"
     
     artifacts:
@@ -143,7 +119,6 @@ workflows:
       - name: Add iOS platform
         script: |
           npx cap add ios
-          cd ios/App && pod install && cd ../..
       
       - name: Capacitor sync
         script: |
@@ -151,7 +126,7 @@ workflows:
       
       - name: Build iOS app (development)
         script: |
-          xcodebuild -workspace "ios/App/App.xcworkspace" \
+          xcodebuild -workspace "ios/App/App.xcodeproj/project.xcworkspace" \
             -scheme "App" \
             -configuration Debug \
             -destination 'generic/platform=iOS' \
