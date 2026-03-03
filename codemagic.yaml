@@ -10,7 +10,6 @@ workflows:
         XCODE_WORKSPACE: "ios/App/App.xcworkspace"
         XCODE_SCHEME: "App"
         BUNDLE_ID: "com.oneummah.app"
-        APP_STORE_ID: 1234567890 # Replace with actual App Store ID after creating app
       node: 20.11.0
       xcode: latest
       cocoapods: default
@@ -30,11 +29,6 @@ workflows:
       - name: Set up code signing settings on Xcode project
         script: |
           xcode-project use-profiles
-      
-      - name: Increment build number
-        script: |
-          cd ios/App
-          agvtool new-version -all $(($(app-store-connect get-latest-build-number "$APP_STORE_ID") + 1))
       
       - name: Build iOS app
         script: |
