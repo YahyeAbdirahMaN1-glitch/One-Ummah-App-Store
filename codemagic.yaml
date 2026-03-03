@@ -20,7 +20,7 @@ workflows:
         GUEST_SERVICES_URL: "http://ac1-platform.production.ac1.local:3000/api/services/v2"
         DB_FILE_NAME: "file:production.db"
         QUEUE_DB_FILE_NAME: "production-queue.db"
-      node: 20.11.0
+      node: 22.12.0
       xcode: latest
       cocoapods: default
     scripts:
@@ -34,6 +34,7 @@ workflows:
       
       - name: Install npm dependencies
         script: |
+          rm -rf node_modules package-lock.json
           npm install
       
       - name: Build production web app
@@ -95,7 +96,7 @@ workflows:
         GUEST_SERVICES_URL: "http://ac1-platform.production.ac1.local:3000/api/services/v2"
         DB_FILE_NAME: "file:production.db"
         QUEUE_DB_FILE_NAME: "production-queue.db"
-      node: 20.11.0
+      node: 22.12.0
       xcode: latest
       cocoapods: default
     scripts:
