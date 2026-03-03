@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    
+    <!-- Favicons - Multiple sizes for browser compatibility -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico?v=3" sizes="16x16 32x32" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png?v=3" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png?v=3" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png?v=3" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png?v=3" />
+    <link rel="icon" type="image/png" sizes="1024x1024" href="/icon.png?v=3" />
+    
+    <!-- Apple Touch Icons for iOS (with cache busting) -->
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=3" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=3" />
+    
+    <!-- Shortcut icon for older browsers -->
+    <link rel="shortcut icon" href="/favicon.ico?v=3" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json?v=3" crossorigin="use-credentials" />
+    
+    <!-- Meta Tags -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="A social media platform for Muslims to connect and spread unity" />
+    <meta name="theme-color" content="#FFD700" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="One Ummah" />
+    
+    <title>One Ummah</title>
+    <link rel="stylesheet" href="/src/index.css" />
+  </head>
+  <body>
+    <script>
+      // CRITICAL: Block Adaptive chat widget injection - runs FIRST
+      (function() {
+        // Inject blocking CSS immediately
+        const style = document.createElement('style');
+        style.id = 'chat-widget-blocker';
+        style.textContent = `
+          [data-adaptive-chat],
+          [data-adaptive-ai],
+          [class*="adaptive-chat"],
+          [class*="adaptive-ai"],
+          iframe[src*="adaptive"],
+          iframe[src*="chat"],
+          body > div:not(#root)[style*="position: fixed"],
+          body > button[style*="position: fixed"],
+          body > iframe:not(#root) {
+            display: none !important;
+            visibility: hidden !important;
+            opacity: 0 !important;
+            pointer-events: none !important;
+            position: absolute !important;
+            left: -999999px !important;
+            top: -999999px !important;
+            width: 0 !important;
+            height: 0 !important;
+            z-index: -999999 !important;
+          }
+        `;
+        document.head.appendChild(style);
+        
+        // Set dark / light mode based on system preference
+        const pd = window.matchMedia("(prefers-color-scheme: dark)").matches;
+        document.body.classList.toggle("dark", pd);
+      })();
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
