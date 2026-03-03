@@ -12,7 +12,7 @@ workflows:
         BUNDLE_ID: "com.oneummah.app"
         APP_STORE_ID: 1234567890 # Replace with actual App Store ID after creating app
       node: 20.11.0
-      xcode: 15.3
+      xcode: latest
       cocoapods: default
     scripts:
       - name: Install npm dependencies
@@ -70,7 +70,7 @@ workflows:
         XCODE_WORKSPACE: "ios/App/App.xcworkspace"
         XCODE_SCHEME: "App"
       node: 20.11.0
-      xcode: 15.3
+      xcode: latest
       cocoapods: default
     scripts:
       - name: Install npm dependencies
