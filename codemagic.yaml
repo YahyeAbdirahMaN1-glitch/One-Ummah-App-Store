@@ -52,7 +52,8 @@ workflows:
       
       - name: Set up code signing
         script: |
-          xcode-project use-profiles
+          echo "=== Setting up code signing ==="
+          xcode-project use-profiles --project "ios/App/App.xcodeproj"
           echo "✅ Code signing configured"
       
       - name: Build iOS app
