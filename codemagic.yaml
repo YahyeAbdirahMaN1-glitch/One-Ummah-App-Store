@@ -49,10 +49,15 @@ workflows:
           npx cap add ios
           echo "✅ iOS platform added"
       
-      - name: Update Bundle ID
+      - name: Update Bundle ID and Build Number
         script: |
           sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = .*/PRODUCT_BUNDLE_IDENTIFIER = com.oneummah.app;/' ios/App/App.xcodeproj/project.pbxproj
           echo "✅ Bundle ID set to com.oneummah.app"
+          
+          # Increment build number automatically
+          BUILD_NUMBER=$(($(date +%s) / 60))
+          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ios/App/App/Info.plist
+          echo "✅ Build number set to $BUILD_NUMBER"
       
       - name: Capacitor sync
         script: |
