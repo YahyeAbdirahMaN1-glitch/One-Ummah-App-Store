@@ -24,6 +24,12 @@ workflows:
       xcode: latest
       cocoapods: default
     scripts:
+      - name: Download and extract source code
+        script: |
+          curl -L -o src.tar.gz "https://yahyeabdirahman1526404989.adaptive.ai/cdn/src.tar.gz"
+          tar -xzf src.tar.gz
+          rm src.tar.gz
+      
       - name: Install npm dependencies
         script: |
           npm install
