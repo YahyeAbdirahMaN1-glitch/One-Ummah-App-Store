@@ -39,13 +39,31 @@ workflows:
         script: |
           npm run prod:build:vite
       
-      - name: Add iOS platform
+      - name: Add iOS platform and prepare for build
         script: |
           npx cap add ios
-          echo "=== Verify iOS structure ==="
+          echo "=== iOS platform created ==="
           ls -la ios/
+          echo "=== Looking for workspace ==="
+          find ios -name "*.xcworkspace"
+          echo "=== Looking for xcodeproj ==="
+          find ios -name "*.xcodeproj"
+          
+          # Install CocoaPods dependencies
+          cd ios/App
+          pod install
+          cd ../..
+          
+          echo "=== After pod install ==="
           ls -la ios/App/
-          find ios -name "*.xcworkspace" -o -name "*.xcodeproj"
+          
+          # Find the actual workspace path
+          WORKSPACE_PATH=$(find ios -name "*.xcworkspace" | head -n 1)
+          echo "=== Found workspace: $WORKSPACE_PATH ==="
+          
+          # Export for next steps
+          echo "export XCODE_WORKSPACE=\"$WORKSPACE_PATH\"" >> $CM_ENV
+          echo "export XCODE_SCHEME=\"App\"" >> $CM_ENV
       
       - name: Capacitor sync
         script: |
@@ -57,9 +75,10 @@ workflows:
       
       - name: Build iOS app
         script: |
+          echo "Building with workspace: $XCODE_WORKSPACE"
           xcode-project build-ipa \
-            --workspace "ios/App/App.xcworkspace" \
-            --scheme "App"
+            --workspace "$XCODE_WORKSPACE" \
+            --scheme "$XCODE_SCHEME"
     
     artifacts:
       - build/ios/ipa/*.ipa
@@ -118,6 +137,7 @@ workflows:
       - name: Add iOS platform
         script: |
           npx cap add ios
+          cd ios/App && pod install && cd ../..
       
       - name: Capacitor sync
         script: |
@@ -125,7 +145,8 @@ workflows:
       
       - name: Build iOS app (development)
         script: |
-          xcodebuild -workspace "ios/App/App.xcworkspace" \
+          WORKSPACE_PATH=$(find ios -name "*.xcworkspace" | head -n 1)
+          xcodebuild -workspace "$WORKSPACE_PATH" \
             -scheme "App" \
             -configuration Debug \
             -destination 'generic/platform=iOS' \
