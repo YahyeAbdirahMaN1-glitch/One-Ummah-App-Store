@@ -21,7 +21,7 @@ workflows:
       
       - name: Build production web app
         script: |
-          npm run prod:build:vite
+          npx vite build
       
       - name: Capacitor sync
         script: |
@@ -79,7 +79,7 @@ workflows:
       
       - name: Build production web app
         script: |
-          npm run prod:build:vite
+          npx vite build
       
       - name: Capacitor sync
         script: |
