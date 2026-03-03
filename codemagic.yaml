@@ -45,6 +45,12 @@ workflows:
           npx cap add ios
           echo "✅ iOS platform added"
       
+      - name: Update Bundle ID
+        script: |
+          # Update the Bundle ID in the Xcode project to match our provisioning profile
+          sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = .*/PRODUCT_BUNDLE_IDENTIFIER = com.oneummah.app;/' ios/App/App.xcodeproj/project.pbxproj
+          echo "✅ Bundle ID set to com.oneummah.app"
+      
       - name: Capacitor sync
         script: |
           npx cap sync ios
@@ -52,8 +58,14 @@ workflows:
       
       - name: Set up code signing
         script: |
-          echo "=== Setting up code signing ==="
-          xcode-project use-profiles --project "ios/App/App.xcodeproj"
+          echo "=== Fetching provisioning profiles from App Store Connect ==="
+          app-store-connect fetch-signing-files "$BUNDLE_ID" \
+            --type IOS_APP_STORE \
+            --create
+          echo "✅ Provisioning profiles fetched"
+          
+          echo "=== Applying code signing to Xcode project ==="
+          xcode-project use-profiles
           echo "✅ Code signing configured"
       
       - name: Build iOS app
