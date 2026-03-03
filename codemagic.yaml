@@ -8,6 +8,7 @@ workflows:
         - app_store_credentials
       vars:
         BUNDLE_ID: "com.oneummah.app"
+        CERTIFICATE_PRIVATE_KEY: $CERTIFICATE_PRIVATE_KEY
         PORT: "57079"
         VITE_APP_ID: "Dzne4aH4DFrnxkLb"
         VITE_BASE_URL: "https://one-ummah-yahyeabdirahman1526404989.adaptive.ai"
@@ -18,6 +19,9 @@ workflows:
         GUEST_SERVICES_URL: "http://ac1-platform.production.ac1.local:3000/api/services/v2"
         DB_FILE_NAME: "file:production.db"
         QUEUE_DB_FILE_NAME: "production-queue.db"
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.oneummah.app
       node: 22.12.0
       xcode: latest
       cocoapods: default
@@ -47,7 +51,6 @@ workflows:
       
       - name: Update Bundle ID
         script: |
-          # Update the Bundle ID in the Xcode project to match our provisioning profile
           sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = .*/PRODUCT_BUNDLE_IDENTIFIER = com.oneummah.app;/' ios/App/App.xcodeproj/project.pbxproj
           echo "✅ Bundle ID set to com.oneummah.app"
       
@@ -58,15 +61,21 @@ workflows:
       
       - name: Set up code signing
         script: |
-          echo "=== Fetching provisioning profiles from App Store Connect ==="
+          echo "=== Setting up automatic code signing ==="
+          keychain initialize
+          
+          echo "=== Fetching signing files ==="
           app-store-connect fetch-signing-files "$BUNDLE_ID" \
             --type IOS_APP_STORE \
             --create
-          echo "✅ Provisioning profiles fetched"
           
-          echo "=== Applying code signing to Xcode project ==="
+          echo "=== Adding certificates to keychain ==="
+          keychain add-certificates
+          
+          echo "=== Applying profiles ==="
           xcode-project use-profiles
-          echo "✅ Code signing configured"
+          
+          echo "✅ Code signing complete"
       
       - name: Build iOS app
         script: |
