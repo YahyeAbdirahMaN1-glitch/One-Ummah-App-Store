@@ -20,10 +20,21 @@ workflows:
         GUEST_SERVICES_URL: "http://ac1-platform.production.ac1.local:3000/api/services/v2"
         DB_FILE_NAME: "file:production.db"
         QUEUE_DB_FILE_NAME: "production-queue.db"
-      node: 20.20.0
+      node: 22.12.0
       xcode: latest
       cocoapods: default
+
     scripts:
+      - name: Use Node 22.12.0 (required by Capacitor CLI)
+        script: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+          nvm install 22.12.0
+          nvm use 22.12.0
+          node -v
+          npm -v
+
       - name: Download and extract source code
         script: |
           set -e
@@ -32,7 +43,7 @@ workflows:
           tar -xzf src.tar.gz
           rm src.tar.gz
 
-          # Normalize common archive layouts so we end up with ./src/main.tsx
+          # Normalize common tar layouts so we end up with ./src/main.tsx
           if [ -d "./src/src" ]; then
             rm -rf ./src
             mv ./src/src ./src
@@ -103,10 +114,21 @@ workflows:
         GUEST_SERVICES_URL: "http://ac1-platform.production.ac1.local:3000/api/services/v2"
         DB_FILE_NAME: "file:production.db"
         QUEUE_DB_FILE_NAME: "production-queue.db"
-      node: 20.20.0
+      node: 22.12.0
       xcode: latest
       cocoapods: default
+
     scripts:
+      - name: Use Node 22.12.0 (required by Capacitor CLI)
+        script: |
+          curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+          export NVM_DIR="$HOME/.nvm"
+          [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+          nvm install 22.12.0
+          nvm use 22.12.0
+          node -v
+          npm -v
+
       - name: Download and extract source code
         script: |
           set -e
