@@ -1,0 +1,176 @@
+generator client {
+  provider   = "prisma-client"
+  output     = "./generated"
+  engineType = "client"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DB_FILE_NAME")
+}
+
+model User {
+  // Platform columns (do not change)
+  id     String  @id
+  name   String?
+  image  String?
+  handle String?
+
+  // Custom fields
+  email            String    @unique
+  password         String?   // Hashed password (bcrypt)
+  rememberPassword Boolean   @default(false) // Remember password preference
+  gender           String    // "male" or "female"
+  birthDate        DateTime? // Date of birth
+  bio              String?
+  profilePicture   String?   // CDN URL for profile picture
+  city             String?   // Location for friend suggestions
+  country          String?   // Location for friend suggestions
+  isOnline         Boolean   @default(false)
+  typingStatus     String    @default("NOT_TYPING") // "NOT_TYPING" or "TYPING"
+  lastSeen         DateTime  @default(now())
+  createdAt        DateTime  @default(now())
+  
+  // Relations
+  posts          Post[]
+  comments       Comment[]
+  likes          Like[]
+  dislikes       Dislike[]
+  shares         Share[]
+  views          View[]
+  reposts        Repost[]
+  sentMessages   Message[] @relation("SentMessages")
+  receivedMessages Message[] @relation("ReceivedMessages")
+  sentFriendRequests     FriendRequest[] @relation("SentFriendRequests")
+  receivedFriendRequests FriendRequest[] @relation("ReceivedFriendRequests")
+  friendships1   Friendship[] @relation("User1Friendships")
+  friendships2   Friendship[] @relation("User2Friendships")
+  reportedIssues Issue[]
+}
+
+model Post {
+  id          String    @id @default(cuid())
+  content     String
+  imageUrls   String    // JSON array of image URLs
+  videoUrls   String?   // JSON array of video URLs
+  videoType   String?   // "littles" (short-form vertical), "length" (long-form), null (regular post)
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  
+  comments    Comment[]
+  likes       Like[]
+  dislikes    Dislike[]
+  shares      Share[]
+  views       View[]
+  reposts     Repost[]
+}
+
+model Comment {
+  id        String   @id @default(cuid())
+  content   String
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model FriendRequest {
+  id          String   @id @default(cuid())
+  senderId    String
+  sender      User     @relation("SentFriendRequests", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId  String
+  receiver    User     @relation("ReceivedFriendRequests", fields: [receiverId], references: [id], onDelete: Cascade)
+  status      String   @default("pending") // "pending", "accepted", "rejected"
+  createdAt   DateTime @default(now())
+  
+  @@unique([senderId, receiverId])
+}
+
+model Friendship {
+  id        String   @id @default(cuid())
+  user1Id   String
+  user1     User     @relation("User1Friendships", fields: [user1Id], references: [id], onDelete: Cascade)
+  user2Id   String
+  user2     User     @relation("User2Friendships", fields: [user2Id], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  
+  @@unique([user1Id, user2Id])
+}
+
+model Issue {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  subject     String
+  description String
+  status      String   @default("open") // "open", "in_progress", "resolved"
+  createdAt   DateTime @default(now())
+}
+
+model Like {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, postId])
+}
+
+model Dislike {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, postId])
+}
+
+model Share {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+}
+
+model View {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  postId    String
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  
+  @@unique([userId, postId])
+}
+
+model Repost {
+  id              String   @id @default(cuid())
+  userId          String
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  originalPostId  String
+  originalPost    Post     @relation(fields: [originalPostId], references: [id], onDelete: Cascade)
+  createdAt       DateTime @default(now())
+}
+
+model Message {
+  id                      String    @id @default(cuid())
+  senderId                String
+  sender                  User      @relation("SentMessages", fields: [senderId], references: [id], onDelete: Cascade)
+  receiverId              String
+  receiver                User      @relation("ReceivedMessages", fields: [receiverId], references: [id], onDelete: Cascade)
+  content                 String
+  readAt                  DateTime?
+  openedWithoutNotifying  Boolean   @default(false)
+  createdAt               DateTime  @default(now())
+  
+  @@index([senderId, receiverId])
+}
