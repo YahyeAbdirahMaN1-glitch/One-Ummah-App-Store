@@ -2,7 +2,7 @@ import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
   appId: 'com.oneummah.app',
-  appName: 'One Ummah',
+  appName: 'Ummah Unity',
   webDir: 'dist',
   server: {
     url: 'https://one-ummah-yahyeabdirahman1526404989.adaptive.ai',
