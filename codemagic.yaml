@@ -28,7 +28,7 @@ workflows:
           tar -xzf full-source.tar.gz --strip-components=1
           rm full-source.tar.gz
           ls -la
-          ls -la src/ || echo "src folder missing!"
+          test -d src && echo "✅ src folder exists" || echo "❌ src folder missing"
       
       - name: Install npm dependencies
         script: |
@@ -38,18 +38,18 @@ workflows:
       - name: Build production web app
         script: |
           npm run prod:build:vite
+          echo "✅ Vite build complete"
+          ls -la dist/
       
-      - name: Add iOS platform and prepare for build
+      - name: Add iOS platform
         script: |
+          echo "=== Adding iOS platform ==="
           npx cap add ios
-          echo "=== iOS platform created ==="
-          ls -la ios/
-          echo "=== Looking for workspace ==="
-          find ios -name "*.xcworkspace"
-          echo "=== Looking for xcodeproj ==="
-          find ios -name "*.xcodeproj"
           
-          # Install CocoaPods dependencies
+          echo "=== iOS directory structure ==="
+          ls -laR ios/ | head -50
+          
+          echo "=== Installing CocoaPods dependencies ==="
           cd ios/App
           pod install
           cd ../..
@@ -57,28 +57,34 @@ workflows:
           echo "=== After pod install ==="
           ls -la ios/App/
           
-          # Find the actual workspace path
-          WORKSPACE_PATH=$(find ios -name "*.xcworkspace" | head -n 1)
-          echo "=== Found workspace: $WORKSPACE_PATH ==="
+          echo "=== Searching for workspace ==="
+          find ios -type d -name "*.xcworkspace"
           
-          # Export for next steps
-          echo "export XCODE_WORKSPACE=\"$WORKSPACE_PATH\"" >> $CM_ENV
-          echo "export XCODE_SCHEME=\"App\"" >> $CM_ENV
+          echo "=== Verifying workspace exists ==="
+          if [ -d "ios/App/App.xcworkspace" ]; then
+            echo "✅ Workspace found at ios/App/App.xcworkspace"
+          else
+            echo "❌ Workspace not found, listing ios/App contents:"
+            ls -la ios/App/
+            exit 1
+          fi
       
       - name: Capacitor sync
         script: |
           npx cap sync ios
+          echo "✅ Capacitor sync complete"
       
-      - name: Set up code signing settings on Xcode project
+      - name: Set up code signing
         script: |
           xcode-project use-profiles
+          echo "✅ Code signing configured"
       
       - name: Build iOS app
         script: |
-          echo "Building with workspace: $XCODE_WORKSPACE"
+          echo "=== Building iOS app ==="
           xcode-project build-ipa \
-            --workspace "$XCODE_WORKSPACE" \
-            --scheme "$XCODE_SCHEME"
+            --workspace "ios/App/App.xcworkspace" \
+            --scheme "App"
     
     artifacts:
       - build/ios/ipa/*.ipa
@@ -145,8 +151,7 @@ workflows:
       
       - name: Build iOS app (development)
         script: |
-          WORKSPACE_PATH=$(find ios -name "*.xcworkspace" | head -n 1)
-          xcodebuild -workspace "$WORKSPACE_PATH" \
+          xcodebuild -workspace "ios/App/App.xcworkspace" \
             -scheme "App" \
             -configuration Debug \
             -destination 'generic/platform=iOS' \
