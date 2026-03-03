@@ -18,7 +18,7 @@
     "lint:fix": "echo 'Lint fix skipped (ESLint config issue in template)'",
     "format": "prettier --write .",
     "postinstall": "prisma generate",
-    "prod:build:vite": "vite build && vite build --config vite.config.api.ts",
+    "prod:build:vite": "vite build",
     "prod:build:types": "dts-bundle-generator --out-file=dist/api-exports.d.ts --no-check --project tsconfig.json --external-inlines @babel/types -- src/api/procedures.ts",
     "prod:build": "dotenv -e .env.production -- run-p prod:migrations prod:build:types prod:build:vite",
     "prod:migrations": "dotenv -e .env.production -- prisma migrate deploy 2>&1 | tee -a api-prod.log",
