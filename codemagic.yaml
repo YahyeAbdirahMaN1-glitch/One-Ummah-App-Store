@@ -1,6 +1,6 @@
 workflows:
   ios-release:
-    name: iOS Release (Flutter)
+    name: iOS Release (React + Capacitor)
     max_build_duration: 60
     instance_type: mac_mini_m2
     environment:
@@ -8,7 +8,7 @@ workflows:
         - app_store_credentials
       vars:
         BUNDLE_ID: "com.oneummah.app"
-      flutter: stable
+      node: 18
       xcode: latest
       cocoapods: default
       ios_signing:
@@ -16,14 +16,30 @@ workflows:
         bundle_identifier: com.oneummah.app
 
     scripts:
-      - name: Flutter pub get
+      - name: Install dependencies
         script: |
-          flutter --version
-          flutter pub get
+          npm install
+          npm install -g @capacitor/cli
 
-      - name: Build iOS IPA (release)
+      - name: Build web app
         script: |
-          flutter build ipa --release
+          npm run build
+
+      - name: Sync Capacitor
+        script: |
+          npx cap sync ios
+
+      - name: Set build number
+        script: |
+          cd ios/App
+          agvtool new-version -all $(($(app-store-connect get-latest-testflight-build-number "$APP_STORE_CONNECT_ISSUER_ID" "$APP_STORE_CONNECT_KEY_IDENTIFIER" "$APP_STORE_CONNECT_PRIVATE_KEY" "$BUNDLE_ID") + 1))
+
+      - name: Build iOS IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace ios/App/App.xcworkspace \
+            --scheme App \
+            --archive-flags "-destination 'generic/platform=iOS'"
 
     artifacts:
       - build/ios/ipa/*.ipa
