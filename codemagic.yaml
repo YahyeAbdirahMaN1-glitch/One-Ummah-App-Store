@@ -1,6 +1,6 @@
 workflows:
   ios-release:
-    name: iOS Release Build
+    name: iOS Release (Flutter)
     max_build_duration: 60
     instance_type: mac_mini_m2
     environment:
@@ -8,163 +8,34 @@ workflows:
         - app_store_credentials
       vars:
         BUNDLE_ID: "com.oneummah.app"
-        CERTIFICATE_PRIVATE_KEY: $CERTIFICATE_PRIVATE_KEY
-        PORT: "57079"
-        VITE_APP_ID: "Dzne4aH4DFrnxkLb"
-        VITE_BASE_URL: "https://one-ummah-yahyeabdirahman1526404989.adaptive.ai"
-        VITE_ROOT_URL: "https://adaptive.ai"
-        VITE_NODE_ENV: "production"
-        VITE_BOX_ID: "MEyXfPBM7yjM9xme"
-        VITE_REALTIME_DOMAIN: "rt.acflare.com"
-        GUEST_SERVICES_URL: "http://ac1-platform.production.ac1.local:3000/api/services/v2"
-        DB_FILE_NAME: "file:production.db"
-        QUEUE_DB_FILE_NAME: "production-queue.db"
+      flutter: stable
+      xcode: latest
+      cocoapods: default
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.oneummah.app
-      node: 22.12.0
-      xcode: latest
-      cocoapods: default
+
     scripts:
-      - name: Download and extract complete source code
+      - name: Flutter pub get
         script: |
-          curl -L -o full-source.tar.gz "https://yahyeabdirahman1526404989.adaptive.ai/cdn/one-ummah-full-source.tar.gz"
-          tar -xzf full-source.tar.gz --strip-components=1
-          rm full-source.tar.gz
-          echo "✅ Source code downloaded"
-      
-      - name: Install npm dependencies
+          flutter --version
+          flutter pub get
+
+      - name: Build iOS IPA (release)
         script: |
-          rm -rf node_modules package-lock.json
-          npm install
-          echo "✅ npm install complete"
-      
-      - name: Build production web app
-        script: |
-          npm run prod:build:vite
-          echo "✅ Vite build complete"
-      
-      - name: Add iOS platform
-        script: |
-          npx cap add ios
-          echo "✅ iOS platform added"
-      
-      - name: Update Bundle ID and Build Number
-        script: |
-          # Update Bundle ID in project file (compatible with both macOS and Linux sed)
-          if [[ "$OSTYPE" == "darwin"* ]]; then
-            sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = .*/PRODUCT_BUNDLE_IDENTIFIER = com.oneummah.app;/' ios/App/App.xcodeproj/project.pbxproj
-          else
-            sed -i 's/PRODUCT_BUNDLE_IDENTIFIER = .*/PRODUCT_BUNDLE_IDENTIFIER = com.oneummah.app;/' ios/App/App.xcodeproj/project.pbxproj
-          fi
-          echo "✅ Bundle ID set to com.oneummah.app"
-          
-          # Increment build number automatically using timestamp
-          BUILD_NUMBER=$(($(date +%s) / 60))
-          /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ios/App/App/Info.plist
-          echo "✅ Build number set to $BUILD_NUMBER"
-      
-      - name: Capacitor sync
-        script: |
-          npx cap sync ios
-          echo "✅ Capacitor sync complete"
-      
-      - name: Set up code signing
-        script: |
-          echo "=== Setting up code signing ==="
-          keychain initialize
-          
-          echo "=== Adding certificates to keychain ==="
-          keychain add-certificates
-          
-          echo "=== Applying manually uploaded profiles ==="
-          xcode-project use-profiles
-          
-          echo "✅ Code signing complete"
-      
-      - name: Build iOS app
-        script: |
-          echo "=== Building iOS app ==="
-          xcode-project build-ipa \
-            --workspace "ios/App/App.xcodeproj/project.xcworkspace" \
-            --scheme "App"
-    
+          flutter build ipa --release
+
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
-    
+
     publishing:
-      email:
-        recipients:
-          - yahyeabdirahman1526404989@adaptive.ai
-        notify:
-          success: true
-          failure: true
-      
       app_store_connect:
         api_key: $APP_STORE_CONNECT_PRIVATE_KEY
         key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
         submit_to_app_store: false
-
-  ios-development:
-    name: iOS Development Build
-    max_build_duration: 30
-    instance_type: mac_mini_m2
-    environment:
-      vars:
-        PORT: "57079"
-        VITE_APP_ID: "Dzne4aH4DFrnxkLb"
-        VITE_BASE_URL: "https://one-ummah-yahyeabdirahman1526404989.adaptive.ai"
-        VITE_ROOT_URL: "https://adaptive.ai"
-        VITE_NODE_ENV: "production"
-        VITE_BOX_ID: "MEyXfPBM7yjM9xme"
-        VITE_REALTIME_DOMAIN: "rt.acflare.com"
-        GUEST_SERVICES_URL: "http://ac1-platform.production.ac1.local:3000/api/services/v2"
-        DB_FILE_NAME: "file:production.db"
-        QUEUE_DB_FILE_NAME: "production-queue.db"
-      node: 22.12.0
-      xcode: latest
-      cocoapods: default
-    scripts:
-      - name: Download and extract complete source code
-        script: |
-          curl -L -o full-source.tar.gz "https://yahyeabdirahman1526404989.adaptive.ai/cdn/one-ummah-full-source.tar.gz"
-          tar -xzf full-source.tar.gz --strip-components=1
-          rm full-source.tar.gz
-      
-      - name: Install npm dependencies
-        script: |
-          rm -rf node_modules package-lock.json
-          npm install
-      
-      - name: Build production web app
-        script: |
-          npm run prod:build:vite
-      
-      - name: Add iOS platform
-        script: |
-          npx cap add ios
-      
-      - name: Capacitor sync
-        script: |
-          npx cap sync ios
-      
-      - name: Build iOS app (development)
-        script: |
-          xcodebuild -workspace "ios/App/App.xcodeproj/project.xcworkspace" \
-            -scheme "App" \
-            -configuration Debug \
-            -destination 'generic/platform=iOS' \
-            -archivePath "$HOME/OneUmmah.xcarchive" \
-            archive
-    
-    artifacts:
-      - $HOME/OneUmmah.xcarchive
-      - /tmp/xcodebuild_logs/*.log
-    
-    publishing:
       email:
         recipients:
           - yahyeabdirahman1526404989@adaptive.ai
