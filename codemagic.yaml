@@ -51,10 +51,15 @@ workflows:
       
       - name: Update Bundle ID and Build Number
         script: |
-          sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = .*/PRODUCT_BUNDLE_IDENTIFIER = com.oneummah.app;/' ios/App/App.xcodeproj/project.pbxproj
+          # Update Bundle ID in project file (compatible with both macOS and Linux sed)
+          if [[ "$OSTYPE" == "darwin"* ]]; then
+            sed -i '' 's/PRODUCT_BUNDLE_IDENTIFIER = .*/PRODUCT_BUNDLE_IDENTIFIER = com.oneummah.app;/' ios/App/App.xcodeproj/project.pbxproj
+          else
+            sed -i 's/PRODUCT_BUNDLE_IDENTIFIER = .*/PRODUCT_BUNDLE_IDENTIFIER = com.oneummah.app;/' ios/App/App.xcodeproj/project.pbxproj
+          fi
           echo "✅ Bundle ID set to com.oneummah.app"
           
-          # Increment build number automatically
+          # Increment build number automatically using timestamp
           BUILD_NUMBER=$(($(date +%s) / 60))
           /usr/libexec/PlistBuddy -c "Set :CFBundleVersion $BUILD_NUMBER" ios/App/App/Info.plist
           echo "✅ Build number set to $BUILD_NUMBER"
