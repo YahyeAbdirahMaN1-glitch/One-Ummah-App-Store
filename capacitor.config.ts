@@ -4,10 +4,6 @@ const config: CapacitorConfig = {
   appId: 'com.oneummah.app',
   appName: 'Ummah Unity',
   webDir: 'dist',
-  server: {
-    url: 'https://one-ummah-yahyeabdirahman1526404989.adaptive.ai',
-    cleartext: true
-  },
   ios: {
     contentInset: 'always',
     allowsLinkPreview: true,
