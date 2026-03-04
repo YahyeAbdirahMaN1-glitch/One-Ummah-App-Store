@@ -5,10 +5,11 @@ const config: CapacitorConfig = {
   appName: 'Ummah Unity',
   webDir: 'dist',
 
-  server: {
-    url: 'https://one-ummah-yahyeabdirahman1526404989.adaptive.ai',
-    cleartext: true
-  },
+  // IMPORTANT: Do NOT use server.url for App Store/TestFlight builds.
+  // server: {
+  //   url: 'https://one-ummah-yahyeabdirahman1526404989.adaptive.ai',
+  //   cleartext: true
+  // },
 
   ios: {
     contentInset: 'always',
