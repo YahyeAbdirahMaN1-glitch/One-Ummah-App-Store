@@ -1,0 +1,239 @@
+@import 'tailwindcss';
+
+/* One Ummah Custom Theme - Islamic Gold & Black */
+:root {
+  --background: 0 0% 100%;
+  --foreground: 222.2 84% 4.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 222.2 84% 4.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 222.2 84% 4.9%;
+  --primary: 45 100% 51%; /* Islamic Gold */
+  --primary-foreground: 0 0% 0%;
+  --secondary: 210 40% 96.1%;
+  --secondary-foreground: 222.2 47.4% 11.2%;
+  --muted: 210 40% 96.1%;
+  --muted-foreground: 215.4 16.3% 46.9%;
+  --accent: 45 93% 47%; /* Darker gold for accents */
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 214.3 31.8% 91.4%;
+  --input: 214.3 31.8% 91.4%;
+  --ring: 45 100% 51%;
+  --radius: 0.5rem;
+}
+
+.dark {
+  --background: 0 0% 0%; /* Pure black */
+  --foreground: 45 100% 95%;
+  --card: 0 0% 5%;
+  --card-foreground: 45 100% 95%;
+  --popover: 0 0% 5%;
+  --popover-foreground: 45 100% 95%;
+  --primary: 45 100% 51%; /* Islamic Gold */
+  --primary-foreground: 0 0% 0%;
+  --secondary: 217.2 32.6% 17.5%;
+  --secondary-foreground: 210 40% 98%;
+  --muted: 217.2 32.6% 17.5%;
+  --muted-foreground: 215 20.2% 65.1%;
+  --accent: 45 93% 47%;
+  --accent-foreground: 0 0% 0%;
+  --destructive: 0 62.8% 30.6%;
+  --destructive-foreground: 210 40% 98%;
+  --border: 217.2 32.6% 17.5%;
+  --input: 217.2 32.6% 17.5%;
+  --ring: 45 100% 51%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  @apply bg-background text-foreground;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100 dark:bg-gray-900;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 dark:bg-gray-700 rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-400 dark:bg-gray-600;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(10px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.animate-slideUp {
+  animation: slideUp 0.3s ease-in-out;
+}
+
+/* Glassmorphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+/* TRIPLE LAYER CHAT WIDGET HIDING - DO NOT MODIFY LINES 122-228 */
+/* Layer 1: Hide all Adaptive chat widget elements with extreme specificity */
+#adaptive-chat-widget,
+#adaptive-chat-container,
+#adaptive-chat-iframe,
+div[id*="adaptive-chat"],
+div[class*="adaptive-chat"],
+iframe[id*="adaptive"],
+iframe[src*="chat"],
+button[aria-label*="chat" i],
+button[aria-label*="help" i],
+div[role="complementary"][aria-label*="chat" i],
+[data-adaptive-chat],
+[data-chat-widget],
+.adaptive-chat-widget,
+.adaptive-chat-container,
+.adaptive-chat-button,
+.adaptive-chat-bubble {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+  overflow: hidden !important;
+  z-index: -9999 !important;
+}
+
+/* Layer 2: Block all bottom-right positioned elements that could be chat widgets */
+body > div:last-child:not(#root),
+body > iframe:last-child,
+div[style*="position: fixed"][style*="bottom"],
+div[style*="position: fixed"][style*="right"],
+button[style*="position: fixed"][style*="bottom"],
+button[style*="position: fixed"][style*="right"] {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Layer 3: Prevent chat widget injection via shadow DOM */
+* {
+  --adaptive-chat-display: none;
+}
+
+*::before,
+*::after {
+  content: none !important;
+}
+
+/* Additional safeguards - block common chat widget patterns */
+[class*="intercom"],
+[class*="drift"],
+[class*="crisp"],
+[class*="zendesk"],
+[id*="intercom"],
+[id*="drift"],
+[id*="crisp"],
+[id*="zendesk"],
+.intercom-launcher,
+.drift-controller,
+.crisp-client,
+#intercom-container,
+#drift-widget,
+#crisp-chatbox {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Prevent ANY bottom-right fixed elements (common chat position) */
+[style*="bottom: 0"][style*="right: 0"],
+[style*="bottom:0"][style*="right:0"],
+[style*="bottom: 20px"][style*="right: 20px"],
+[style*="position: fixed; bottom"],
+[style*="position:fixed;bottom"] {
+  display: none !important;
+}
+
+/* Nuclear option: Hide all iframes not explicitly whitelisted */
+iframe:not([src*="youtube"]):not([src*="vimeo"]):not([src*="maps"]):not([title="One Ummah"]) {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Prevent script injection of chat elements */
+script[src*="chat"],
+script[src*="intercom"],
+script[src*="drift"],
+script[src*="crisp"] {
+  display: none !important;
+}
+
+/* END CHAT WIDGET HIDING - Lines 122-228 */
+
+/* One Ummah brand colors */
+.text-one-ummah-gold {
+  color: #D4AF37;
+}
+
+.bg-one-ummah-gold {
+  background-color: #D4AF37;
+}
+
+.border-one-ummah-gold {
+  border-color: #D4AF37;
+}
+
+/* Instagram-style camera effects */
+.camera-mirror {
+  transform: scaleX(-1);
+}
+
+.object-cover-center {
+  object-fit: cover;
+  object-position: center center;
+}

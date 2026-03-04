@@ -2,8 +2,9 @@ import { defineConfig, HttpProxy } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
-import { env } from "./src/lib/env";
 import http from "http";
+
+const PORT = Number(process.env.PORT) || 4500;
 
 function proxyConfig(proxy: HttpProxy.ProxyServer) {
   proxy.on('error', function (err, _req, res) {
@@ -25,20 +26,18 @@ export default ({ mode }: { mode: "development" | "production" }) => {
   return defineConfig({
     plugins: [tsconfigPaths(), react(), tailwindcss()],
     server: {
-      port: Number(env.PORT),
-      allowedHosts: true,
-      headers: {
-        'Cache-Control': 'no-cache, must-revalidate',
-      },
+      port: Number(PORT),
+      host: '0.0.0.0',
+      strictPort: false,
       proxy: {
         "/_logger": {
-          target: "http://localhost:" + (Number(env.PORT) + 1),
+          target: "http://localhost:" + (Number(PORT) + 1),
           changeOrigin: true,
           secure: false,
           configure: proxyConfig,
         },
-        "/api/": {
-          target: "http://localhost:" + (Number(env.PORT) + 1),
+        "/api": {
+          target: "http://localhost:" + (Number(PORT) + 1),
           changeOrigin: true,
           secure: false,
           configure: proxyConfig,
@@ -46,17 +45,18 @@ export default ({ mode }: { mode: "development" | "production" }) => {
       },
     },
     preview: {
-      port: Number(env.PORT),
-      allowedHosts: true,
+      port: Number(PORT),
+      host: '0.0.0.0',
+      strictPort: false,
       proxy: {
         "/_logger": {
-          target: "http://localhost:" + (Number(env.PORT) + 1),
+          target: "http://localhost:" + (Number(PORT) + 1),
           changeOrigin: true,
           secure: false,
           configure: proxyConfig,
         },
-        "/api/": {
-          target: "http://localhost:" + (Number(env.PORT) + 1),
+        "/api": {
+          target: "http://localhost:" + (Number(PORT) + 1),
           changeOrigin: true,
           secure: false,
           configure: proxyConfig,

@@ -1,0 +1,96 @@
+
+> full-stack-app-template@0.0.0 dev:vite
+> vite --host 0.0.0.0 2>&1 | tee -a vite-dev.log
+
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 299 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.11:4500/
+
+  VITE v7.3.1  ready in 299 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.11:4500/
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 288 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.11:4500/
+9:52:08 PM [vite] (client) Pre-transform error: Cannot apply unknown utility class `border-border`
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /home/computer/one-ummah/src/index.css
+9:52:46 PM [vite] Internal server error: Cannot apply unknown utility class `border-border`
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /home/computer/one-ummah/src/index.css?direct
+      at onInvalidCandidate (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:1511)
+      at $e (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:16:37066)
+      at file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:355
+      at Ar (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:3:1733)
+      at I (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:3:1377)
+      at Ce (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:172)
+      at Gi (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:294)
+      at async ao (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:631)
+      at async vf (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:1406)
+      at async uu (file:///home/computer/one-ummah/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+      at async B.generate (file:///home/computer/one-ummah/node_modules/@tailwindcss/vite/dist/index.mjs:1:5049)
+      at async TransformPluginContext.handler (file:///home/computer/one-ummah/node_modules/@tailwindcss/vite/dist/index.mjs:1:2719)
+      at async EnvironmentPluginContainer.transform (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:28797:14)
+      at async loadAndTransform (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:22670:26)
+9:52:46 PM [vite] Internal server error: Cannot apply unknown utility class `border-border`
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /home/computer/one-ummah/src/index.css
+      at onInvalidCandidate (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:1511)
+      at $e (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:16:37066)
+      at file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:355
+      at Ar (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:3:1733)
+      at I (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:3:1377)
+      at Ce (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:172)
+      at Gi (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:294)
+      at async ao (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:631)
+      at async vf (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:1406)
+      at async uu (file:///home/computer/one-ummah/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+      at async B.generate (file:///home/computer/one-ummah/node_modules/@tailwindcss/vite/dist/index.mjs:1:5049)
+      at async TransformPluginContext.handler (file:///home/computer/one-ummah/node_modules/@tailwindcss/vite/dist/index.mjs:1:2719)
+      at async EnvironmentPluginContainer.transform (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:28797:14)
+      at async loadAndTransform (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:22670:26)
+      at async viteTransformMiddleware (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:24542:20)
+9:59:08 PM [vite] Internal server error: Cannot apply unknown utility class `border-border`
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /home/computer/one-ummah/src/index.css?direct
+      at onInvalidCandidate (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:1511)
+      at $e (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:16:37066)
+      at file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:355
+      at Ar (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:3:1733)
+      at I (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:3:1377)
+      at Ce (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:172)
+      at Gi (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:294)
+      at async ao (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:631)
+      at async vf (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:1406)
+      at async uu (file:///home/computer/one-ummah/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+      at async B.generate (file:///home/computer/one-ummah/node_modules/@tailwindcss/vite/dist/index.mjs:1:5049)
+      at async TransformPluginContext.handler (file:///home/computer/one-ummah/node_modules/@tailwindcss/vite/dist/index.mjs:1:2719)
+      at async EnvironmentPluginContainer.transform (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:28797:14)
+      at async loadAndTransform (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:22670:26)
+      at async viteTransformMiddleware (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:24542:20)
+9:59:08 PM [vite] Internal server error: Cannot apply unknown utility class `border-border`
+  Plugin: @tailwindcss/vite:generate:serve
+  File: /home/computer/one-ummah/src/index.css
+      at onInvalidCandidate (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:1511)
+      at $e (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:16:37066)
+      at file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:355
+      at Ar (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:3:1733)
+      at I (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:3:1377)
+      at Ce (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:21:172)
+      at Gi (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:294)
+      at async ao (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:631)
+      at async vf (file:///home/computer/one-ummah/node_modules/tailwindcss/dist/chunk-L5IEUH3R.mjs:38:1406)
+      at async uu (file:///home/computer/one-ummah/node_modules/@tailwindcss/node/dist/index.mjs:10:3458)
+      at async B.generate (file:///home/computer/one-ummah/node_modules/@tailwindcss/vite/dist/index.mjs:1:5049)
+      at async TransformPluginContext.handler (file:///home/computer/one-ummah/node_modules/@tailwindcss/vite/dist/index.mjs:1:2719)
+      at async EnvironmentPluginContainer.transform (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:28797:14)
+      at async loadAndTransform (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:22670:26)
+      at async viteTransformMiddleware (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:24542:20)
+Started vite server in mode: development
