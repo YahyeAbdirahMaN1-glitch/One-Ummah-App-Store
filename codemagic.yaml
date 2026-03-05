@@ -10,6 +10,7 @@ workflows:
         BUNDLE_ID: "com.oneummah.app"
       node: 22
       xcode: latest
+      cocoapods: default
       ios_signing:
         distribution_type: app_store
         bundle_identifier: com.oneummah.app
@@ -29,6 +30,7 @@ workflows:
       - name: Sync Capacitor
         script: |
           npx cap sync ios
+          cd ios/App && pod install && cd ../..
 
       - name: Set build number
         script: |
@@ -38,7 +40,7 @@ workflows:
       - name: Build iOS IPA
         script: |
           xcode-project build-ipa \
-            --project ios/App/App.xcodeproj \
+            --workspace ios/App/App.xcworkspace \
             --scheme App
 
     artifacts:
