@@ -58,31 +58,40 @@ export function useAuth() {
   };
 
   const login = async (email: string, password: string) => {
-    const response = await fetch(`${API_URL}/signIn`, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({ email, password }),
-      credentials: 'include',
-      mode: 'cors',
-    });
+    try {
+      console.log('Attempting login to:', `${API_URL}/signIn`);
+      
+      const response = await fetch(`${API_URL}/signIn`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ email, password }),
+        credentials: 'include',
+        mode: 'cors',
+      });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Login failed');
-    }
+      console.log('Login response status:', response.status);
 
-    const data = await response.json();
-    
-    // Store user ID in localStorage
-    if (data.userId) {
-      localStorage.setItem('userId', data.userId);
-      setUser(data.user);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Login failed');
+      }
+
+      const data = await response.json();
+      
+      // Store user ID in localStorage
+      if (data.userId) {
+        localStorage.setItem('userId', data.userId);
+        setUser(data.user);
+      }
+      
+      return data;
+    } catch (error: any) {
+      console.error('Login error:', error);
+      throw new Error(error.message || 'Network error - please check your internet connection');
     }
-    
-    return data;
   };
 
   const signup = async (email: string, password: string, name: string, gender: string) => {
