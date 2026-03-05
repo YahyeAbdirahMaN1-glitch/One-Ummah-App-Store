@@ -1,0 +1,47 @@
+/* CRITICAL: Hide Adaptive AI chat widget for white-label iOS app */
+/* This file ensures NO Adaptive branding appears in the production iOS app */
+
+/* Hide chat widget button */
+#adaptive-chat-widget-button,
+[id*="adaptive-chat"],
+[class*="adaptive-chat"],
+button[aria-label*="chat" i][aria-label*="adaptive" i] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  position: absolute !important;
+  left: -9999px !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+/* Hide chat widget iframe */
+iframe[src*="adaptive"],
+iframe[title*="Adaptive"],
+iframe[title*="Chat"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Hide any Adaptive branding elements */
+[data-adaptive-widget],
+[data-adaptive-chat],
+.adaptive-widget,
+.adaptive-chat-container {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Ensure main content takes full space */
+body {
+  padding-bottom: 0 !important;
+}
+
+/* Additional safety: Hide any floating chat buttons */
+button[style*="position: fixed"][style*="bottom"],
+button[style*="position: fixed"][style*="right"] {
+  display: none !important;
+}

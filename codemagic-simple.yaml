@@ -23,25 +23,17 @@ workflows:
 
       - name: Build web app
         script: |
-          # Build the Vite app for production
-          export VITE_SERVER_URL=https://one-ummah-yahyeabdirahman1526404989.adaptive.ai
           npm run prod:build:vite
 
       - name: Sync Capacitor
         script: |
           npx cap sync ios
 
-      - name: Set build number
-        script: |
-          cd ios/App
-          agvtool new-version -all $(($(app-store-connect get-latest-testflight-build-number "$APP_STORE_CONNECT_ISSUER_ID" "$APP_STORE_CONNECT_KEY_IDENTIFIER" "$APP_STORE_CONNECT_PRIVATE_KEY" "$BUNDLE_ID") + 1))
-
       - name: Build iOS IPA
         script: |
           xcode-project build-ipa \
             --workspace ios/App/App.xcworkspace \
-            --scheme App \
-            --archive-flags "-destination 'generic/platform=iOS'"
+            --scheme App
 
     artifacts:
       - build/ios/ipa/*.ipa
@@ -53,7 +45,6 @@ workflows:
         key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
-        submit_to_app_store: false
       email:
         recipients:
           - yahyeabdirahman1526404989@adaptive.ai
