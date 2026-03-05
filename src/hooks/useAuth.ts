@@ -34,8 +34,12 @@ export function useAuth() {
       
       const response = await fetch(`${API_URL}/getUser`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
         body: JSON.stringify({ userId }),
+        mode: 'cors',
       });
       
       if (response.ok) {
@@ -56,9 +60,13 @@ export function useAuth() {
   const login = async (email: string, password: string) => {
     const response = await fetch(`${API_URL}/signIn`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
       body: JSON.stringify({ email, password }),
       credentials: 'include',
+      mode: 'cors',
     });
 
     if (!response.ok) {
@@ -80,9 +88,13 @@ export function useAuth() {
   const signup = async (email: string, password: string, name: string, gender: string) => {
     const response = await fetch(`${API_URL}/signUp`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
       body: JSON.stringify({ email, password, name, gender }),
       credentials: 'include',
+      mode: 'cors',
     });
 
     if (!response.ok) {
@@ -100,8 +112,12 @@ export function useAuth() {
     // Fetch full user data
     const userResponse = await fetch(`${API_URL}/getUser`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: { 
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
       body: JSON.stringify({ userId: data.userId }),
+      mode: 'cors',
     });
     
     if (userResponse.ok) {

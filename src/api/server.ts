@@ -5,7 +5,12 @@ import { router } from "./procedures";
 
 const app = new Hono();
 
-app.use("/*", cors());
+app.use("/*", cors({
+  origin: '*', // Allow all origins including iOS app
+  credentials: true,
+  allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowHeaders: ['Content-Type', 'Authorization'],
+}));
 
 app.route("/rpc", router);
 
