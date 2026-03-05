@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { API_URL } from '../config';
 
 export interface User {
   id: string;
@@ -31,7 +32,7 @@ export function useAuth() {
         return;
       }
       
-      const response = await fetch('/rpc/getUser', {
+      const response = await fetch(`${API_URL}/getUser`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ userId }),
@@ -53,7 +54,7 @@ export function useAuth() {
   };
 
   const login = async (email: string, password: string) => {
-    const response = await fetch('/rpc/signIn', {
+    const response = await fetch(`${API_URL}/signIn`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password }),
@@ -77,7 +78,7 @@ export function useAuth() {
   };
 
   const signup = async (email: string, password: string, name: string, gender: string) => {
-    const response = await fetch('/rpc/signUp', {
+    const response = await fetch(`${API_URL}/signUp`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ email, password, name, gender }),
@@ -97,7 +98,7 @@ export function useAuth() {
     }
     
     // Fetch full user data
-    const userResponse = await fetch('/rpc/getUser', {
+    const userResponse = await fetch(`${API_URL}/getUser`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ userId: data.userId }),

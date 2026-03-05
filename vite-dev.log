@@ -94,3 +94,245 @@ Started vite server in mode: development
       at async loadAndTransform (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:22670:26)
       at async viteTransformMiddleware (file:///home/computer/one-ummah/node_modules/vite/dist/node/chunks/config.js:24542:20)
 Started vite server in mode: development
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 281 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.16:4500/
+7:03:02 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:02 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:03 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:03 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:03 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:03 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:03 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:03 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:03 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:03 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:03 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:04 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:04 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:04 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:04 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:04 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:04 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:04 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:04 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:04 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:04 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:05 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:05 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:05 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:05 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:05 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:05 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:05 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:05 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:05 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:05 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:06 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:06 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:06 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:06 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:06 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:06 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:06 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:06 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:06 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:06 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:07 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:07 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:07 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:07 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:07 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:07 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:07 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:07 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:07 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:07 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:08 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:08 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:08 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:08 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:08 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:08 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:08 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:08 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:08 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:09 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:09 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:09 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:09 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:09 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:09 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:09 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:09 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:09 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:09 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:10 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:10 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:10 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:10 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:10 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:10 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:03:10 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:4501
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+7:04:49 PM [vite] (client) page reload ios/App/App/public/index.html
+7:04:49 PM [vite] (client) page reload ios/App/App/public/index.html
+7:04:53 PM [vite] (client) page reload ios/App/App/public/index.html
+7:04:54 PM [vite] (client) page reload ios/App/App/public/index.html
+8:06:46 PM [vite] (client) page reload ios/App/App/public/index.html
