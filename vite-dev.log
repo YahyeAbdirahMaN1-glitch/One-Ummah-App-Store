@@ -1011,3 +1011,4 @@ Started vite server in mode: development
 Started vite server in mode: development
 10:43:20 PM [vite] server restarted.
 10:45:47 PM [vite] (client) hmr update /src/index.css, /src/App.tsx, /src/pages/SignUpPage.tsx, /src/pages/SettingsPage.tsx, /src/pages/LoginPage.tsx, /src/components/Layout.tsx
+11:33:06 PM [vite] (client) hmr update /src/index.css, /src/App.tsx, /src/pages/SignUpPage.tsx, /src/pages/SettingsPage.tsx, /src/pages/LoginPage.tsx, /src/components/Layout.tsx
