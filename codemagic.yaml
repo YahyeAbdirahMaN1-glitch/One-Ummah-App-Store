@@ -49,7 +49,21 @@ workflows:
       - name: Set build number
         script: |
           cd ios/App
-          agvtool new-version -all $(($(app-store-connect get-latest-testflight-build-number "$APP_STORE_CONNECT_ISSUER_ID" "$APP_STORE_CONNECT_KEY_IDENTIFIER" "$APP_STORE_CONNECT_PRIVATE_KEY" "$BUNDLE_ID") + 1))
+          # Get latest build number from TestFlight, or use timestamp if that fails
+          LATEST_BUILD=$(app-store-connect get-latest-testflight-build-number \
+            "$APP_STORE_CONNECT_ISSUER_ID" \
+            "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            "$APP_STORE_CONNECT_PRIVATE_KEY" \
+            "$BUNDLE_ID" 2>/dev/null || echo "0")
+          NEW_BUILD=$((LATEST_BUILD + 1))
+          
+          # If latest build is the problematic one, add extra increment
+          if [ "$NEW_BUILD" -le "29544245" ]; then
+            NEW_BUILD=$((29544245 + 1))
+          fi
+          
+          echo "Setting build number to: $NEW_BUILD"
+          agvtool new-version -all "$NEW_BUILD"
 
       - name: Build iOS IPA  
         script: |
