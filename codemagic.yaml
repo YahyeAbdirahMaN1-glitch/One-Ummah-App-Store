@@ -49,18 +49,10 @@ workflows:
       - name: Set build number
         script: |
           cd ios/App
-          # Get latest build number from TestFlight
-          LATEST_BUILD=$(app-store-connect get-latest-testflight-build-number \
-            "$APP_STORE_CONNECT_ISSUER_ID" \
-            "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
-            "$APP_STORE_CONNECT_PRIVATE_KEY" \
-            "$BUNDLE_ID" 2>/dev/null || echo "29544246")
+          # Use current Unix timestamp as build number (always unique and incrementing)
+          NEW_BUILD=$(date +%s)
           
-          # Always increment by 1 from the latest
-          NEW_BUILD=$((LATEST_BUILD + 1))
-          
-          echo "Latest TestFlight build: $LATEST_BUILD"
-          echo "Setting new build number to: $NEW_BUILD"
+          echo "Setting build number to timestamp: $NEW_BUILD"
           agvtool new-version -all "$NEW_BUILD"
 
       - name: Build iOS IPA  
