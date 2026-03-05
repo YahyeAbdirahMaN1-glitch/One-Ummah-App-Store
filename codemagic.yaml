@@ -31,23 +31,18 @@ workflows:
         script: |
           npx cap sync ios
 
-      - name: Fetch signing files
+      - name: Set up code signing
         script: |
+          keychain initialize
+          
+          # Fetch or create signing files
           app-store-connect fetch-signing-files "$BUNDLE_ID" \
             --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
             --private-key "$APP_STORE_CONNECT_PRIVATE_KEY" \
             --type IOS_APP_STORE \
             --create
-
-      - name: Set up code signing
-        script: |
-          keychain initialize
-          app-store-connect certificates list \
-            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
-            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
-            --private-key "$APP_STORE_CONNECT_PRIVATE_KEY" \
-            --save
+          
           keychain add-certificates
           xcode-project use-profiles
 
