@@ -5,11 +5,11 @@ const config: CapacitorConfig = {
   appName: 'Ummah Unity',
   webDir: 'dist',
 
-  // Point to Adaptive web app (includes both UI and API)
-  server: {
-    url: 'https://one-ummah-yahyeabdirahman1526404989.on.adaptive.ai',
-    cleartext: true
-  },
+  // iOS uses local files - API calls use full URL in config.ts
+  // server: {
+  //   url: 'https://one-ummah-yahyeabdirahman1526404989.on.adaptive.ai',
+  //   cleartext: true
+  // },
 
   ios: {
     contentInset: 'always',

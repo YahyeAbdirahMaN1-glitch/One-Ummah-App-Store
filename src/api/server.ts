@@ -14,7 +14,7 @@ app.use("/*", cors({
 
 app.route("/rpc", router);
 
-const port = Number(process.env.PORT) || 4500;
+const port = Number(process.env.API_PORT || process.env.PORT) + 1 || 4501;
 
 console.log(`🚀 API Server running on http://localhost:${port}`);
 

@@ -21,13 +21,21 @@ export default function LoginPage() {
       return;
     }
 
+    // Basic email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      toast.error('Please enter a valid email address');
+      return;
+    }
+
     setLoading(true);
     try {
       await login(email, password);
       toast.success('Welcome back!');
       navigate('/');
     } catch (error: any) {
-      toast.error(error.message || 'Login failed');
+      console.error('Login error:', error);
+      toast.error(error.message || 'Unable to connect. Please check your internet connection.');
     } finally {
       setLoading(false);
     }

@@ -31,13 +31,19 @@ export default ({ mode }: { mode: "development" | "production" }) => {
       strictPort: false,
       proxy: {
         "/_logger": {
-          target: "http://localhost:" + (Number(PORT) + 1),
+          target: "http://localhost:5002",
           changeOrigin: true,
           secure: false,
           configure: proxyConfig,
         },
         "/api": {
-          target: "http://localhost:" + (Number(PORT) + 1),
+          target: "http://localhost:5002",
+          changeOrigin: true,
+          secure: false,
+          configure: proxyConfig,
+        },
+        "/rpc": {
+          target: "http://localhost:5002",
           changeOrigin: true,
           secure: false,
           configure: proxyConfig,
