@@ -1100,3 +1100,37 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 3:19:32 AM [vite] (client) page reload ios/App/App/public/index.html
 3:23:48 AM [vite] (client) hmr update /src/components/InstagramCamera.tsx, /src/index.css
 3:24:50 AM [vite] (client) page reload ios/App/App/public/index.html
+
+> full-stack-app-template@0.0.0 dev:vite
+> vite --host 0.0.0.0 2>&1 | tee -a vite-dev.log
+
+Started vite server in mode: development
+Started vite server in mode: development
+Port 4500 is in use, trying another one...
+Port 4501 is in use, trying another one...
+
+  VITE v7.3.1  ready in 296 ms
+
+  ➜  Local:   http://localhost:4502/
+  ➜  Network: http://172.17.0.3:4502/
+Port 4500 is in use, trying another one...
+Port 4501 is in use, trying another one...
+
+  VITE v7.3.1  ready in 296 ms
+
+  ➜  Local:   http://localhost:4502/
+  ➜  Network: http://172.17.0.3:4502/
+3:30:27 AM [vite] (client) hmr update /src/components/InstagramCamera.tsx, /src/index.css
+3:30:35 AM [vite] (client) hmr update /src/components/InstagramCamera.tsx, /src/index.css
+3:30:46 AM [vite] (client) hmr update /src/components/InstagramCamera.tsx, /src/index.css
+3:30:56 AM [vite] (client) hmr update /src/components/InstagramCamera.tsx, /src/index.css
+3:31:17 AM [vite] (client) hmr update /src/pages/PrayerTimesPage.tsx, /src/index.css
+3:31:28 AM [vite] (client) page reload ios/App/App/public/index.html
+3:31:28 AM [vite] (client) page reload ios/App/App/public/index.html
+3:31:28 AM [vite] (client) page reload ios/App/App/public/index.html
+3:32:34 AM [vite] (client) hmr update /src/pages/SettingsPage.tsx, /src/index.css
+3:32:39 AM [vite] (client) hmr update /src/pages/SettingsPage.tsx, /src/index.css
+3:32:47 AM [vite] (client) hmr update /src/App.tsx, /src/index.css
+3:32:52 AM [vite] (client) hmr update /src/App.tsx, /src/index.css
+3:33:04 AM [vite] (client) hmr update /src/index.css, /src/pages/ProfileSettingsPage.tsx
+3:33:08 AM [vite] (client) hmr update /src/index.css, /src/pages/ProfileSettingsPage.tsx

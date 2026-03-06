@@ -153,59 +153,49 @@ export default function PrayerTimesPage() {
       const audio = document.createElement('audio');
       audio.setAttribute('playsinline', '');
       audio.setAttribute('webkit-playsinline', '');
+      audio.preload = 'auto';
       
       audioRef.current = audio;
-      setPlayingReciter(reciter.id);
-
-      // Set source and wait for 'canplay' event before playing (iOS fix)
-      audio.src = reciter.audioFile;
       
-      return new Promise<void>((resolve, reject) => {
-        const playTimeout = setTimeout(() => {
-          reject(new Error('Audio loading timeout'));
-        }, 10000); // 10 second timeout
+      // Set source
+      audio.src = reciter.audioFile;
 
-        audio.addEventListener('canplay', async () => {
-          clearTimeout(playTimeout);
-          try {
-            await audio.play();
-            resolve();
-          } catch (playError: any) {
-            console.error('Play error:', playError);
-            setPlayingReciter(null);
-            
-            // iOS-specific error messages
-            if (playError.name === 'AbortError') {
-              toast.error('Playback interrupted. Please try again.');
-            } else if (playError.name === 'NotAllowedError') {
-              toast.error('Please enable audio permissions and try again.');
-            } else {
-              toast.error('Failed to play Adhan. Please try again.');
-            }
-            reject(playError);
-          }
-        });
-
-        audio.addEventListener('ended', () => {
-          setPlayingReciter(null);
-          audioRef.current = null;
-        });
-
-        audio.addEventListener('error', (e) => {
-          clearTimeout(playTimeout);
-          console.error('Audio error:', e);
-          setPlayingReciter(null);
-          toast.error('Failed to load Adhan audio');
-          reject(new Error('Audio load error'));
-        });
-
-        // Start loading the audio
-        audio.load();
+      // Setup event handlers
+      audio.addEventListener('ended', () => {
+        setPlayingReciter(null);
+        audioRef.current = null;
       });
+
+      audio.addEventListener('error', (e) => {
+        console.error('Audio error:', e);
+        setPlayingReciter(null);
+        audioRef.current = null;
+        toast.error('Failed to load Adhan audio. Please check your internet connection.');
+      });
+
+      // Try to play
+      try {
+        setPlayingReciter(reciter.id);
+        await audio.play();
+        toast.success(`Playing ${reciter.name}`);
+      } catch (playError: any) {
+        console.error('Play error:', playError);
+        setPlayingReciter(null);
+        audioRef.current = null;
+        
+        if (playError.name === 'NotAllowedError') {
+          toast.error('Please tap the play button again to start audio (browser security requirement)');
+        } else if (playError.name === 'AbortError') {
+          toast.error('Playback interrupted. Please try again.');
+        } else {
+          toast.error('Failed to play Adhan. Please try again.');
+        }
+      }
     } catch (error: any) {
       console.error('Adhan playback error:', error);
       setPlayingReciter(null);
       audioRef.current = null;
+      toast.error('An error occurred. Please try again.');
     }
   };
 

@@ -340,3 +340,15 @@ Running generate... (Use --skip-generate to skip the generators)
 └─────────────────────────────────────────────────────────┘
 
 🚀 API Server running on http://localhost:5002
+
+> full-stack-app-template@0.0.0 dev:api
+> tsx watch --include "src/api/procedures.ts" src/api/server.ts 2>&1 | tee -a api-dev.log
+
+🚀 API Server running on http://localhost:4501
+🚀 API Server running on http://localhost:4501
+3:33:26 AM [tsx] change in ./src/api/procedures.ts Restarting...
+3:33:26 AM [tsx] change in ./src/api/procedures.ts Restarting...
+3:33:26 AM [tsx] change in ./src/api/procedures.ts Restarting...
+ccc🚀 API Server running on http://localhost:5002
+🚀 API Server running on http://localhost:4501
+🚀 API Server running on http://localhost:4501

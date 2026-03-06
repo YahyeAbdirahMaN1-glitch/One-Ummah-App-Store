@@ -112,6 +112,48 @@ export const getUser = router.post(
   }
 );
 
+// Update Profile
+export const updateProfile = router.post(
+  "/updateProfile",
+  zValidator(
+    "json",
+    z.object({
+      userId: z.string(),
+      name: z.string().optional(),
+      bio: z.string().optional(),
+      city: z.string().optional(),
+      country: z.string().optional(),
+      profilePicture: z.string().nullable().optional(),
+      gender: z.enum(["male", "female"]).optional(),
+    })
+  ),
+  async (c) => {
+    const { userId, name, bio, city, country, profilePicture, gender } = c.req.valid("json");
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+    });
+
+    if (!user) {
+      return c.json({ error: "User not found" }, 404);
+    }
+
+    const updatedUser = await prisma.user.update({
+      where: { id: userId },
+      data: {
+        ...(name !== undefined && { name }),
+        ...(bio !== undefined && { bio }),
+        ...(city !== undefined && { city }),
+        ...(country !== undefined && { country }),
+        ...(profilePicture !== undefined && { profilePicture }),
+        ...(gender !== undefined && { gender }),
+      },
+    });
+
+    return c.json({ user: updatedUser });
+  }
+);
+
 // ==================== POST PROCEDURES ====================
 
 // Create Post

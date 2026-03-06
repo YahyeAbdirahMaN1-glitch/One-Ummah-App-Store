@@ -1,6 +1,6 @@
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Settings, FileText, Shield, AlertCircle, ChevronRight } from 'lucide-react';
+import { Settings, FileText, Shield, AlertCircle, ChevronRight, User } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -24,6 +24,18 @@ export default function SettingsPage() {
         </h2>
 
         <div className="space-y-3">
+          {/* Edit Profile */}
+          <button
+            onClick={() => navigate('/profile-settings')}
+            className="w-full flex items-center justify-between p-4 bg-black/30 hover:bg-black/50 border border-amber-900/20 hover:border-amber-800/40 rounded-lg transition-all"
+          >
+            <div className="flex items-center gap-3">
+              <User className="w-5 h-5 text-amber-400" />
+              <span className="text-white font-medium">Edit Profile</span>
+            </div>
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </button>
+
           {/* Privacy Policy */}
           <button
             onClick={() => navigate('/privacy')}

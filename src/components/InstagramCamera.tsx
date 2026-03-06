@@ -19,6 +19,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
   const [isRecording, setIsRecording] = useState(false);
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   // Lock body scroll
   useEffect(() => {
@@ -36,11 +37,14 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
 
   const startCamera = async () => {
     try {
+      setIsLoading(true);
+      setError(null);
       stopCamera();
       
       // Check if getUserMedia is available
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
         setError('Camera not supported in this browser. Please use Chrome, Safari, or Firefox.');
+        setIsLoading(false);
         return;
       }
       
@@ -58,18 +62,21 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         await videoRef.current.play();
+        setIsLoading(false);
       }
     } catch (err: any) {
       console.error('Camera error:', err);
+      setIsLoading(false);
       
       if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
-        setError('Camera permission denied. Please:\n1. Click the camera icon in your browser address bar\n2. Allow camera and microphone access\n3. Refresh the page');
+        setError('Camera permission denied. Please:\n1. Click the camera icon in your browser address bar\n2. Allow camera and microphone access\n3. Click the button below to try again');
       } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
         setError('No camera found. Please ensure your device has a working camera.');
       } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
         setError('Camera is in use by another application. Please close other apps using the camera.');
       } else if (err.name === 'OverconstrainedError') {
         setError('Camera settings not supported. Trying simpler settings...');
+        setIsLoading(true);
         // Try again with simpler constraints
         try {
           const simpleStream = await navigator.mediaDevices.getUserMedia({
@@ -80,10 +87,12 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
           if (videoRef.current) {
             videoRef.current.srcObject = simpleStream;
             await videoRef.current.play();
+            setIsLoading(false);
           }
           setError(null);
         } catch {
           setError('Failed to access camera with any settings.');
+          setIsLoading(false);
         }
       } else {
         setError(`Camera error: ${err.message || 'Unknown error'}. Please refresh and try again.`);
@@ -184,15 +193,39 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
 
   if (error) {
     return (
+      <div className="fixed inset-0 bg-black z-50 flex items-center justify-center p-6">
+        <div className="text-center max-w-md">
+          <div className="mb-6">
+            <Video className="w-20 h-20 text-red-500 mx-auto mb-4" />
+            <h2 className="text-2xl font-bold text-white mb-2">Camera Access Needed</h2>
+            <p className="text-gray-300 whitespace-pre-line">{error}</p>
+          </div>
+          <div className="flex gap-3 justify-center">
+            <button
+              onClick={startCamera}
+              className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+            >
+              Try Again
+            </button>
+            <button
+              onClick={onClose}
+              className="bg-gray-700 hover:bg-gray-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (isLoading) {
+    return (
       <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
-        <div className="text-center px-6">
-          <p className="text-red-400 text-xl mb-4">{error}</p>
-          <button
-            onClick={onClose}
-            className="bg-amber-500 text-white px-6 py-3 rounded-lg"
-          >
-            Close
-          </button>
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-20 w-20 border-t-4 border-b-4 border-amber-500 mx-auto mb-6"></div>
+          <h2 className="text-2xl font-bold text-white mb-2">Starting Camera...</h2>
+          <p className="text-gray-400">Please allow camera and microphone access when prompted</p>
         </div>
       </div>
     );
