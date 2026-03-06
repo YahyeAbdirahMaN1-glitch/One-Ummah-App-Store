@@ -400,100 +400,114 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
         </div>
       )}
 
-      {/* Recording Indicator - Instagram Style */}
+      {/* Recording Indicator - One Ummah Premium Style */}
       {isRecording && (
-        <div className="absolute top-24 left-0 right-0 flex justify-center z-20">
-          <div className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 backdrop-blur-lg px-5 py-2 rounded-full shadow-xl shadow-red-900/40 border border-red-400/30">
-            <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
-            <span className="text-white font-bold text-base tracking-wide drop-shadow-lg">
-              REC
+        <div className="absolute top-6 left-6 z-20">
+          <div className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-500 px-4 py-2 rounded-xl shadow-lg border border-red-400/30">
+            <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse shadow-[0_0_8px_rgba(255,255,255,0.8)]"></div>
+            <span className="text-white font-bold text-sm tracking-wide">
+              {formatDuration(duration)}
             </span>
           </div>
         </div>
       )}
 
-      {/* Timer - Instagram Style with Gold Accent */}
-      <div className="absolute top-40 left-0 right-0 flex justify-center z-10">
-        <div className="bg-gradient-to-r from-black/70 to-black/60 backdrop-blur-lg px-6 py-2 rounded-full shadow-xl border border-amber-400/30">
-          <p className="text-amber-100 text-xl font-semibold font-mono tracking-wide drop-shadow-lg">
-            {formatDuration(duration)} / {getMaxDuration()}
-          </p>
-        </div>
-      </div>
-
-      {/* Recording Controls - Instagram Style with One Ummah Branding */}
-      {isRecording && !recordedBlob && (
-        <>
-          {/* Start Over - Left Side (Instagram style) */}
-          <button
-            onClick={startOver}
-            className="absolute bottom-32 left-6 flex items-center gap-2 bg-gradient-to-r from-black/60 to-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/50 hover:border-amber-400/70 hover:bg-black/70 transition-all shadow-xl"
-            style={{ zIndex: 50 }}
-          >
-            <div className="w-5 h-5 rounded-full border-2 border-white flex items-center justify-center">
-              <span className="text-white text-xs">↻</span>
-            </div>
-            <span className="text-white font-semibold text-sm tracking-tight drop-shadow-lg">
-              Start Over
+      {/* Video Mode Badge - One Ummah Gold Accent */}
+      {!isRecording && (
+        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-20">
+          <div className="bg-gradient-to-r from-black/50 via-amber-950/40 to-black/50 backdrop-blur-md px-5 py-2 rounded-full border border-amber-500/20 shadow-lg">
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-amber-300 via-amber-400 to-amber-300 font-bold text-sm tracking-wide">
+              {videoType === 'littles' ? 'LITTLES MODE' : 'LENGTH MODE'}
             </span>
-          </button>
-
-          {/* STOP - Right Side (Instagram style with gold accent) */}
-          <button
-            onClick={stopRecording}
-            className="absolute bottom-32 right-6 flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 px-5 py-2 rounded-full shadow-2xl shadow-amber-500/40 hover:shadow-amber-500/60 border border-amber-300/30 transition-all"
-            style={{ zIndex: 50 }}
-          >
-            <div className="w-2 h-2 bg-white rounded-sm animate-pulse"></div>
-            <span className="text-white font-bold text-sm tracking-wide drop-shadow-lg">
-              STOP
-            </span>
-          </button>
-        </>
-      )}
-
-      {/* Preview State - Positioned Higher (Same as Recording Controls) */}
-      {recordedBlob && (
-        <div className="absolute bottom-32 left-0 right-0 flex justify-center items-center gap-4 px-4" style={{ zIndex: 50 }}>
-          {/* Discard - Instagram style */}
-          <button
-            onClick={discardVideo}
-            className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-6 py-3 rounded-full border border-white/50 hover:border-white hover:bg-black/70 transition-all shadow-xl"
-          >
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-            <span className="text-white font-semibold text-base tracking-tight drop-shadow-lg">
-              Discard
-            </span>
-          </button>
-
-          {/* Post - One Ummah Gold Gradient (Instagram inspired) */}
-          <button
-            onClick={postVideo}
-            className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:via-amber-700 hover:to-yellow-600 px-8 py-3 rounded-full shadow-2xl shadow-amber-500/50 hover:shadow-amber-500/70 border border-amber-300/40 transition-all scale-105 hover:scale-110"
-          >
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-            </svg>
-            <span className="text-white font-bold text-lg tracking-wide drop-shadow-lg">
-              Post
-            </span>
-          </button>
+          </div>
         </div>
       )}
 
-      {/* Bottom Controls */}
-      <div className="absolute bottom-8 left-0 right-0 px-4" style={{ zIndex: 50 }}>
+      {/* Bottom Controls - One Ummah Premium Islamic Design */}
+      <div className="absolute bottom-0 left-0 right-0 pb-8 pt-6 bg-gradient-to-t from-black via-amber-950/20 to-transparent" style={{ zIndex: 50 }}>
+        
+        {/* Recording State - One Ummah Gold Accent */}
+        {isRecording && !recordedBlob && (
+          <div className="flex items-center justify-between px-12">
+            {/* Thumbnail/Gallery placeholder (left) */}
+            <div className="w-12 h-12"></div>
 
-        {/* Initial State - Instagram Record Button with Gold Accent */}
+            {/* Stop Button (center) - One Ummah gold ring */}
+            <button
+              onClick={stopRecording}
+              className="relative w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center hover:scale-105 transition-all shadow-[0_0_30px_rgba(251,191,36,0.5)]"
+            >
+              <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center">
+                <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-sm shadow-lg"></div>
+              </div>
+            </button>
+
+            {/* Flip Camera (right) - Gold accent */}
+            <button
+              onClick={flipCamera}
+              className="w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-amber-500/30 flex items-center justify-center hover:bg-black/80 hover:border-amber-400/50 transition-all"
+            >
+              <RotateCw className="w-6 h-6 text-amber-300" />
+            </button>
+          </div>
+        )}
+
+        {/* Preview State - One Ummah Premium Gold Design */}
+        {recordedBlob && (
+          <div className="flex items-center justify-center gap-8 px-8">
+            {/* Retake - Premium black with gold border */}
+            <button
+              onClick={discardVideo}
+              className="flex flex-col items-center gap-2"
+            >
+              <div className="w-14 h-14 rounded-full bg-black/70 backdrop-blur-md border-2 border-amber-500/40 flex items-center justify-center hover:bg-black/80 hover:border-amber-400/60 transition-all shadow-lg">
+                <svg className="w-7 h-7 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+              </div>
+              <span className="text-amber-200 text-sm font-bold tracking-wide">Retake</span>
+            </button>
+
+            {/* Use Video - Islamic Gold Gradient */}
+            <button
+              onClick={postVideo}
+              className="flex flex-col items-center gap-2"
+            >
+              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center hover:scale-105 transition-all shadow-[0_0_40px_rgba(251,191,36,0.6)] border-2 border-amber-300/50">
+                <svg className="w-10 h-10 text-black drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3.5}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+              </div>
+              <span className="text-amber-200 text-base font-bold tracking-wide">Use Video</span>
+            </button>
+          </div>
+        )}
+
+        {/* Initial State - One Ummah Islamic Gold Record Button */}
         {!isRecording && !recordedBlob && (
-          <div className="flex justify-center">
+          <div className="flex items-center justify-between px-12">
+            {/* Library/Gallery button (left) - Gold accent preview */}
+            <div className="w-12 h-12 rounded-xl border-2 border-amber-500/30 overflow-hidden bg-gradient-to-br from-gray-800 via-amber-950/30 to-gray-900 shadow-lg">
+              <div className="w-full h-full bg-gradient-to-br from-amber-900/20 to-black/40"></div>
+            </div>
+
+            {/* Record Button (center) - One Ummah gold ring with red center */}
             <button
               onClick={startRecording}
-              className="relative w-20 h-20 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5 border-4 border-amber-400 hover:border-amber-300 transition-all hover:scale-105 shadow-2xl shadow-amber-500/30"
+              className="relative w-24 h-24 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center hover:scale-105 transition-all shadow-[0_0_40px_rgba(251,191,36,0.5)] border-2 border-amber-300/50"
             >
-              <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-full shadow-lg"></div>
+              <div className="w-20 h-20 bg-black rounded-full flex items-center justify-center">
+                <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-full shadow-[0_0_20px_rgba(239,68,68,0.6)]"></div>
+              </div>
+            </button>
+
+            {/* Flip Camera (right) - Gold accent */}
+            <button
+              onClick={flipCamera}
+              disabled={isRecording}
+              className="w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-amber-500/30 flex items-center justify-center hover:bg-black/80 hover:border-amber-400/50 transition-all disabled:opacity-50"
+            >
+              <RotateCw className="w-6 h-6 text-amber-300" />
             </button>
           </div>
         )}
