@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, Play, Pause, MapPin, Volume2 } from 'lucide-react';
+import { Search, Play, Pause, MapPin, Volume2, ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 import { Card } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
@@ -87,6 +88,7 @@ const ADHAN_RECITERS: AdhanReciter[] = [
 ];
 
 export default function PrayerTimesPage() {
+  const navigate = useNavigate();
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
@@ -224,6 +226,14 @@ export default function PrayerTimesPage() {
 
   return (
     <div className="space-y-6 pb-8">
+      <button
+        onClick={() => navigate(-1)}
+        className="mb-4 flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors"
+      >
+        <ArrowLeft className="w-5 h-5" />
+        <span>Back</span>
+      </button>
+      
       <Card className="bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-6">
         <h2 className="text-2xl font-bold text-amber-400 mb-4 flex items-center gap-2">
           <MapPin className="w-6 h-6" />
