@@ -164,13 +164,22 @@ export const createPost = router.post(
     z.object({
       userId: z.string(),
       content: z.string(),
-      imageUrls: z.string().optional(),
-      videoUrls: z.string().optional(),
-      videoType: z.string().optional(),
+      imageUrls: z.string().optional().nullable(),
+      videoUrls: z.string().optional().nullable(),
+      videoType: z.string().optional().nullable(),
     })
   ),
   async (c) => {
     const { userId, content, imageUrls, videoUrls, videoType } = c.req.valid("json");
+
+    // Verify user exists
+    const user = await prisma.user.findUnique({
+      where: { id: userId }
+    });
+
+    if (!user) {
+      return c.json({ error: 'User not found. Please sign in again.' }, 404);
+    }
 
     const post = await prisma.post.create({
       data: {

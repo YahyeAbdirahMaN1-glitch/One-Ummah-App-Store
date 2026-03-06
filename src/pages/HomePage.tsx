@@ -158,6 +158,13 @@ export default function HomePage() {
       }
 
       // Save to database
+      console.log('Creating post with data:', {
+        userId: user.id,
+        content: postContent,
+        hasVideo: !!videoBase64,
+        videoType: recordedVideo?.type
+      });
+
       const response = await CapacitorHttp.post({
         url: `${API_URL}/createPost`,
         headers: { 'Content-Type': 'application/json' },
@@ -168,6 +175,19 @@ export default function HomePage() {
           videoType: recordedVideo?.type || null,
         },
       });
+
+      console.log('CreatePost API Response:', {
+        status: response.status,
+        hasData: !!response.data,
+        hasPost: !!(response.data && response.data.post)
+      });
+
+      if (response.status !== 200) {
+        toast.dismiss();
+        toast.error(`Server error: ${response.status}`);
+        console.error('API returned non-200 status:', response);
+        return;
+      }
 
       if (response.data && response.data.post) {
         const dbPost = response.data.post;
@@ -200,12 +220,14 @@ export default function HomePage() {
         setRecordedVideo(null);
       } else {
         toast.dismiss();
-        toast.error('Failed to create post');
+        toast.error('Server returned invalid response');
+        console.error('Invalid API response:', response.data);
       }
-    } catch (error) {
+    } catch (error: any) {
       toast.dismiss();
-      toast.error('Failed to create post');
-      console.error(error);
+      const errorMessage = error?.message || 'Unknown error';
+      toast.error(`Failed to create post: ${errorMessage}`);
+      console.error('Create post error:', error);
     }
   };
 

@@ -1,412 +1,58 @@
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (6.19.2) to ./generated in 129ms
-
-
-
-node:internal/modules/run_main:123
-    triggerUncaughtException(
-    ^
-Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/computer/one-ummah/src/api/server.ts' imported from /home/computer/one-ummah/
-    at finalizeResolution (node:internal/modules/esm/resolve:274:11)
-    at moduleResolve (node:internal/modules/esm/resolve:859:10)
-    at defaultResolve (node:internal/modules/esm/resolve:983:11)
-    at nextResolve (node:internal/modules/esm/hooks:748:28)
-    at resolveBase (file:///home/computer/one-ummah/node_modules/tsx/dist/esm/index.mjs?1772660518291:2:3744)
-    at resolveDirectory (file:///home/computer/one-ummah/node_modules/tsx/dist/esm/index.mjs?1772660518291:2:4243)
-    at resolveTsPaths (file:///home/computer/one-ummah/node_modules/tsx/dist/esm/index.mjs?1772660518291:2:4984)
-    at resolve (file:///home/computer/one-ummah/node_modules/tsx/dist/esm/index.mjs?1772660518291:2:5361)
-    at nextResolve (node:internal/modules/esm/hooks:748:28)
-    at Hooks.resolve (node:internal/modules/esm/hooks:240:30) {
-  code: 'ERR_MODULE_NOT_FOUND',
-  url: 'file:///home/computer/one-ummah/src/api/server.ts'
-}
-
-Node.js v22.22.0
-9:42:38 PM [tsx] add in ./src/api/procedures.ts Rerunning...
-c
-node:internal/modules/run_main:123
-    triggerUncaughtException(
-    ^
-Error [ERR_MODULE_NOT_FOUND]: Cannot find package '@hono/zod-validator' imported from /home/computer/one-ummah/src/api/procedures.ts
-    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:314:9)
-    at packageResolve (node:internal/modules/esm/resolve:767:81)
-    at moduleResolve (node:internal/modules/esm/resolve:853:18)
-    at defaultResolve (node:internal/modules/esm/resolve:983:11)
-    at nextResolve (node:internal/modules/esm/hooks:748:28)
-    at resolveBase (file:///home/computer/one-ummah/node_modules/tsx/dist/esm/index.mjs?1772660558709:2:3744)
-    at resolveDirectory (file:///home/computer/one-ummah/node_modules/tsx/dist/esm/index.mjs?1772660558709:2:4243)
-    at resolveTsPaths (file:///home/computer/one-ummah/node_modules/tsx/dist/esm/index.mjs?1772660558709:2:4984)
-    at async resolve (file:///home/computer/one-ummah/node_modules/tsx/dist/esm/index.mjs?1772660558709:2:5355)
-    at async nextResolve (node:internal/modules/esm/hooks:748:22) {
-  code: 'ERR_MODULE_NOT_FOUND'
-}
-
-Node.js v22.22.0
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (6.19.2) to ./generated in 130ms
-
-
-
-node:internal/modules/run_main:123
-    triggerUncaughtException(
-    ^
-Error [ERR_MODULE_NOT_FOUND]: Cannot find module '/home/computer/one-ummah/generated/index.json' imported from /home/computer/one-ummah/src/lib/prisma.ts
-    at finalizeResolution (node:internal/modules/esm/resolve:274:11)
-    at moduleResolve (node:internal/modules/esm/resolve:859:10)
-    at defaultResolve (node:internal/modules/esm/resolve:983:11)
-    at nextResolve (node:internal/modules/esm/hooks:748:28)
-    at resolveExtensions (file:///home/computer/one-ummah/node_modules/tsx/dist/esm/index.mjs?1772660598873:2:3251)
-    at async resolveDirectory (file:///home/computer/one-ummah/node_modules/tsx/dist/esm/index.mjs?1772660598873:2:4428)
-    at async resolve (file:///home/computer/one-ummah/node_modules/tsx/dist/esm/index.mjs?1772660598873:2:5355)
-    at async nextResolve (node:internal/modules/esm/hooks:748:22)
-    at async Hooks.resolve (node:internal/modules/esm/hooks:240:24)
-    at async handleMessage (node:internal/modules/esm/worker:199:18) {
-  code: 'ERR_MODULE_NOT_FOUND',
-  url: 'file:///home/computer/one-ummah/generated/index.json'
-}
-
-Node.js v22.22.0
-9:44:01 PM [tsx] change in ./src/lib/prisma.ts Rerunning...
-c/home/computer/one-ummah/src/api/procedures.ts:6
-import { generateId } from "../lib/utils";
-         ^
-SyntaxError: The requested module '../lib/utils' does not provide an export named 'generateId'
-    at ModuleJob._instantiate (node:internal/modules/esm/module_job:226:21)
-    at async ModuleJob.run (node:internal/modules/esm/module_job:335:5)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
-
-Node.js v22.22.0
-9:44:20 PM [tsx] change in ./src/lib/utils.ts Rerunning...
-c/home/computer/one-ummah/node_modules/@prisma/client/src/runtime/core/engines/client/ClientEngine.ts:113
-      throw new PrismaClientInitializationError(
-            ^
-
-PrismaClientInitializationError: Missing configured driver adapter. Engine type `client` requires an active driver adapter. Please check your PrismaClient initialization code.
-    at new Bt (/home/computer/one-ummah/node_modules/@prisma/client/src/runtime/core/engines/client/ClientEngine.ts:113:13)
-    at getEngineInstance (/home/computer/one-ummah/node_modules/@prisma/client/src/runtime/core/init/getEngineInstance.ts:68:12)
-    at new t (/home/computer/one-ummah/node_modules/@prisma/client/src/runtime/getPrismaClient.ts:422:24)
-    at <anonymous> (/home/computer/one-ummah/src/lib/prisma.ts:3:23)
-    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5) {
-  clientVersion: '6.19.2',
-  errorCode: 'P2038',
-  retryable: undefined
-}
-
-Node.js v22.22.0
-9:44:44 PM [tsx] change in ./src/api/procedures.ts Rerunning...
-c/home/computer/one-ummah/src/lib/prisma.ts:1
-import { PrismaClient } from "../../generated/client";
-         ^
-SyntaxError: The requested module '../../generated/client' does not provide an export named 'PrismaClient'
-    at ModuleJob._instantiate (node:internal/modules/esm/module_job:226:21)
-    at async ModuleJob.run (node:internal/modules/esm/module_job:335:5)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
-
-Node.js v22.22.0
-9:45:03 PM [tsx] change in ./src/lib/prisma.ts Rerunning...
-c🚀 API Server running on http://localhost:4500
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 155ms
-
-
-🚀 API Server running on http://localhost:4500
-node:events:497
-      throw er; // Unhandled 'error' event
-      ^
-
-Error: listen EADDRINUSE: address already in use :::4500
-    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
-    at listenInCluster (node:net:1997:12)
-    at Server.listen (node:net:2102:7)
-    at serve (file:///home/computer/one-ummah/node_modules/@hono/node-server/dist/index.mjs:562:10)
-    at <anonymous> (/home/computer/one-ummah/src/api/server.ts:16:1)
-    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
-Emitted 'error' event on Server instance at:
-    at emitErrorNT (node:net:1976:8)
-    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
-  code: 'EADDRINUSE',
-  errno: -98,
-  syscall: 'listen',
-  address: '::',
-  port: 4500
-}
-
-Node.js v22.22.0
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 243ms
-
-
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 165ms
-
-
-🚀 API Server running on http://localhost:4500
-node:events:497
-      throw er; // Unhandled 'error' event
-      ^
-
-Error: listen EADDRINUSE: address already in use :::4500
-    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
-    at listenInCluster (node:net:1997:12)
-    at Server.listen (node:net:2102:7)
-    at serve (file:///home/computer/one-ummah/node_modules/@hono/node-server/dist/index.mjs:562:10)
-    at <anonymous> (/home/computer/one-ummah/src/api/server.ts:16:1)
-    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
-Emitted 'error' event on Server instance at:
-    at emitErrorNT (node:net:1976:8)
-    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
-  code: 'EADDRINUSE',
-  errno: -98,
-  syscall: 'listen',
-  address: '::',
-  port: 4500
-}
-
-Node.js v22.22.0
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 215ms
-
-
-🚀 API Server running on http://localhost:4500
-node:events:497
-      throw er; // Unhandled 'error' event
-      ^
-
-Error: listen EADDRINUSE: address already in use :::4500
-    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
-    at listenInCluster (node:net:1997:12)
-    at Server.listen (node:net:2102:7)
-    at serve (file:///home/computer/one-ummah/node_modules/@hono/node-server/dist/index.mjs:562:10)
-    at <anonymous> (/home/computer/one-ummah/src/api/server.ts:21:1)
-    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
-Emitted 'error' event on Server instance at:
-    at emitErrorNT (node:net:1976:8)
-    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
-  code: 'EADDRINUSE',
-  errno: -98,
-  syscall: 'listen',
-  address: '::',
-  port: 4500
-}
-
-Node.js v22.22.0
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 134ms
-
-
-🚀 API Server running on http://localhost:4500
-node:events:497
-      throw er; // Unhandled 'error' event
-      ^
-
-Error: listen EADDRINUSE: address already in use :::4500
-    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
-    at listenInCluster (node:net:1997:12)
-    at Server.listen (node:net:2102:7)
-    at serve (file:///home/computer/one-ummah/node_modules/@hono/node-server/dist/index.mjs:562:10)
-    at <anonymous> (/home/computer/one-ummah/src/api/server.ts:21:1)
-    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
-Emitted 'error' event on Server instance at:
-    at emitErrorNT (node:net:1976:8)
-    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
-  code: 'EADDRINUSE',
-  errno: -98,
-  syscall: 'listen',
-  address: '::',
-  port: 4500
-}
-
-Node.js v22.22.0
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 187ms
-
-
-🚀 API Server running on http://localhost:4500
-node:events:497
-      throw er; // Unhandled 'error' event
-      ^
-
-Error: listen EADDRINUSE: address already in use :::4500
-    at Server.setupListenHandle [as _listen2] (node:net:1940:16)
-    at listenInCluster (node:net:1997:12)
-    at Server.listen (node:net:2102:7)
-    at serve (file:///home/computer/one-ummah/node_modules/@hono/node-server/dist/index.mjs:562:10)
-    at <anonymous> (/home/computer/one-ummah/src/api/server.ts:21:1)
-    at ModuleJob.run (node:internal/modules/esm/module_job:343:25)
-    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)
-Emitted 'error' event on Server instance at:
-    at emitErrorNT (node:net:1976:8)
-    at process.processTicksAndRejections (node:internal/process/task_queues:90:21) {
-  code: 'EADDRINUSE',
-  errno: -98,
-  syscall: 'listen',
-  address: '::',
-  port: 4500
-}
-
-Node.js v22.22.0
-10:42:55 PM [tsx] change in ./src/api/server.ts Rerunning...
-c🚀 API Server running on http://localhost:4501
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 164ms
-
-
-🚀 API Server running on http://localhost:5002
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 187ms
-
-┌─────────────────────────────────────────────────────────┐
-│  Update available 6.19.2 -> 7.4.2                       │
-│                                                         │
-│  This is a major update - please follow the guide at    │
-│  https://pris.ly/d/major-version-upgrade                │
-│                                                         │
-│  Run the following to update                            │
-│    npm i --save-dev prisma@latest                       │
-│    npm i @prisma/client@latest                          │
-└─────────────────────────────────────────────────────────┘
-
-🚀 API Server running on http://localhost:5002
 
 > full-stack-app-template@0.0.0 dev:api
 > tsx watch --include "src/api/procedures.ts" src/api/server.ts 2>&1 | tee -a api-dev.log
 
 🚀 API Server running on http://localhost:4501
-🚀 API Server running on http://localhost:4501
-3:33:26 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:33:26 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:33:26 AM [tsx] change in ./src/api/procedures.ts Restarting...
-ccc🚀 API Server running on http://localhost:5002
-🚀 API Server running on http://localhost:4501
-🚀 API Server running on http://localhost:4501
-3:38:15 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:38:15 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:38:15 AM [tsx] change in ./src/api/procedures.ts Restarting...
-ccc🚀 API Server running on http://localhost:4501
-🚀 API Server running on http://localhost:4501
-🚀 API Server running on http://localhost:5002
-3:39:50 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:39:50 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:39:50 AM [tsx] change in ./src/api/procedures.ts Restarting...
-ccc🚀 API Server running on http://localhost:4501
-🚀 API Server running on http://localhost:4501
-🚀 API Server running on http://localhost:5002
-3:39:54 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:39:54 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:39:54 AM [tsx] change in ./src/api/procedures.ts Restarting...
-ccc🚀 API Server running on http://localhost:5002
-🚀 API Server running on http://localhost:4501
-🚀 API Server running on http://localhost:4501
-3:43:03 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:43:03 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:43:03 AM [tsx] change in ./src/api/procedures.ts Restarting...
-ccc🚀 API Server running on http://localhost:5002
-🚀 API Server running on http://localhost:4501
-🚀 API Server running on http://localhost:4501
-3:43:08 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:43:08 AM [tsx] change in ./src/api/procedures.ts Restarting...
-3:43:08 AM [tsx] change in ./src/api/procedures.ts Restarting...
-ccc🚀 API Server running on http://localhost:4501
-🚀 API Server running on http://localhost:4501
-🚀 API Server running on http://localhost:5002
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
+11:04:36 AM [tsx] change in ./src/api/procedures.ts Restarting...
+c🚀 API Server running on http://localhost:4501
+ation in
+/home/computer/one-ummah/src/api/procedures.ts:175:36
 
-Already in sync, no schema change or pending migration was found.
+  172 async (c) => {
+  173   const { userId, content, imageUrls, videoUrls, videoType } = c.req.valid("json");
+  174 
+→ 175   const post = await prisma.post.create(
+Foreign key constraint violated on the foreign key
+    at ei.handleRequestError (/home/computer/one-ummah/generated/runtime/library.js:125:7268)
+    at ei.handleAndLogRequestError (/home/computer/one-ummah/generated/runtime/library.js:125:6593)
+    at ei.request (/home/computer/one-ummah/generated/runtime/library.js:125:6300)
+    at async a (/home/computer/one-ummah/generated/runtime/library.js:134:9551)
+    at async <anonymous> (/home/computer/one-ummah/src/api/procedures.ts:175:18)
+    at async dispatch (file:///home/computer/one-ummah/node_modules/hono/dist/compose.js:22:17)
+    at async file:///home/computer/one-ummah/node_modules/hono/dist/validator/validator.js:81:12
+    at async dispatch (file:///home/computer/one-ummah/node_modules/hono/dist/compose.js:22:17)
+    at async cors2 (file:///home/computer/one-ummah/node_modules/hono/dist/middleware/cors/index.js:79:5)
+    at async dispatch (file:///home/computer/one-ummah/node_modules/hono/dist/compose.js:22:17) {
+  code: 'P2003',
+  meta: { modelName: 'Post', constraint: null },
+  clientVersion: '6.19.2'
+}
+PrismaClientKnownRequestError: 
+Invalid `prisma.post.create()` invocation in
+/home/computer/one-ummah/src/api/procedures.ts:175:36
 
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 207ms
-
-
-🚀 API Server running on http://localhost:5002
-4:38:38 AM [tsx] change in ./src/api/procedures.ts Restarting...
-c🚀 API Server running on http://localhost:5002
-4:38:43 AM [tsx] change in ./src/api/procedures.ts Restarting...
-c🚀 API Server running on http://localhost:5002
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 224ms
-
-
+  172 async (c) => {
+  173   const { userId, content, imageUrls, videoUrls, videoType } = c.req.valid("json");
+  174 
+→ 175   const post = await prisma.post.create(
+Foreign key constraint violated on the foreign key
+    at ei.handleRequestError (/home/computer/one-ummah/generated/runtime/library.js:125:7268)
+    at ei.handleAndLogRequestError (/home/computer/one-ummah/generated/runtime/library.js:125:6593)
+    at ei.request (/home/computer/one-ummah/generated/runtime/library.js:125:6300)
+    at async a (/home/computer/one-ummah/generated/runtime/library.js:134:9551)
+    at async <anonymous> (/home/computer/one-ummah/src/api/procedures.ts:175:18)
+    at async dispatch (file:///home/computer/one-ummah/node_modules/hono/dist/compose.js:22:17)
+    at async file:///home/computer/one-ummah/node_modules/hono/dist/validator/validator.js:81:12
+    at async dispatch (file:///home/computer/one-ummah/node_modules/hono/dist/compose.js:22:17)
+    at async cors2 (file:///home/computer/one-ummah/node_modules/hono/dist/middleware/cors/index.js:79:5)
+    at async dispatch (file:///home/computer/one-ummah/node_modules/hono/dist/compose.js:22:17) {
+  code: 'P2003',
+  meta: { modelName: 'Post', constraint: null },
+  clientVersion: '6.19.2'
+}
+11:04:36 AM [tsx] change in ./src/api/procedures.ts Restarting...
+11:04:36 AM [tsx] change in ./src/api/procedures.ts Restarting...
+cc🚀 API Server running on http://localhost:4501
 🚀 API Server running on http://localhost:5002
 Prisma schema loaded from schema.prisma
 Datasource "db": SQLite database "development.db" at "file:./development.db"
@@ -415,29 +61,7 @@ Already in sync, no schema change or pending migration was found.
 
 Running generate... (Use --skip-generate to skip the generators)
 [2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 153ms
-
-
-🚀 API Server running on http://localhost:5002
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 125ms
-
-
-🚀 API Server running on http://localhost:5002
-Prisma schema loaded from schema.prisma
-Datasource "db": SQLite database "development.db" at "file:./development.db"
-
-Already in sync, no schema change or pending migration was found.
-
-Running generate... (Use --skip-generate to skip the generators)
-[2K[1A[2K[GRunning generate... - Prisma Client
-[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 208ms
+[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 140ms
 
 
 🚀 API Server running on http://localhost:5002

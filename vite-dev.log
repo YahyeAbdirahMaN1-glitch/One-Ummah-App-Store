@@ -1670,3 +1670,22 @@ Started vite server in mode: development
 10:52:04 AM [vite] (client) hmr update /src/index.css, /src/pages/HomePage.tsx
 10:52:23 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
 10:52:37 AM [vite] (client) page reload ios/App/App/public/index.html
+11:02:43 AM [vite] (client) hmr update /src/index.css, /src/pages/HomePage.tsx
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 320 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.3:4500/
+11:03:18 AM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:5002
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 364 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.3:4500/
+11:04:55 AM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:5002
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
