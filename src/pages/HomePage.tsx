@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Video, Heart, ThumbsDown, Share2, Repeat, Eye, MessageCircle, Send, Trash2 } from 'lucide-react';
+import { Video, Heart, ThumbsDown, Share2, Repeat, Eye, MessageCircle, Send, Trash2, User } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Textarea } from '../components/ui/textarea';
@@ -7,6 +7,8 @@ import { Input } from '../components/ui/input';
 import InstagramCamera from '../components/InstagramCamera';
 import { toast } from 'sonner';
 import { useAuth } from '../hooks/useAuth';
+import { CapacitorHttp } from '@capacitor/core';
+import { API_URL } from '../config';
 
 interface Comment {
   id: string;
@@ -19,6 +21,9 @@ interface Comment {
 
 interface Post {
   id: string;
+  userId: string;
+  userName: string;
+  userImage?: string;
   content: string;
   videoUrl?: string;
   videoType?: 'littles' | 'length';
@@ -44,6 +49,55 @@ export default function HomePage() {
   const [commentInputs, setCommentInputs] = useState<{ [postId: string]: string }>({});
   const postRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
+  // Load all posts from database on component mount
+  useEffect(() => {
+    loadPosts();
+  }, []);
+
+  const loadPosts = async () => {
+    try {
+      const response = await CapacitorHttp.post({
+        url: `${API_URL}/getPosts`,
+        headers: { 'Content-Type': 'application/json' },
+        data: { limit: 50, offset: 0 },
+      });
+
+      if (response.data && response.data.posts) {
+        const formattedPosts: Post[] = response.data.posts.map((post: any) => ({
+          id: post.id,
+          userId: post.userId,
+          userName: post.user?.name || 'Anonymous',
+          userImage: post.user?.profilePicture || undefined,
+          content: post.content,
+          videoUrl: post.videoUrls || undefined,
+          videoType: post.videoType as 'littles' | 'length' | undefined,
+          likes: post.likesCount || 0,
+          dislikes: post.dislikesCount || 0,
+          shares: post.sharesCount || 0,
+          reposts: post.repostsCount || 0,
+          views: post.viewsCount || 0,
+          comments: post.comments?.map((c: any) => ({
+            id: c.id,
+            userId: c.userId,
+            userName: c.user?.name || 'Anonymous',
+            userImage: c.user?.profilePicture || undefined,
+            content: c.content,
+            createdAt: new Date(c.createdAt),
+          })) || [],
+          liked: false,
+          disliked: false,
+          showComments: false,
+          createdAt: new Date(post.createdAt),
+        }));
+
+        setPosts(formattedPosts);
+      }
+    } catch (error) {
+      console.error('Failed to load posts:', error);
+      toast.error('Failed to load posts');
+    }
+  };
+
   const handleVideoRecorded = (blob: Blob, type: 'littles' | 'length') => {
     setRecordedVideo({ blob, type });
     setShowCamera(false);
@@ -56,29 +110,71 @@ export default function HomePage() {
       return;
     }
 
-    try {
-      const newPost: Post = {
-        id: Date.now().toString(),
-        content: postContent,
-        videoUrl: recordedVideo ? URL.createObjectURL(recordedVideo.blob) : undefined,
-        videoType: recordedVideo?.type,
-        likes: 0,
-        dislikes: 0,
-        shares: 0,
-        reposts: 0,
-        views: 0,
-        comments: [],
-        liked: false,
-        disliked: false,
-        showComments: false,
-        createdAt: new Date(),
-      };
+    if (!user) {
+      toast.error('Please sign in to create a post');
+      return;
+    }
 
-      setPosts([newPost, ...posts]);
-      toast.success('Post created successfully!');
-      setPostContent('');
-      setRecordedVideo(null);
+    try {
+      toast.loading('Creating post...');
+
+      // Convert video to base64 if present
+      let videoBase64: string | undefined;
+      if (recordedVideo) {
+        const reader = new FileReader();
+        videoBase64 = await new Promise((resolve) => {
+          reader.onloadend = () => resolve(reader.result as string);
+          reader.readAsDataURL(recordedVideo.blob);
+        });
+      }
+
+      // Save to database
+      const response = await CapacitorHttp.post({
+        url: `${API_URL}/createPost`,
+        headers: { 'Content-Type': 'application/json' },
+        data: {
+          userId: user.id,
+          content: postContent,
+          videoUrls: videoBase64 || null,
+          videoType: recordedVideo?.type || null,
+        },
+      });
+
+      if (response.data && response.data.post) {
+        const dbPost = response.data.post;
+        
+        // Add to local state immediately
+        const newPost: Post = {
+          id: dbPost.id,
+          userId: user.id,
+          userName: user.name || 'Anonymous',
+          userImage: user.profilePicture || undefined,
+          content: postContent,
+          videoUrl: videoBase64 || undefined,
+          videoType: recordedVideo?.type,
+          likes: 0,
+          dislikes: 0,
+          shares: 0,
+          reposts: 0,
+          views: 0,
+          comments: [],
+          liked: false,
+          disliked: false,
+          showComments: false,
+          createdAt: new Date(),
+        };
+
+        setPosts([newPost, ...posts]);
+        toast.dismiss();
+        toast.success('Post created successfully!');
+        setPostContent('');
+        setRecordedVideo(null);
+      } else {
+        toast.dismiss();
+        toast.error('Failed to create post');
+      }
     } catch (error) {
+      toast.dismiss();
       toast.error('Failed to create post');
       console.error(error);
     }
@@ -297,6 +393,27 @@ export default function HomePage() {
               >
                 <Trash2 className="w-4 h-4" />
               </button>
+
+              {/* User Profile Section */}
+              <div className="flex items-center gap-3 mb-4 pb-3 border-b border-amber-900/30">
+                {post.userImage ? (
+                  <img
+                    src={post.userImage}
+                    alt={post.userName}
+                    className="w-12 h-12 rounded-full border-2 border-amber-500 object-cover"
+                  />
+                ) : (
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center border-2 border-amber-500">
+                    <User className="w-6 h-6 text-white" />
+                  </div>
+                )}
+                <div className="flex-1">
+                  <h3 className="text-white font-semibold">{post.userName}</h3>
+                  <p className="text-gray-400 text-sm">
+                    {post.createdAt.toLocaleDateString()} at {post.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                  </p>
+                </div>
+              </div>
 
               {/* Post Content */}
               <p className="text-white mb-4">{post.content}</p>

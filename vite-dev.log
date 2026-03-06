@@ -1187,3 +1187,12 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 4:27:24 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
 4:27:30 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
 4:28:26 AM [vite] (client) page reload ios/App/App/public/index.html
+4:30:02 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+4:30:09 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+4:30:10 AM [vite] (client) ✨ new dependencies optimized: @capacitor/http
+4:30:10 AM [vite] (client) ✨ optimized dependencies changed. reloading
+4:30:20 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+4:30:31 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+4:30:46 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+4:31:05 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+4:31:15 AM [vite] (client) page reload ios/App/App/public/index.html
