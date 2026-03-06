@@ -1,73 +1,75 @@
-// NUCLEAR OPTION: JavaScript-based chat widget blocker
-// This runs immediately to prevent ANY chat widget from appearing
-
+// Chat widget repositioner - moves it to top instead of blocking bottom content
 (function() {
   'use strict';
   
-  console.log('[Chat Blocker] Starting aggressive chat widget blocking...');
+  console.log('[Chat Repositioner] Moving chat widget to top...');
   
-  // Function to remove chat widgets
-  function destroyChatWidgets() {
-    // Remove all elements outside #root
+  // Function to reposition chat widgets
+  function repositionChatWidgets() {
+    // Find all fixed position elements outside #root
     document.querySelectorAll('body > *:not(#root):not(script):not(style):not(link)').forEach(el => {
-      console.log('[Chat Blocker] Removing element outside #root:', el);
-      el.remove();
-    });
-    
-    // Remove elements with extremely high z-index (chat widgets use this)
-    document.querySelectorAll('[style*="z-index"]').forEach(el => {
-      const zIndex = parseInt(window.getComputedStyle(el).zIndex);
-      if (zIndex > 999999) {
-        console.log('[Chat Blocker] Removing high z-index element:', el, 'z-index:', zIndex);
-        el.remove();
-      }
-    });
-    
-    // Remove fixed position elements in bottom-right
-    document.querySelectorAll('[style*="position: fixed"], [style*="position:fixed"]').forEach(el => {
       const style = window.getComputedStyle(el);
-      const bottom = style.bottom;
-      const right = style.right;
       
-      if ((bottom !== 'auto' && parseInt(bottom) < 100) && 
-          (right !== 'auto' && parseInt(right) < 100)) {
-        // This is in bottom-right corner - likely chat widget
-        if (!el.closest('#root')) {
-          console.log('[Chat Blocker] Removing bottom-right fixed element:', el);
-          el.remove();
+      if (style.position === 'fixed') {
+        console.log('[Chat Repositioner] Found fixed element, moving to top:', el);
+        
+        // Move to top instead of bottom
+        el.style.setProperty('bottom', 'auto', 'important');
+        el.style.setProperty('top', '20px', 'important');
+        el.style.setProperty('right', '20px', 'important');
+        el.style.setProperty('z-index', '999999', 'important');
+        
+        // Make it smaller if it's too big
+        const width = parseInt(style.width);
+        const height = parseInt(style.height);
+        
+        if (width > 400) {
+          el.style.setProperty('max-width', '400px', 'important');
+        }
+        if (height > 600) {
+          el.style.setProperty('max-height', '600px', 'important');
         }
       }
     });
     
-    // Remove iframes outside #root
+    // Find iframes and move them too
     document.querySelectorAll('iframe:not(#root iframe)').forEach(iframe => {
-      console.log('[Chat Blocker] Removing iframe outside #root:', iframe);
-      iframe.remove();
+      console.log('[Chat Repositioner] Moving iframe to top:', iframe);
+      
+      const parent = iframe.parentElement;
+      if (parent && window.getComputedStyle(parent).position === 'fixed') {
+        parent.style.setProperty('bottom', 'auto', 'important');
+        parent.style.setProperty('top', '20px', 'important');
+        parent.style.setProperty('right', '20px', 'important');
+      }
+      
+      iframe.style.setProperty('max-width', '400px', 'important');
+      iframe.style.setProperty('max-height', '600px', 'important');
     });
   }
   
   // Run immediately
-  destroyChatWidgets();
+  repositionChatWidgets();
   
   // Run after DOM loads
-  document.addEventListener('DOMContentLoaded', destroyChatWidgets);
+  document.addEventListener('DOMContentLoaded', repositionChatWidgets);
   
   // Run after page fully loads
-  window.addEventListener('load', destroyChatWidgets);
+  window.addEventListener('load', repositionChatWidgets);
   
-  // Watch for new elements being added (MutationObserver)
+  // Watch for new elements being added
   const observer = new MutationObserver(function(mutations) {
     mutations.forEach(function(mutation) {
       mutation.addedNodes.forEach(function(node) {
-        if (node.nodeType === 1) { // Element node
-          // If it's added outside #root, remove it
-          if (!node.closest('#root') && 
-              node.tagName !== 'SCRIPT' && 
-              node.tagName !== 'STYLE' && 
-              node.tagName !== 'LINK') {
-            console.log('[Chat Blocker] Removing dynamically added element:', node);
-            node.remove();
-          }
+        if (node.nodeType === 1) {
+          // Check if it's a fixed position element
+          setTimeout(() => {
+            const style = window.getComputedStyle(node);
+            if (style.position === 'fixed' && !node.closest('#root')) {
+              console.log('[Chat Repositioner] New fixed element detected, repositioning:', node);
+              repositionChatWidgets();
+            }
+          }, 100);
         }
       });
     });
@@ -79,5 +81,8 @@
     subtree: true
   });
   
-  console.log('[Chat Blocker] Active and watching for chat widgets...');
+  // Re-run every 2 seconds to catch any changes
+  setInterval(repositionChatWidgets, 2000);
+  
+  console.log('[Chat Repositioner] Active and watching...');
 })();
