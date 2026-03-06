@@ -41,8 +41,8 @@ export default function Layout() {
     { icon: Settings, label: 'Settings', path: '/settings' },
   ];
 
-  // Pages that shouldn't show back button (main nav pages)
-  const noBackButtonPages = ['/', '/prayer-times', '/messages', '/friends', '/settings'];
+  // Pages that shouldn't show back button (main nav pages + login/signup)
+  const noBackButtonPages = ['/', '/prayer-times', '/messages', '/friends', '/settings', '/login', '/signup', '/profile-setup'];
   const showBackButton = !noBackButtonPages.includes(location.pathname);
 
   return (

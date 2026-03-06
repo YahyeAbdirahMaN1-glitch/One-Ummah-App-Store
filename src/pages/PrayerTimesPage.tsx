@@ -143,40 +143,59 @@ export default function PrayerTimesPage() {
   };
 
   const toggleNotifications = async () => {
-    console.log('Toggle notifications clicked', { 
+    console.log('[PrayerTimes] Toggle notifications clicked', { 
       current: notificationsEnabled, 
       permission,
-      prayerTimesCount: prayerTimes.length 
+      prayerTimesCount: prayerTimes.length,
+      isSupported: 'Notification' in window
     });
 
     if (!notificationsEnabled) {
+      // Check if Notification API is supported
+      if (!('Notification' in window)) {
+        console.error('[PrayerTimes] Notification API not supported');
+        toast.error('Notifications are not supported on this device/browser');
+        return;
+      }
+
       if (prayerTimes.length === 0) {
+        console.warn('[PrayerTimes] No prayer times loaded');
         toast.error('Please fetch prayer times first');
         return;
       }
 
       // Request permission first
-      console.log('Requesting notification permission...');
+      console.log('[PrayerTimes] Requesting notification permission...');
+      toast.info('Please allow notifications when prompted');
+      
       const granted = await requestPermission();
-      console.log('Permission result:', granted);
+      console.log('[PrayerTimes] Permission result:', granted);
       
       if (!granted) {
-        toast.error('Notification permission denied. Please enable notifications in your browser settings.');
+        console.warn('[PrayerTimes] Permission not granted');
+        toast.error('Notification permission denied. Please enable notifications in Settings → One Ummah → Notifications');
         return;
       }
 
       // Schedule notifications
-      console.log('Scheduling prayer notifications...');
-      schedulePrayerNotifications();
-      setNotificationsEnabled(true);
-      toast.success('Prayer notifications enabled! You will be notified 5 minutes before each prayer.');
+      console.log('[PrayerTimes] Scheduling prayer notifications...');
+      try {
+        schedulePrayerNotifications();
+        setNotificationsEnabled(true);
+        toast.success('Prayer notifications enabled! You will be notified 5 minutes before each prayer.');
+        console.log('[PrayerTimes] Notifications successfully enabled');
+      } catch (error) {
+        console.error('[PrayerTimes] Failed to schedule notifications:', error);
+        toast.error('Failed to schedule notifications. Please try again.');
+      }
     } else {
       // Clear all timers
-      console.log('Clearing notifications, timers count:', notificationTimersRef.current.length);
+      console.log('[PrayerTimes] Disabling notifications, timers count:', notificationTimersRef.current.length);
       notificationTimersRef.current.forEach(clearTimeout);
       notificationTimersRef.current = [];
       setNotificationsEnabled(false);
       toast.success('Prayer notifications disabled');
+      console.log('[PrayerTimes] Notifications disabled');
     }
   };
 

@@ -15,30 +15,57 @@ export function useNotifications() {
   }, []);
 
   const requestPermission = async () => {
+    console.log('[Notifications] requestPermission called', { isSupported, permission });
+    
     if (!isSupported) {
+      console.error('[Notifications] Not supported');
       toast.error('Notifications are not supported in this browser');
       return false;
     }
 
     if (permission === 'granted') {
+      console.log('[Notifications] Already granted');
       return true;
     }
 
     try {
+      console.log('[Notifications] Requesting permission...');
+      
+      // iOS Safari requires user interaction before showing permission dialog
+      // The dialog should appear when this is called from a button click
       const result = await Notification.requestPermission();
+      console.log('[Notifications] Permission result:', result);
+      
       setPermission(result);
       
       if (result === 'granted') {
+        console.log('[Notifications] Permission granted!');
         toast.success('Notifications enabled! You will receive prayer and message alerts.');
+        
+        // Test notification to confirm it works
+        try {
+          const testNotif = new Notification('One Ummah', {
+            body: 'Prayer notifications are now enabled!',
+            icon: '/icon-192x192.png',
+          });
+          setTimeout(() => testNotif.close(), 3000);
+          console.log('[Notifications] Test notification sent');
+        } catch (notifError) {
+          console.error('[Notifications] Test notification failed:', notifError);
+        }
+        
         return true;
       } else if (result === 'denied') {
+        console.warn('[Notifications] Permission denied');
         toast.error('Notification permission denied. Please enable in browser settings.');
         return false;
+      } else {
+        console.warn('[Notifications] Permission default/dismissed');
+        return false;
       }
-      return false;
     } catch (error) {
-      console.error('Notification permission error:', error);
-      toast.error('Failed to request notification permission');
+      console.error('[Notifications] Permission request error:', error);
+      toast.error('Failed to request notification permission. Please try again.');
       return false;
     }
   };
