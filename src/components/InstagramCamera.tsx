@@ -417,27 +417,31 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
         </div>
       </div>
 
-      {/* Recording Controls - Moved Higher */}
+      {/* Recording Controls - Positioned Left and Right */}
       {isRecording && !recordedBlob && (
-        <div className="absolute bottom-32 left-0 right-0 flex justify-center items-center gap-6 px-4" style={{ zIndex: 50 }}>
+        <>
+          {/* Start Over - Left Side */}
           <button
             onClick={startOver}
-            className="bg-black/70 backdrop-blur-lg px-5 py-2.5 rounded-2xl border border-white/40 hover:bg-black/85 transition-all shadow-lg hover:shadow-xl"
+            className="absolute bottom-32 left-4 bg-black/70 backdrop-blur-lg px-5 py-2.5 rounded-2xl border border-white/40 hover:bg-black/85 transition-all shadow-lg hover:shadow-xl"
+            style={{ zIndex: 50 }}
           >
             <span className="text-white font-light text-sm italic tracking-wide drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]">
               ↻ start over
             </span>
           </button>
 
+          {/* STOP - Right Side */}
           <button
             onClick={stopRecording}
-            className="bg-red-600/90 backdrop-blur-lg px-6 py-2.5 rounded-2xl hover:bg-red-700 transition-all shadow-lg hover:shadow-xl border border-red-400/30"
+            className="absolute bottom-32 right-4 bg-red-600/90 backdrop-blur-lg px-6 py-2.5 rounded-2xl hover:bg-red-700 transition-all shadow-lg hover:shadow-xl border border-red-400/30"
+            style={{ zIndex: 50 }}
           >
             <span className="text-white font-medium text-base tracking-[0.15em] drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]">
               ■ STOP
             </span>
           </button>
-        </div>
+        </>
       )}
 
       {/* Bottom Controls */}
