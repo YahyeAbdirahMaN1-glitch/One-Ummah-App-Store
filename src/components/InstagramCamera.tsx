@@ -203,17 +203,29 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
     }
   };
 
-  const startOver = () => {
-    if (isRecording) {
+  const startOver = async () => {
+    console.log('Start Over clicked');
+    
+    // Stop current recording
+    if (isRecording && mediaRecorderRef.current) {
       const interval = (mediaRecorderRef.current as any).durationInterval;
       if (interval) clearInterval(interval);
-      if (mediaRecorderRef.current) {
-        mediaRecorderRef.current.stop();
-      }
+      
+      mediaRecorderRef.current.stop();
       setIsRecording(false);
       setDuration(0);
       chunksRef.current = [];
+      mediaRecorderRef.current = null;
+      
+      console.log('Stopped current recording');
     }
+    
+    // Wait a moment for cleanup
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    // Start new recording
+    console.log('Starting new recording');
+    startRecording();
   };
 
   const formatDuration = (seconds: number) => {
