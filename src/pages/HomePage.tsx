@@ -196,26 +196,26 @@ export default function HomePage() {
       if (response.data && response.data.post) {
         const dbPost = response.data.post;
         
-        // Add to local state immediately
+        // Add to local state immediately (use data from database response)
         const newPost: Post = {
           id: dbPost.id,
-          userId: user.id,
-          userName: user.name || 'Anonymous',
-          userImage: user.profilePicture || undefined,
-          userIsOnline: dbPost.user?.isOnline ?? user.isOnline ?? true, // Use fresh data from DB or fallback to current user status
-          content: postContent,
-          videoUrl: videoBase64 || undefined,
-          videoType: recordedVideo?.type,
-          likes: 0,
-          dislikes: 0,
-          shares: 0,
-          reposts: 0,
-          views: 0,
-          comments: [],
+          userId: dbPost.userId || user.id,
+          userName: dbPost.user?.name || user.name || 'Anonymous',
+          userImage: dbPost.user?.profilePicture || user.profilePicture || undefined,
+          userIsOnline: dbPost.user?.isOnline ?? true, // Use ONLY fresh DB data, default to true if posting
+          content: dbPost.content || postContent,
+          videoUrl: dbPost.videoUrls || videoBase64 || undefined,
+          videoType: dbPost.videoType as 'littles' | 'length' | undefined,
+          likes: dbPost.likesCount || 0,
+          dislikes: dbPost.dislikesCount || 0,
+          shares: dbPost.sharesCount || 0,
+          reposts: dbPost.repostsCount || 0,
+          views: dbPost.viewsCount || 0,
+          comments: dbPost.comments || [],
           liked: false,
           disliked: false,
           showComments: false,
-          createdAt: new Date(),
+          createdAt: new Date(dbPost.createdAt || Date.now()),
         };
 
         setPosts([newPost, ...posts]);
@@ -569,6 +569,9 @@ export default function HomePage() {
                   <video
                     src={post.videoUrl}
                     controls
+                    playsInline
+                    preload="metadata"
+                    webkit-playsinline="true"
                     className="w-full max-h-96 object-contain bg-black"
                   />
                   {post.videoType && (
