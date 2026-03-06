@@ -2459,3 +2459,9 @@ Started vite server in mode: development
 3:52:48 PM [vite] (client) page reload ios/App/App/public/index.html
 3:57:29 PM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
 3:57:53 PM [vite] (client) page reload ios/App/App/public/index.html
+4:02:08 PM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+4:02:18 PM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+4:02:23 PM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+4:02:32 PM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+4:02:36 PM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+4:03:06 PM [vite] (client) page reload ios/App/App/public/index.html

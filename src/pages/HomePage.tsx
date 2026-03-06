@@ -203,21 +203,28 @@ export default function HomePage() {
       // Convert video to base64 if present
       let videoBase64: string | undefined;
       if (recordedVideo) {
-        console.log('[VIDEO] Original blob size:', recordedVideo.blob.size, 'bytes');
+        const sizeMB = (recordedVideo.blob.size / (1024 * 1024)).toFixed(2);
+        console.log('[VIDEO] Original blob size:', recordedVideo.blob.size, 'bytes (', sizeMB, 'MB)');
         
-        // Check if video is too large (> 50MB)
-        if (recordedVideo.blob.size > 50 * 1024 * 1024) {
+        // Check if video is too large (> 10MB for database storage)
+        if (recordedVideo.blob.size > 10 * 1024 * 1024) {
           toast.dismiss();
-          toast.error('Video is too large! Please record a shorter video (max 3 min for Littles)');
+          toast.error(`Video is too large (${sizeMB}MB)! Please record a shorter video. Max 10MB.`);
           return;
+        }
+        
+        // Warn if video is getting large
+        if (recordedVideo.blob.size > 5 * 1024 * 1024) {
+          console.warn('[VIDEO] Large video size:', sizeMB, 'MB - may be slow to upload');
         }
         
         const reader = new FileReader();
         videoBase64 = await new Promise((resolve) => {
           reader.onloadend = () => {
             const result = reader.result as string;
-            console.log('[VIDEO] Base64 length:', result.length);
-            console.log('[VIDEO] Base64 prefix:', result.substring(0, 50));
+            const base64SizeMB = (result.length / (1024 * 1024)).toFixed(2);
+            console.log('[VIDEO] Base64 size:', result.length, 'chars (', base64SizeMB, 'MB)');
+            console.log('[VIDEO] Base64 starts with:', result.substring(0, 50));
             resolve(result);
           };
           reader.readAsDataURL(recordedVideo.blob);

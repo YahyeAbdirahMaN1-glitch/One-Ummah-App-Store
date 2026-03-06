@@ -180,8 +180,12 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       const interval = setInterval(() => {
         setDuration(prev => {
           const newDuration = prev + 1;
-          // Littles max: 180 seconds (3 minutes)
-          if (videoType === 'littles' && newDuration >= 180) {
+          // Littles max: 30 seconds (to keep file size under 10MB)
+          if (videoType === 'littles' && newDuration >= 30) {
+            stopRecording();
+          }
+          // Length max: 60 seconds (1 minute)
+          if (videoType === 'length' && newDuration >= 60) {
             stopRecording();
           }
           return newDuration;
@@ -260,7 +264,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
   };
 
   const getMaxDuration = () => {
-    return videoType === 'littles' ? '3:00' : '∞';
+    return videoType === 'littles' ? '0:30' : '1:00';
   };
 
   if (error) {
@@ -365,7 +369,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
                 <span className={`text-sm font-bold tracking-wide ${
                   videoType === 'littles' ? 'text-black' : 'text-white'
                 }`}>
-                  3 MIN MAX
+                  30 SEC MAX
                 </span>
               </div>
             </button>
@@ -388,7 +392,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
                 <span className={`text-sm font-bold tracking-wide ${
                   videoType === 'length' ? 'text-black' : 'text-green-400'
                 }`}>
-                  UNLIMITED
+                  1 MIN MAX
                 </span>
               </div>
             </button>
