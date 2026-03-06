@@ -59,15 +59,24 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       
       streamRef.current = stream;
       
+      console.log('Stream created:', stream);
+      console.log('Video ref exists:', !!videoRef.current);
+      
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        console.log('Stream assigned to video element');
+        
+        // Force video to be visible
+        videoRef.current.style.display = 'block';
+        videoRef.current.style.opacity = '1';
         
         // Wait for video to be ready and playing
         videoRef.current.onloadedmetadata = async () => {
+          console.log('Video metadata loaded');
           try {
             if (videoRef.current) {
               await videoRef.current.play();
-              console.log('Camera started successfully');
+              console.log('Camera started successfully - video is playing');
               // Only hide loading AFTER video is actually playing
               setIsLoading(false);
               setError(null);
@@ -78,7 +87,16 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
             setError('Failed to start camera. Please try again.');
           }
         };
+        
+        // Fallback: hide loading after 2 seconds even if onloadedmetadata doesn't fire
+        setTimeout(() => {
+          if (videoRef.current && videoRef.current.srcObject) {
+            console.log('Fallback: hiding loading screen');
+            setIsLoading(false);
+          }
+        }, 2000);
       } else {
+        console.error('Video ref is null!');
         setIsLoading(false);
       }
     } catch (err: any) {
@@ -249,15 +267,21 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
   }
 
   return (
-    <div className="fixed inset-0 bg-black z-50">
+    <div className="fixed inset-0 bg-black z-50 overflow-hidden">
       {/* Video Preview */}
       <video
         ref={videoRef}
         autoPlay
         playsInline
         muted
-        className={`w-full h-full object-cover ${cameraFacing === 'user' ? 'scale-x-[-1]' : ''}`}
-        style={{ objectPosition: 'center center' }}
+        className={`absolute inset-0 w-full h-full object-cover ${cameraFacing === 'user' ? 'scale-x-[-1]' : ''}`}
+        style={{ 
+          objectPosition: 'center center',
+          width: '100vw',
+          height: '100vh',
+          minWidth: '100%',
+          minHeight: '100%',
+        }}
       />
 
       {/* Header - Close and Flip buttons only */}

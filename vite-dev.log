@@ -1628,3 +1628,6 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 5:02:47 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
 5:03:12 AM [vite] (client) hmr update /src/pages/PrayerTimesPage.tsx, /src/index.css
 5:03:23 AM [vite] (client) page reload ios/App/App/public/index.html
+5:05:52 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+5:06:03 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+5:06:15 AM [vite] (client) page reload ios/App/App/public/index.html
