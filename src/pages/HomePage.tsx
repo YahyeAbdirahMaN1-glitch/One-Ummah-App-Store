@@ -159,9 +159,28 @@ export default function HomePage() {
   };
 
   const handleVideoRecorded = (blob: Blob, type: 'littles' | 'length') => {
+    console.log('[HomePage] Video recorded callback received', {
+      blobSize: blob.size,
+      blobType: blob.type,
+      videoType: type
+    });
+    
+    if (!blob || blob.size === 0) {
+      console.error('[HomePage] Invalid blob received - empty or null');
+      toast.error('Invalid video recording. Please try again.');
+      return;
+    }
+    
     setRecordedVideo({ blob, type });
+    console.log('[HomePage] recordedVideo state updated');
+    
     setSelectedPhoto(null); // Clear photo if video is recorded
+    console.log('[HomePage] selectedPhoto cleared');
+    
     setShowCamera(false);
+    console.log('[HomePage] Camera closed, video ready to post');
+    
+    toast.success(`Video recorded! (${(blob.size / (1024 * 1024)).toFixed(2)} MB) - Add caption and post`);
   };
 
   const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {

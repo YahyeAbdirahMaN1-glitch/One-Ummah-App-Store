@@ -205,24 +205,64 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
   };
 
   const stopRecording = () => {
+    console.log('[Camera] Stop Recording clicked', {
+      hasRecorder: !!mediaRecorderRef.current,
+      isRecording,
+      chunksCount: chunksRef.current.length
+    });
+    
     if (mediaRecorderRef.current && isRecording) {
       const interval = (mediaRecorderRef.current as any).durationInterval;
-      if (interval) clearInterval(interval);
+      if (interval) {
+        clearInterval(interval);
+        console.log('[Camera] Cleared duration interval');
+      }
       
       mediaRecorderRef.current.stop();
-      setIsRecording(false);
+      console.log('[Camera] MediaRecorder stopped');
       
-      // Create blob and show preview (don't close camera yet)
-      const blob = new Blob(chunksRef.current, { type: 'video/webm' });
-      setRecordedBlob(blob);
+      setIsRecording(false);
+      console.log('[Camera] isRecording set to false');
+      
+      // Wait a moment for all data to arrive
+      setTimeout(() => {
+        console.log('[Camera] Creating blob from chunks:', chunksRef.current.length);
+        const blob = new Blob(chunksRef.current, { type: 'video/webm' });
+        console.log('[Camera] Blob created:', blob.size, 'bytes');
+        
+        if (blob.size === 0) {
+          console.error('[Camera] WARNING: Blob is empty! No video data recorded.');
+          alert('Recording failed - no video data captured. Please try again.');
+          return;
+        }
+        
+        setRecordedBlob(blob);
+        console.log('[Camera] recordedBlob state updated, showing preview');
+      }, 100); // Small delay to ensure all chunks arrive
     }
   };
   
   const postVideo = () => {
+    console.log('[Camera] Post Video clicked', {
+      hasBlob: !!recordedBlob,
+      blobSize: recordedBlob?.size,
+      videoType
+    });
+    
     if (recordedBlob) {
+      console.log('[Camera] Calling onVideoRecorded with blob:', recordedBlob.size, 'bytes');
       onVideoRecorded(recordedBlob, videoType);
+      
+      console.log('[Camera] Stopping camera...');
       stopCamera();
+      
+      console.log('[Camera] Closing camera...');
       onClose();
+      
+      console.log('[Camera] Post Video complete');
+    } else {
+      console.error('[Camera] No recorded blob available!');
+      alert('No video recorded. Please try recording again.');
     }
   };
   
@@ -406,13 +446,13 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
         </div>
       )}
 
-      {/* Recording Indicator - One Ummah Premium Style */}
+      {/* Recording Indicator - One Ummah Premium Style - BIGGER AND MORE VISIBLE */}
       {isRecording && (
-        <div className="absolute top-6 left-6 z-20">
-          <div className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-500 px-4 py-2 rounded-xl shadow-lg border border-red-400/30">
-            <div className="w-2.5 h-2.5 bg-white rounded-full animate-pulse shadow-[0_0_8px_rgba(255,255,255,0.8)]"></div>
-            <span className="text-white font-bold text-sm tracking-wide">
-              {formatDuration(duration)}
+        <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-50">
+          <div className="flex items-center gap-3 bg-gradient-to-r from-red-600 via-red-500 to-red-600 px-6 py-4 rounded-2xl shadow-[0_0_30px_rgba(239,68,68,0.8)] border-2 border-red-300/50 animate-pulse-slow">
+            <div className="w-4 h-4 bg-white rounded-full animate-pulse shadow-[0_0_12px_rgba(255,255,255,1)]"></div>
+            <span className="text-white font-black text-2xl tracking-wider drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+              {formatDuration(duration)} / {getMaxDuration()}
             </span>
           </div>
         </div>
@@ -458,34 +498,46 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
           </div>
         )}
 
-        {/* Preview State - One Ummah Premium Gold Design */}
+        {/* Preview State - One Ummah Premium Gold Design - ENHANCED VISIBILITY */}
         {recordedBlob && (
-          <div className="flex items-center justify-center gap-8 px-8">
-            {/* Retake - Premium black with gold border */}
-            <button
-              onClick={discardVideo}
-              className="flex flex-col items-center gap-2"
-            >
-              <div className="w-14 h-14 rounded-full bg-black/70 backdrop-blur-md border-2 border-amber-500/40 flex items-center justify-center hover:bg-black/80 hover:border-amber-400/60 transition-all shadow-lg">
-                <svg className="w-7 h-7 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </div>
-              <span className="text-amber-200 text-sm font-bold tracking-wide">Retake</span>
-            </button>
+          <div className="space-y-4">
+            {/* Video recorded message */}
+            <div className="text-center">
+              <p className="text-white text-xl font-bold drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">
+                Video Recorded! ({(recordedBlob.size / (1024 * 1024)).toFixed(2)} MB)
+              </p>
+              <p className="text-amber-300 text-sm font-semibold mt-1">
+                Choose an option below
+              </p>
+            </div>
+            
+            <div className="flex items-center justify-center gap-8 px-8">
+              {/* Retake - Premium black with gold border */}
+              <button
+                onClick={discardVideo}
+                className="flex flex-col items-center gap-2"
+              >
+                <div className="w-16 h-16 rounded-full bg-black/70 backdrop-blur-md border-2 border-amber-500/40 flex items-center justify-center hover:bg-black/80 hover:border-amber-400/60 transition-all shadow-lg active:scale-95">
+                  <svg className="w-8 h-8 text-amber-300" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </div>
+                <span className="text-amber-200 text-base font-bold tracking-wide">Retake</span>
+              </button>
 
-            {/* Use Video - Islamic Gold Gradient */}
-            <button
-              onClick={postVideo}
-              className="flex flex-col items-center gap-2"
-            >
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center hover:scale-105 transition-all shadow-[0_0_40px_rgba(251,191,36,0.6)] border-2 border-amber-300/50">
-                <svg className="w-10 h-10 text-black drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={3.5}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                </svg>
-              </div>
-              <span className="text-amber-200 text-base font-bold tracking-wide">Use Video</span>
-            </button>
+              {/* Use Video - Islamic Gold Gradient - BIGGER AND MORE PROMINENT */}
+              <button
+                onClick={postVideo}
+                className="flex flex-col items-center gap-2"
+              >
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center hover:scale-110 transition-all shadow-[0_0_50px_rgba(251,191,36,0.8)] border-4 border-amber-300/50 active:scale-105 animate-pulse-slow">
+                  <svg className="w-12 h-12 text-black drop-shadow-lg" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={4}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                </div>
+                <span className="text-amber-200 text-lg font-black tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">USE VIDEO</span>
+              </button>
+            </div>
           </div>
         )}
 
