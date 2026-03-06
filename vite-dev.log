@@ -1088,3 +1088,10 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 3:10:30 AM [vite] (client) hmr update /src/pages/MessagesPage.tsx, /src/index.css
 3:11:00 AM [vite] (client) hmr update /src/pages/FriendsPage.tsx, /src/index.css
 3:11:23 AM [vite] (client) page reload ios/App/App/public/index.html
+3:17:53 AM [vite] (client) hmr update /src/pages/MessagesPage.tsx, /src/index.css
+3:18:03 AM [vite] (client) hmr update /src/pages/MessagesPage.tsx, /src/index.css
+3:18:06 AM [vite] (client) hmr update /src/pages/FriendsPage.tsx, /src/index.css
+3:18:11 AM [vite] (client) hmr update /src/pages/FriendsPage.tsx, /src/index.css
+3:18:17 AM [vite] (client) hmr update /src/pages/FriendsPage.tsx, /src/index.css
+3:18:31 AM [vite] (client) hmr update /src/pages/FriendsPage.tsx, /src/index.css
+3:18:44 AM [vite] (client) page reload ios/App/App/public/index.html

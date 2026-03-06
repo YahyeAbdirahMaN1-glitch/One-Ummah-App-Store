@@ -25,35 +25,7 @@ export default function MessagesPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [newMessage, setNewMessage] = useState('');
-  const [messages] = useState<Message[]>([
-    {
-      id: '1',
-      userId: 'user1',
-      userName: 'Ahmed Abdullah',
-      userImage: '👤',
-      lastMessage: 'Assalamu Alaikum! How are you?',
-      timestamp: new Date(Date.now() - 1000 * 60 * 5),
-      unread: 2,
-    },
-    {
-      id: '2',
-      userId: 'user2',
-      userName: 'Fatima Hassan',
-      userImage: '👤',
-      lastMessage: 'JazakAllah Khair for the advice',
-      timestamp: new Date(Date.now() - 1000 * 60 * 30),
-      unread: 0,
-    },
-    {
-      id: '3',
-      userId: 'user3',
-      userName: 'Muhammad Ali',
-      userImage: '👤',
-      lastMessage: 'See you at the mosque!',
-      timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2),
-      unread: 1,
-    },
-  ]);
+  const [messages] = useState<Message[]>([]);
 
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
@@ -190,29 +162,39 @@ export default function MessagesPage() {
         </div>
 
         {/* Message List */}
-        <div className="space-y-3">
-          {filteredMessages.map(msg => (
-            <button
-              key={msg.id}
-              onClick={() => setSelectedChat(msg.id)}
-              className="w-full flex items-center gap-3 p-4 bg-black/30 hover:bg-black/50 border border-amber-900/20 hover:border-amber-800/40 rounded-lg transition-all text-left"
-            >
-              <div className="text-3xl">{msg.userImage}</div>
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center justify-between mb-1">
-                  <h3 className="text-white font-semibold">{msg.userName}</h3>
-                  <span className="text-gray-400 text-xs">{formatTime(msg.timestamp)}</span>
+        {filteredMessages.length === 0 ? (
+          <div className="text-center py-12">
+            <MessageCircle className="w-16 h-16 text-gray-600 mx-auto mb-4" />
+            <p className="text-gray-400 text-lg mb-2">No messages yet</p>
+            <p className="text-gray-500 text-sm">
+              {searchQuery ? 'No messages found' : 'Start connecting with the One Ummah community'}
+            </p>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            {filteredMessages.map(msg => (
+              <button
+                key={msg.id}
+                onClick={() => setSelectedChat(msg.id)}
+                className="w-full flex items-center gap-3 p-4 bg-black/30 hover:bg-black/50 border border-amber-900/20 hover:border-amber-800/40 rounded-lg transition-all text-left"
+              >
+                <div className="text-3xl">{msg.userImage}</div>
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-center justify-between mb-1">
+                    <h3 className="text-white font-semibold">{msg.userName}</h3>
+                    <span className="text-gray-400 text-xs">{formatTime(msg.timestamp)}</span>
+                  </div>
+                  <p className="text-gray-400 text-sm truncate">{msg.lastMessage}</p>
                 </div>
-                <p className="text-gray-400 text-sm truncate">{msg.lastMessage}</p>
-              </div>
-              {msg.unread > 0 && (
-                <div className="bg-amber-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
-                  {msg.unread}
-                </div>
-              )}
-            </button>
-          ))}
-        </div>
+                {msg.unread > 0 && (
+                  <div className="bg-amber-500 text-white text-xs font-bold rounded-full w-6 h-6 flex items-center justify-center">
+                    {msg.unread}
+                  </div>
+                )}
+              </button>
+            ))}
+          </div>
+        )}
       </Card>
     </div>
   );
