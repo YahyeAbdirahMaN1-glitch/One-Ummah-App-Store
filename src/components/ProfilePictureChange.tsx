@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Card } from './ui/card';
 import { Button } from './ui/button';
-import { X, Camera, Upload } from 'lucide-react';
+import { X, Camera, Upload, Trash2 } from 'lucide-react';
 import { API_URL } from '../config';
 import { CapacitorHttp } from '@capacitor/core';
 import { toast } from 'sonner';
@@ -74,6 +74,41 @@ export default function ProfilePictureChange({ userId, userName, currentImage, o
     }
   };
 
+  const handleRemovePicture = async () => {
+    if (!currentImage) {
+      toast.error('No profile picture to remove');
+      return;
+    }
+
+    setUploading(true);
+
+    try {
+      // Remove profile picture (set to null)
+      const response = await CapacitorHttp.post({
+        url: `${API_URL}/updateProfilePicture`,
+        headers: { 'Content-Type': 'application/json' },
+        data: { 
+          userId, 
+          profilePicture: null 
+        },
+      });
+
+      if (response.status === 200) {
+        toast.success('Profile picture removed! Refreshing...');
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } else {
+        toast.error('Failed to remove profile picture');
+      }
+    } catch (error) {
+      console.error('Profile picture removal error:', error);
+      toast.error('Failed to remove profile picture');
+    } finally {
+      setUploading(false);
+    }
+  };
+
   return (
     <>
       {/* Backdrop */}
@@ -135,15 +170,31 @@ export default function ProfilePictureChange({ userId, userName, currentImage, o
             className="hidden"
           />
 
-          {/* Upload Button */}
-          <Button
-            onClick={() => fileInputRef.current?.click()}
-            disabled={uploading}
-            className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white flex items-center justify-center gap-2"
-          >
-            <Upload className="w-4 h-4" />
-            {uploading ? 'Uploading...' : 'Choose New Picture'}
-          </Button>
+          {/* Buttons */}
+          <div className="space-y-3">
+            {/* Upload Button */}
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={uploading}
+              className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white flex items-center justify-center gap-2"
+            >
+              <Upload className="w-4 h-4" />
+              {uploading ? 'Uploading...' : 'Choose New Picture'}
+            </Button>
+
+            {/* Remove Button - Only show if user has a profile picture */}
+            {currentImage && (
+              <Button
+                onClick={handleRemovePicture}
+                disabled={uploading}
+                variant="destructive"
+                className="w-full flex items-center justify-center gap-2"
+              >
+                <Trash2 className="w-4 h-4" />
+                {uploading ? 'Removing...' : 'Remove Picture'}
+              </Button>
+            )}
+          </div>
 
           {/* Info */}
           <div className="mt-4 p-3 bg-amber-950/20 border border-amber-900/30 rounded-lg">

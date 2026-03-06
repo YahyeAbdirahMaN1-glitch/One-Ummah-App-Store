@@ -652,7 +652,7 @@ export const updateProfilePicture = router.post(
     "json",
     z.object({
       userId: z.string(),
-      profilePicture: z.string(),
+      profilePicture: z.string().nullable(), // Allow null to remove picture
     })
   ),
   async (c) => {
