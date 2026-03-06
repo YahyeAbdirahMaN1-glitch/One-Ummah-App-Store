@@ -1824,3 +1824,9 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 3:26:52 PM [vite] (client) hmr update /src/index.css, /src/components/ProfileQuickSettings.tsx
 3:27:13 PM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
 3:27:27 PM [vite] (client) page reload ios/App/App/public/index.html
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 323 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.4:4500/
