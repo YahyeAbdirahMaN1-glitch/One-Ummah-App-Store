@@ -38,6 +38,12 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
     try {
       stopCamera();
       
+      // Check if getUserMedia is available
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        setError('Camera not supported in this browser. Please use Chrome, Safari, or Firefox.');
+        return;
+      }
+      
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: cameraFacing,
@@ -55,7 +61,33 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       }
     } catch (err: any) {
       console.error('Camera error:', err);
-      setError('Failed to access camera. Please allow camera permissions.');
+      
+      if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+        setError('Camera permission denied. Please:\n1. Click the camera icon in your browser address bar\n2. Allow camera and microphone access\n3. Refresh the page');
+      } else if (err.name === 'NotFoundError' || err.name === 'DevicesNotFoundError') {
+        setError('No camera found. Please ensure your device has a working camera.');
+      } else if (err.name === 'NotReadableError' || err.name === 'TrackStartError') {
+        setError('Camera is in use by another application. Please close other apps using the camera.');
+      } else if (err.name === 'OverconstrainedError') {
+        setError('Camera settings not supported. Trying simpler settings...');
+        // Try again with simpler constraints
+        try {
+          const simpleStream = await navigator.mediaDevices.getUserMedia({
+            video: true,
+            audio: true,
+          });
+          streamRef.current = simpleStream;
+          if (videoRef.current) {
+            videoRef.current.srcObject = simpleStream;
+            await videoRef.current.play();
+          }
+          setError(null);
+        } catch {
+          setError('Failed to access camera with any settings.');
+        }
+      } else {
+        setError(`Camera error: ${err.message || 'Unknown error'}. Please refresh and try again.`);
+      }
     }
   };
 
