@@ -41,8 +41,8 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: cameraFacing,
-          width: { ideal: 1080 },
-          height: { ideal: 1920 },
+          width: { ideal: 1280 },
+          height: { ideal: 720 },
         },
         audio: true,
       });
@@ -175,6 +175,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
         playsInline
         muted
         className={`w-full h-full object-cover ${cameraFacing === 'user' ? 'scale-x-[-1]' : ''}`}
+        style={{ objectPosition: 'center center' }}
       />
 
       {/* Header */}
