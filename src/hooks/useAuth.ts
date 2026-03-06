@@ -59,7 +59,12 @@ export function useAuth() {
 
   const login = async (email: string, password: string) => {
     try {
-      console.log('Attempting login to:', `${API_URL}/signIn`);
+      console.log('=== LOGIN DEBUG ===');
+      console.log('API_URL:', API_URL);
+      console.log('Login endpoint:', `${API_URL}/signIn`);
+      console.log('Email:', email);
+      console.log('User agent:', navigator.userAgent);
+      console.log('Platform:', navigator.platform);
       
       const response = await fetch(`${API_URL}/signIn`, {
         method: 'POST',
@@ -72,14 +77,26 @@ export function useAuth() {
         mode: 'cors',
       });
 
-      console.log('Login response status:', response.status);
+      console.log('Response status:', response.status);
+      console.log('Response headers:', Object.fromEntries(response.headers.entries()));
 
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Login failed');
+        const errorText = await response.text();
+        console.error('Error response body:', errorText);
+        
+        let errorMessage = 'Login failed';
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.error || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
       }
 
       const data = await response.json();
+      console.log('Login successful, userId:', data.userId);
       
       // Store user ID in localStorage
       if (data.userId) {
@@ -89,52 +106,101 @@ export function useAuth() {
       
       return data;
     } catch (error: any) {
-      console.error('Login error:', error);
+      console.error('=== LOGIN ERROR ===');
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      console.error('Full error object:', error);
+      
+      // Provide iOS-specific error messages
+      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+        throw new Error('Cannot connect to server. Please check:\n1. Your internet connection\n2. The app has permission to access network\n3. The server is running');
+      }
+      
       throw new Error(error.message || 'Network error - please check your internet connection');
     }
   };
 
   const signup = async (email: string, password: string, name: string, gender: string) => {
-    const response = await fetch(`${API_URL}/signUp`, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({ email, password, name, gender }),
-      credentials: 'include',
-      mode: 'cors',
-    });
+    try {
+      console.log('=== SIGNUP DEBUG ===');
+      console.log('API_URL:', API_URL);
+      console.log('Signup endpoint:', `${API_URL}/signUp`);
+      console.log('Email:', email);
+      console.log('Name:', name);
+      console.log('Gender:', gender);
+      
+      const response = await fetch(`${API_URL}/signUp`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ email, password, name, gender }),
+        credentials: 'include',
+        mode: 'cors',
+      });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.error || 'Signup failed');
-    }
+      console.log('Signup response status:', response.status);
 
-    const data = await response.json();
-    
-    // Store user ID in localStorage
-    if (data.userId) {
-      localStorage.setItem('userId', data.userId);
+      if (!response.ok) {
+        const errorText = await response.text();
+        console.error('Error response body:', errorText);
+        
+        let errorMessage = 'Signup failed';
+        try {
+          const errorJson = JSON.parse(errorText);
+          errorMessage = errorJson.error || errorMessage;
+        } catch {
+          errorMessage = errorText || errorMessage;
+        }
+        
+        throw new Error(errorMessage);
+      }
+
+      const data = await response.json();
+      console.log('Signup successful, userId:', data.userId);
+      
+      // Store user ID in localStorage
+      if (data.userId) {
+        localStorage.setItem('userId', data.userId);
+      }
+      
+      // Fetch full user data
+      console.log('Fetching user data...');
+      const userResponse = await fetch(`${API_URL}/getUser`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
+        },
+        body: JSON.stringify({ userId: data.userId }),
+        mode: 'cors',
+      });
+      
+      if (userResponse.ok) {
+        const userData = await userResponse.json();
+        console.log('User data fetched successfully');
+        setUser(userData.user);
+      } else {
+        console.error('Failed to fetch user data, status:', userResponse.status);
+      }
+      
+      return data;
+    } catch (error: any) {
+      console.error('=== SIGNUP ERROR ===');
+      console.error('Error name:', error.name);
+      console.error('Error message:', error.message);
+      console.error('Error stack:', error.stack);
+      console.error('Full error object:', error);
+      
+      // Provide iOS-specific error messages
+      if (error.name === 'TypeError' && error.message.includes('Failed to fetch')) {
+        throw new Error('Cannot connect to server. Please check:\n1. Your internet connection\n2. The app has permission to access network\n3. The server is running');
+      }
+      
+      throw new Error(error.message || 'Signup failed');
     }
-    
-    // Fetch full user data
-    const userResponse = await fetch(`${API_URL}/getUser`, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-        'Accept': 'application/json'
-      },
-      body: JSON.stringify({ userId: data.userId }),
-      mode: 'cors',
-    });
-    
-    if (userResponse.ok) {
-      const userData = await userResponse.json();
-      setUser(userData.user);
-    }
-    
-    return data;
   };
 
   const logout = async () => {
