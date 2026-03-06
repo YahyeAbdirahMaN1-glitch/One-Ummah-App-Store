@@ -18,6 +18,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
   const [videoType, setVideoType] = useState<VideoType>('littles');
   const [cameraFacing, setCameraFacing] = useState<'user' | 'environment'>('user');
   const [isRecording, setIsRecording] = useState(false);
+  const [recordedBlob, setRecordedBlob] = useState<Blob | null>(null);
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -166,12 +167,8 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       };
       
       recorder.onstop = () => {
-        // Don't trigger callback if we're just starting over
-        if (!isStartingOverRef.current) {
-          const blob = new Blob(chunksRef.current, { type: 'video/webm' });
-          onVideoRecorded(blob, videoType);
-        }
-        // Reset the flag after handling
+        // onstop handler now just handles the start-over flag
+        // Blob creation moved to stopRecording() function
         isStartingOverRef.current = false;
       };
       
@@ -204,9 +201,26 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       
       mediaRecorderRef.current.stop();
       setIsRecording(false);
+      
+      // Create blob and show preview (don't close camera yet)
+      const blob = new Blob(chunksRef.current, { type: 'video/webm' });
+      setRecordedBlob(blob);
+    }
+  };
+  
+  const postVideo = () => {
+    if (recordedBlob) {
+      onVideoRecorded(recordedBlob, videoType);
       stopCamera();
       onClose();
     }
+  };
+  
+  const discardVideo = () => {
+    setRecordedBlob(null);
+    setDuration(0);
+    chunksRef.current = [];
+    // Camera is still running, user can record again
   };
 
   const startOver = async () => {
@@ -404,32 +418,56 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       </div>
 
       {/* Bottom Controls */}
-      <div className="absolute bottom-8 left-0 right-0 flex justify-center items-center gap-8" style={{ zIndex: 50 }}>
-        {/* Start Over Button */}
-        {isRecording && (
-          <button
-            onClick={startOver}
-            className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-white/30 hover:bg-white/30 transition-all"
-          >
-            <span className="text-white font-semibold">Start Over</span>
-          </button>
+      <div className="absolute bottom-8 left-0 right-0 px-4" style={{ zIndex: 50 }}>
+        {/* Recording State - Start Over + Stop buttons */}
+        {isRecording && !recordedBlob && (
+          <div className="flex justify-center items-center gap-8">
+            <button
+              onClick={startOver}
+              className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-white/30 hover:bg-white/30 transition-all"
+            >
+              <span className="text-white font-semibold">Start Over</span>
+            </button>
+
+            <button
+              onClick={stopRecording}
+              className="bg-red-600 px-8 py-4 rounded-full hover:bg-red-700 transition-all scale-110"
+            >
+              <span className="text-white font-bold text-lg">STOP</span>
+            </button>
+          </div>
         )}
 
-        {/* Record/Stop Button */}
-        <button
-          onClick={isRecording ? stopRecording : startRecording}
-          className={`relative w-20 h-20 rounded-full flex items-center justify-center transition-all ${
-            isRecording
-              ? 'bg-red-600 scale-110'
-              : 'bg-white/20 border-4 border-white'
-          }`}
-        >
-          {isRecording ? (
-            <div className="w-8 h-8 bg-white rounded-sm"></div>
-          ) : (
-            <div className="w-16 h-16 bg-red-600 rounded-full"></div>
-          )}
-        </button>
+        {/* Preview State - Discard + Post buttons */}
+        {recordedBlob && (
+          <div className="flex justify-center items-center gap-6">
+            <button
+              onClick={discardVideo}
+              className="bg-gray-700/90 backdrop-blur-sm px-8 py-4 rounded-full border-2 border-gray-500 hover:bg-gray-600 transition-all"
+            >
+              <span className="text-white font-bold text-lg">DISCARD</span>
+            </button>
+
+            <button
+              onClick={postVideo}
+              className="bg-gradient-to-r from-amber-500 to-amber-600 px-12 py-4 rounded-full hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg shadow-amber-500/50 scale-105"
+            >
+              <span className="text-white font-bold text-lg">POST</span>
+            </button>
+          </div>
+        )}
+
+        {/* Initial State - Record button */}
+        {!isRecording && !recordedBlob && (
+          <div className="flex justify-center">
+            <button
+              onClick={startRecording}
+              className="relative w-20 h-20 rounded-full flex items-center justify-center bg-white/20 border-4 border-white transition-all hover:scale-105"
+            >
+              <div className="w-16 h-16 bg-red-600 rounded-full"></div>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

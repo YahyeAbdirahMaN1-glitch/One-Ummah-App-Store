@@ -202,6 +202,7 @@ export default function HomePage() {
           userId: user.id,
           userName: user.name || 'Anonymous',
           userImage: user.profilePicture || undefined,
+          userIsOnline: dbPost.user?.isOnline ?? user.isOnline ?? true, // Use fresh data from DB or fallback to current user status
           content: postContent,
           videoUrl: videoBase64 || undefined,
           videoType: recordedVideo?.type,

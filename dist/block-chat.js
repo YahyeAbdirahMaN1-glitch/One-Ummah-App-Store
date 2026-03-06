@@ -13,9 +13,9 @@
       if (style.position === 'fixed') {
         console.log('[Chat Repositioner] Found fixed element, moving to top:', el);
         
-        // Move to top instead of bottom
+        // Move completely off-screen (pushed way above viewport)
         el.style.setProperty('bottom', 'auto', 'important');
-        el.style.setProperty('top', '20px', 'important');
+        el.style.setProperty('top', '-2000px', 'important');
         el.style.setProperty('right', '20px', 'important');
         el.style.setProperty('z-index', '999999', 'important');
         
@@ -39,7 +39,7 @@
       const parent = iframe.parentElement;
       if (parent && window.getComputedStyle(parent).position === 'fixed') {
         parent.style.setProperty('bottom', 'auto', 'important');
-        parent.style.setProperty('top', '20px', 'important');
+        parent.style.setProperty('top', '-2000px', 'important');
         parent.style.setProperty('right', '20px', 'important');
       }
       
