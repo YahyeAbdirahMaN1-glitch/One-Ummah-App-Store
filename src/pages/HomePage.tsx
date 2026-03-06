@@ -289,16 +289,14 @@ export default function HomePage() {
               data-post-id={post.id}
               className="bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-6 relative"
             >
-              {/* Delete Button (only for user's own posts) */}
-              {user?.id && (
-                <button
-                  onClick={() => handleDeletePost(post.id)}
-                  className="absolute top-4 right-4 p-2 rounded-full bg-black/50 hover:bg-red-500/80 text-gray-400 hover:text-white transition-all group"
-                  aria-label="Delete post"
-                >
-                  <Trash2 className="w-4 h-4" />
-                </button>
-              )}
+              {/* Delete Button */}
+              <button
+                onClick={() => handleDeletePost(post.id)}
+                className="absolute top-4 right-4 p-2 rounded-full bg-black/50 hover:bg-red-500/80 text-gray-400 hover:text-white transition-all group"
+                aria-label="Delete post"
+              >
+                <Trash2 className="w-4 h-4" />
+              </button>
 
               {/* Post Content */}
               <p className="text-white mb-4">{post.content}</p>

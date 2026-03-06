@@ -61,10 +61,20 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
-        await videoRef.current.play();
+        // Wait for video metadata to load before playing
+        videoRef.current.onloadedmetadata = async () => {
+          try {
+            if (videoRef.current) {
+              await videoRef.current.play();
+              console.log('Camera started successfully');
+            }
+          } catch (playErr) {
+            console.error('Video play error:', playErr);
+          }
+        };
       }
       
-      // Always set loading to false after stream is created
+      // Set loading to false after stream is created
       setIsLoading(false);
     } catch (err: any) {
       console.error('Camera error:', err);
