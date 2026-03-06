@@ -70,6 +70,8 @@
       })();
     </script>
     <div id="root"></div>
+    <!-- CRITICAL: Chat widget blocker - runs BEFORE React -->
+    <script src="/block-chat.js"></script>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
