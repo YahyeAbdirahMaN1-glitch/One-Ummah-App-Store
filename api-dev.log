@@ -82,3 +82,50 @@ Running generate... (Use --skip-generate to skip the generators)
 
 
 🚀 API Server running on http://localhost:5002
+Prisma schema loaded from schema.prisma
+Datasource "db": SQLite database "development.db" at "file:./development.db"
+
+Already in sync, no schema change or pending migration was found.
+
+Running generate... (Use --skip-generate to skip the generators)
+[2K[1A[2K[GRunning generate... - Prisma Client
+[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 215ms
+
+
+🚀 API Server running on http://localhost:5002
+Prisma schema loaded from schema.prisma
+Datasource "db": SQLite database "development.db" at "file:./development.db"
+
+Already in sync, no schema change or pending migration was found.
+
+Running generate... (Use --skip-generate to skip the generators)
+[2K[1A[2K[GRunning generate... - Prisma Client
+[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 184ms
+
+
+🚀 API Server running on http://localhost:5002
+2:01:00 PM [tsx] change in ./src/api/procedures.ts Restarting...
+c🚀 API Server running on http://localhost:5002
+2:01:05 PM [tsx] change in ./src/api/procedures.ts Restarting...
+c🚀 API Server running on http://localhost:5002
+Prisma schema loaded from schema.prisma
+Datasource "db": SQLite database "development.db" at "file:./development.db"
+
+Already in sync, no schema change or pending migration was found.
+
+Running generate... (Use --skip-generate to skip the generators)
+[2K[1A[2K[GRunning generate... - Prisma Client
+[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 208ms
+
+┌─────────────────────────────────────────────────────────┐
+│  Update available 6.19.2 -> 7.4.2                       │
+│                                                         │
+│  This is a major update - please follow the guide at    │
+│  https://pris.ly/d/major-version-upgrade                │
+│                                                         │
+│  Run the following to update                            │
+│    npm i --save-dev prisma@latest                       │
+│    npm i @prisma/client@latest                          │
+└─────────────────────────────────────────────────────────┘
+
+🚀 API Server running on http://localhost:5002

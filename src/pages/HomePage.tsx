@@ -5,6 +5,7 @@ import { Card } from '../components/ui/card';
 import { Textarea } from '../components/ui/textarea';
 import { Input } from '../components/ui/input';
 import InstagramCamera from '../components/InstagramCamera';
+import ProfileQuickSettings from '../components/ProfileQuickSettings';
 import { toast } from 'sonner';
 import { useAuth } from '../hooks/useAuth';
 import { CapacitorHttp } from '@capacitor/core';
@@ -51,6 +52,7 @@ export default function HomePage() {
   const [loadingPosts, setLoadingPosts] = useState(true);
   const [postsError, setPostsError] = useState<string | null>(null);
   const postRefs = useRef<Map<string, HTMLDivElement>>(new Map());
+  const [showProfileSettings, setShowProfileSettings] = useState<{ userId: string; userName: string; isOnline: boolean } | null>(null);
 
   // Load all posts from database on component mount
   useEffect(() => {
@@ -486,7 +488,21 @@ export default function HomePage() {
                 </div>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-white font-semibold">{post.userName}</h3>
+                    <button
+                      onClick={() => {
+                        // Only allow editing own profile
+                        if (user && post.userId === user.id) {
+                          setShowProfileSettings({
+                            userId: post.userId,
+                            userName: post.userName,
+                            isOnline: post.userIsOnline || false
+                          });
+                        }
+                      }}
+                      className={`text-white font-semibold ${user && post.userId === user.id ? 'hover:text-amber-400 cursor-pointer transition-colors' : ''}`}
+                    >
+                      {post.userName}
+                    </button>
                     <span className={`text-xs font-semibold ${post.userIsOnline ? 'text-green-400' : 'text-red-400'}`}>
                       {post.userIsOnline ? '● Online' : '● Offline'}
                     </span>
@@ -663,6 +679,16 @@ export default function HomePage() {
         <InstagramCamera
           onClose={() => setShowCamera(false)}
           onVideoRecorded={handleVideoRecorded}
+        />
+      )}
+
+      {/* Profile Quick Settings Modal */}
+      {showProfileSettings && (
+        <ProfileQuickSettings
+          userId={showProfileSettings.userId}
+          userName={showProfileSettings.userName}
+          isOnline={showProfileSettings.isOnline}
+          onClose={() => setShowProfileSettings(null)}
         />
       )}
     </div>

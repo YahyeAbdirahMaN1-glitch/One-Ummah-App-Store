@@ -1,5 +1,5 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Home, Clock, MessageCircle, Users, Settings } from 'lucide-react';
+import { Home, Clock, MessageCircle, Users, Settings, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useEffect } from 'react';
 
@@ -41,12 +41,26 @@ export default function Layout() {
     { icon: Settings, label: 'Settings', path: '/settings' },
   ];
 
+  // Pages that shouldn't show back button (main nav pages)
+  const noBackButtonPages = ['/', '/prayer-times', '/messages', '/friends', '/settings'];
+  const showBackButton = !noBackButtonPages.includes(location.pathname);
+
   return (
     <div className="min-h-screen bg-black text-white pb-20">
       {/* Header */}
       <header className="bg-gradient-to-b from-black to-amber-950/20 border-b border-amber-900/30 sticky top-0 z-50 backdrop-blur-sm">
         <div className="max-w-2xl mx-auto px-4 py-4">
-          <h1 className="text-2xl font-bold text-amber-400">🕌 One Ummah</h1>
+          <div className="flex items-center gap-3">
+            {showBackButton && (
+              <button
+                onClick={() => navigate(-1)}
+                className="p-2 hover:bg-amber-900/20 rounded-full transition-colors"
+              >
+                <ArrowLeft className="w-5 h-5 text-amber-400" />
+              </button>
+            )}
+            <h1 className="text-2xl font-bold text-amber-400">🕌 One Ummah</h1>
+          </div>
         </div>
       </header>
 

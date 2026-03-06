@@ -1708,3 +1708,38 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 11:13:39 AM [vite] (client) hmr update /src/pages/PrivacySettingsPage.tsx, /src/index.css
 11:13:51 AM [vite] (client) hmr update /src/pages/PrivacySettingsPage.tsx, /src/index.css
 11:14:03 AM [vite] (client) hmr update /src/pages/PrivacySettingsPage.tsx, /src/index.css
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 734 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.9:4500/
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 732 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.4:4500/
+1:59:13 PM [vite] (client) hmr update /src/components/Layout.tsx, /src/index.css
+1:59:21 PM [vite] (client) hmr update /src/components/Layout.tsx, /src/index.css
+1:59:47 PM [vite] (client) hmr update /src/pages/PrivacyPolicyPage.tsx, /src/index.css
+2:00:16 PM [vite] (client) hmr update /src/pages/TermsOfServicePage.tsx, /src/index.css
+2:00:34 PM [vite] (client) hmr update /src/pages/ReportProblemPage.tsx, /src/index.css
+2:00:42 PM [vite] (client) hmr update /src/pages/ReportProblemPage.tsx, /src/index.css
+2:00:49 PM [vite] (client) hmr update /src/pages/ReportProblemPage.tsx, /src/index.css
+2:01:45 PM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+2:01:55 PM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+2:02:05 PM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+2:02:13 PM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 281 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.4:4500/
+2:02:33 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:5002
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+2:02:33 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:5002
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)

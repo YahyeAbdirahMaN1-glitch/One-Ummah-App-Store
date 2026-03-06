@@ -617,6 +617,34 @@ export const updatePrivacySettings = router.post(
   }
 );
 
+// Report Issue
+export const reportIssue = router.post(
+  "/reportIssue",
+  zValidator(
+    "json",
+    z.object({
+      userId: z.string(),
+      subject: z.string(),
+      description: z.string(),
+    })
+  ),
+  async (c) => {
+    const { userId, subject, description } = c.req.valid("json");
+
+    const issue = await prisma.issue.create({
+      data: {
+        id: generateId(),
+        userId,
+        subject,
+        description,
+        status: "PENDING",
+      },
+    });
+
+    return c.json({ success: true, issue });
+  }
+);
+
 // ==================== EXPORT ====================
 
 export default {
@@ -637,4 +665,5 @@ export default {
   markMessagesAsRead,
   updateOnlineStatus,
   updatePrivacySettings,
+  reportIssue,
 };
