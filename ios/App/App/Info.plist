@@ -52,5 +52,15 @@
 		<key>NSAllowsArbitraryLoads</key>
 		<true/>
 	</dict>
+	<key>NSCameraUsageDescription</key>
+	<string>One Ummah would like to access the camera to record and share videos with the Ummah community.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>One Ummah would like to access the microphone to record videos with audio.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>One Ummah would like to access your photo library to share images with the Ummah community.</string>
+	<key>NSPhotoLibraryAddUsageDescription</key>
+	<string>One Ummah would like to save photos and videos to your photo library.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>One Ummah would like to access your location to find nearby Muslims and suggest friends.</string>
 </dict>
 </plist>
