@@ -1036,3 +1036,4 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 Error: connect ECONNREFUSED 127.0.0.1:5002
     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
 1:09:25 AM [vite] (client) page reload ios/App/App/public/index.html
+1:32:40 AM [vite] (client) page reload ios/App/App/public/index.html
