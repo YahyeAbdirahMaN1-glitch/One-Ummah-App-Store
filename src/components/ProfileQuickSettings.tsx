@@ -37,8 +37,8 @@ export default function ProfileQuickSettings({ userId, userName, isOnline: initi
             ? 'You are now visible as ONLINE' 
             : 'You appear OFFLINE - others won\'t see you\'re active'
         );
-        // Refresh page to show updated status
-        setTimeout(() => window.location.reload(), 1000);
+        // Close modal after successful update (NO PAGE RELOAD)
+        setTimeout(() => onClose(), 500);
       } else {
         toast.error('Failed to update online status');
       }

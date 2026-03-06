@@ -573,6 +573,15 @@ export default function HomePage() {
                     preload="metadata"
                     webkit-playsinline="true"
                     className="w-full max-h-96 object-contain bg-black"
+                    onError={(e) => {
+                      console.error('[VIDEO ERROR] Post ID:', post.id);
+                      console.error('[VIDEO ERROR] Video URL length:', post.videoUrl?.length);
+                      console.error('[VIDEO ERROR] Video URL prefix:', post.videoUrl?.substring(0, 50));
+                      console.error('[VIDEO ERROR] Error:', e);
+                    }}
+                    onLoadedData={() => {
+                      console.log('[VIDEO SUCCESS] Loaded for post:', post.id);
+                    }}
                   />
                   {post.videoType && (
                     <div className="bg-black/50 px-3 py-1">
