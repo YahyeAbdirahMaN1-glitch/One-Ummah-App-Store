@@ -12,9 +12,10 @@ interface ProfileQuickSettingsProps {
   userName: string;
   isOnline: boolean;
   onClose: () => void;
+  onStatusChanged?: () => void;
 }
 
-export default function ProfileQuickSettings({ userId, userName, isOnline: initialOnlineStatus, onClose }: ProfileQuickSettingsProps) {
+export default function ProfileQuickSettings({ userId, userName, isOnline: initialOnlineStatus, onClose, onStatusChanged }: ProfileQuickSettingsProps) {
   const navigate = useNavigate();
   const [isOnline, setIsOnline] = useState(initialOnlineStatus);
   const [isToggling, setIsToggling] = useState(false);
@@ -37,7 +38,11 @@ export default function ProfileQuickSettings({ userId, userName, isOnline: initi
             ? 'You are now visible as ONLINE' 
             : 'You appear OFFLINE - others won\'t see you\'re active'
         );
-        // Close modal after successful update (NO PAGE RELOAD)
+        // Notify parent to refresh data
+        if (onStatusChanged) {
+          onStatusChanged();
+        }
+        // Close modal after successful update
         setTimeout(() => onClose(), 500);
       } else {
         toast.error('Failed to update online status');

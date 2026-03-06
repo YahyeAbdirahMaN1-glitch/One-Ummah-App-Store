@@ -150,6 +150,13 @@ export default function HomePage() {
 
     try {
       toast.loading('Creating post...');
+      
+      // Set user to online when posting (you can't post if you're offline!)
+      await CapacitorHttp.post({
+        url: `${API_URL}/updateOnlineStatus`,
+        headers: { 'Content-Type': 'application/json' },
+        data: { userId: user.id, isOnline: true },
+      });
 
       // Convert video to base64 if present
       let videoBase64: string | undefined;
@@ -748,6 +755,7 @@ export default function HomePage() {
           userName={showProfileSettings.userName}
           isOnline={showProfileSettings.isOnline}
           onClose={() => setShowProfileSettings(null)}
+          onStatusChanged={() => loadPosts()}
         />
       )}
 
