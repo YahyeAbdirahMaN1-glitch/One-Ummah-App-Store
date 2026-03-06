@@ -255,12 +255,12 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
         style={{ objectPosition: 'center center' }}
       />
 
-      {/* Header */}
-      <div className="absolute top-0 left-0 right-0 bg-gradient-to-b from-black/80 via-black/40 to-transparent pb-6 z-10">
-        <div className="flex justify-between items-center p-4">
+      {/* Header - Close and Flip buttons only */}
+      <div className="absolute top-0 left-0 right-0 z-10">
+        <div className="flex justify-between items-center p-4 bg-gradient-to-b from-black/90 to-transparent">
           <button
             onClick={onClose}
-            className="p-3 rounded-full bg-black/50 backdrop-blur-sm hover:bg-black/70 transition-all"
+            className="p-3 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/90 transition-all"
           >
             <X className="w-6 h-6 text-white" />
           </button>
@@ -268,32 +268,34 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
           <button
             onClick={flipCamera}
             disabled={isRecording}
-            className="p-3 rounded-full bg-black/50 backdrop-blur-sm hover:bg-black/70 transition-all disabled:opacity-50"
+            className="p-3 rounded-full bg-black/70 backdrop-blur-sm hover:bg-black/90 transition-all disabled:opacity-50"
           >
             <RotateCw className="w-6 h-6 text-white" />
           </button>
         </div>
+      </div>
 
-        {/* Littles / Length Selector - ULTRA CLEAR */}
-        {!isRecording && (
-          <div className="flex justify-center gap-6 mt-6 px-4">
+      {/* Littles / Length Selector - SEPARATE SOLID SECTION */}
+      {!isRecording && (
+        <div className="absolute top-20 left-0 right-0 z-20 bg-black/95 py-6 px-4 border-b-2 border-amber-500/30">
+          <div className="flex justify-center gap-4">
             {/* LITTLES BUTTON */}
             <button
               onClick={() => setVideoType('littles')}
-              className={`flex-1 max-w-[180px] py-4 px-6 rounded-2xl backdrop-blur-md transition-all duration-200 ${
+              className={`flex-1 max-w-[160px] py-5 px-4 rounded-2xl transition-all duration-200 ${
                 videoType === 'littles'
-                  ? 'bg-white text-black shadow-2xl shadow-white/70 scale-110 border-4 border-white'
-                  : 'bg-black/60 border-4 border-white/50 text-white hover:bg-black/40'
+                  ? 'bg-white text-black shadow-[0_0_30px_rgba(255,255,255,0.8)] scale-105 border-4 border-white'
+                  : 'bg-black border-4 border-white text-white hover:bg-gray-900'
               }`}
             >
-              <div className="flex flex-col items-center gap-1">
-                <span className={`font-black tracking-widest text-2xl ${
-                  videoType === 'littles' ? 'text-black' : 'text-white'
+              <div className="flex flex-col items-center gap-2">
+                <span className={`font-black text-3xl tracking-wider ${
+                  videoType === 'littles' ? 'text-black' : 'text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]'
                 }`}>
                   LITTLES
                 </span>
-                <span className={`text-xs font-bold ${
-                  videoType === 'littles' ? 'text-black/70' : 'text-white/70'
+                <span className={`text-sm font-bold tracking-wide ${
+                  videoType === 'littles' ? 'text-black' : 'text-white'
                 }`}>
                   3 MIN MAX
                 </span>
@@ -303,43 +305,43 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
             {/* LENGTH BUTTON */}
             <button
               onClick={() => setVideoType('length')}
-              className={`flex-1 max-w-[180px] py-4 px-6 rounded-2xl backdrop-blur-md transition-all duration-200 ${
+              className={`flex-1 max-w-[160px] py-5 px-4 rounded-2xl transition-all duration-200 ${
                 videoType === 'length'
-                  ? 'bg-green-400 text-black shadow-2xl shadow-green-400/70 scale-110 border-4 border-green-400'
-                  : 'bg-black/60 border-4 border-green-400/50 text-green-400 hover:bg-black/40'
+                  ? 'bg-green-400 text-black shadow-[0_0_30px_rgba(74,222,128,0.8)] scale-105 border-4 border-green-400'
+                  : 'bg-black border-4 border-green-400 text-green-400 hover:bg-gray-900'
               }`}
             >
-              <div className="flex flex-col items-center gap-1">
-                <span className={`font-black tracking-widest text-2xl ${
-                  videoType === 'length' ? 'text-black' : 'text-green-400'
+              <div className="flex flex-col items-center gap-2">
+                <span className={`font-black text-3xl tracking-wider ${
+                  videoType === 'length' ? 'text-black' : 'text-green-400 drop-shadow-[0_0_10px_rgba(74,222,128,0.8)]'
                 }`}>
                   LENGTH
                 </span>
-                <span className={`text-xs font-bold ${
-                  videoType === 'length' ? 'text-black/70' : 'text-green-400/70'
+                <span className={`text-sm font-bold tracking-wide ${
+                  videoType === 'length' ? 'text-black' : 'text-green-400'
                 }`}>
                   UNLIMITED
                 </span>
               </div>
             </button>
           </div>
-        )}
+        </div>
+      )}
 
-        {/* Recording Indicator */}
-        {isRecording && (
-          <div className="flex justify-center items-center gap-3 mt-4">
-            <div className="flex items-center gap-2 bg-red-600/90 backdrop-blur-sm px-4 py-2 rounded-full">
-              <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
-              <span className="text-white font-bold text-xl tracking-widest" style={{ textShadow: '0 0 10px rgba(255,255,255,0.5)' }}>
-                REC
-              </span>
-            </div>
+      {/* Recording Indicator */}
+      {isRecording && (
+        <div className="absolute top-24 left-0 right-0 flex justify-center z-20">
+          <div className="flex items-center gap-2 bg-red-600/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg">
+            <div className="w-4 h-4 bg-white rounded-full animate-pulse"></div>
+            <span className="text-white font-black text-2xl tracking-widest drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
+              REC
+            </span>
           </div>
-        )}
-      </div>
+        </div>
+      )}
 
       {/* Timer & Max Duration */}
-      <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+      <div className="absolute top-40 left-0 right-0 flex justify-center z-10">
         <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
           <p className="text-white text-2xl font-bold font-mono">
             {formatDuration(duration)} / {getMaxDuration()}

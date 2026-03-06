@@ -1204,3 +1204,424 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 4:40:28 AM [vite] (client) page reload ios/App/App/public/index.html
 4:42:48 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
 4:43:00 AM [vite] (client) page reload ios/App/App/public/index.html
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 287 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.3:4500/
+4:45:15 AM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:5002
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+4:45:16 AM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:5002
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+4:45:16 AM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:5002
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+4:46:31 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+4:46:31 AM [vite] Internal server error: /home/computer/one-ummah/src/components/InstagramCamera.tsx: Unexpected token, expected "," (395:6)
+
+  393 |       </div>
+  394 |
+> 395 |       {/* Timer & Max Duration */}
+      |       ^
+  396 |       <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |         <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+  398 |           <p className="text-white text-2xl font-bold font-mono">
+  Plugin: vite:react-babel
+  File: /home/computer/one-ummah/src/components/InstagramCamera.tsx:395:6
+  393 |        </div>
+  394 |  
+  395 |        {/* Timer & Max Duration */}
+      |        ^
+  396 |        <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |          <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+      at constructor (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:365:19)
+      at TypeScriptParserMixin.raise (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6619:16)
+      at TypeScriptParserMixin.expect (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6899:12)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11661:14)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11331:23)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9786:20)
+      at TypeScriptParserMixin.parseExpressionBase (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10784:23)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:39
+      at TypeScriptParserMixin.allowInAnd (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12421:16)
+      at TypeScriptParserMixin.parseExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:17)
+      at TypeScriptParserMixin.parseReturnStatement (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13142:28)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12798:21)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12100:24)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12086:10)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9172:18)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13445:12
+      at TypeScriptParserMixin.withSmartMixTopicForbiddingContext (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12403:14)
+      at TypeScriptParserMixin.parseFunction (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13444:10)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13907:19)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9402:18)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13828:25)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9385:20)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12878:27)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseModuleItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12744:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:36)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseProgram (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12622:10)
+      at TypeScriptParserMixin.parseTopLevel (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12612:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14488:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10126:18)
+      at parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14522:38)
+      at parser (/home/computer/one-ummah/node_modules/@babel/core/lib/parser/index.js:41:34)
+4:46:31 AM [vite] Internal server error: /home/computer/one-ummah/src/components/InstagramCamera.tsx: Unexpected token, expected "," (395:6)
+
+  393 |       </div>
+  394 |
+> 395 |       {/* Timer & Max Duration */}
+      |       ^
+  396 |       <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |         <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+  398 |           <p className="text-white text-2xl font-bold font-mono">
+  Plugin: vite:react-babel
+  File: /home/computer/one-ummah/src/components/InstagramCamera.tsx:395:6
+  393 |        </div>
+  394 |  
+  395 |        {/* Timer & Max Duration */}
+      |        ^
+  396 |        <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |          <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+      at constructor (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:365:19)
+      at TypeScriptParserMixin.raise (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6619:16)
+      at TypeScriptParserMixin.expect (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6899:12)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11661:14)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11331:23)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9786:20)
+      at TypeScriptParserMixin.parseExpressionBase (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10784:23)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:39
+      at TypeScriptParserMixin.allowInAnd (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12421:16)
+      at TypeScriptParserMixin.parseExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:17)
+      at TypeScriptParserMixin.parseReturnStatement (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13142:28)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12798:21)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12100:24)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12086:10)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9172:18)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13445:12
+      at TypeScriptParserMixin.withSmartMixTopicForbiddingContext (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12403:14)
+      at TypeScriptParserMixin.parseFunction (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13444:10)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13907:19)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9402:18)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13828:25)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9385:20)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12878:27)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseModuleItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12744:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:36)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseProgram (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12622:10)
+      at TypeScriptParserMixin.parseTopLevel (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12612:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14488:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10126:18)
+      at parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14522:38)
+      at parser (/home/computer/one-ummah/node_modules/@babel/core/lib/parser/index.js:41:34)
+4:46:31 AM [vite] Internal server error: /home/computer/one-ummah/src/components/InstagramCamera.tsx: Unexpected token, expected "," (395:6)
+
+  393 |       </div>
+  394 |
+> 395 |       {/* Timer & Max Duration */}
+      |       ^
+  396 |       <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |         <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+  398 |           <p className="text-white text-2xl font-bold font-mono">
+  Plugin: vite:react-babel
+  File: /home/computer/one-ummah/src/components/InstagramCamera.tsx:395:6
+  393 |        </div>
+  394 |  
+  395 |        {/* Timer & Max Duration */}
+      |        ^
+  396 |        <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |          <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+      at constructor (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:365:19)
+      at TypeScriptParserMixin.raise (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6619:16)
+      at TypeScriptParserMixin.expect (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6899:12)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11661:14)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11331:23)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9786:20)
+      at TypeScriptParserMixin.parseExpressionBase (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10784:23)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:39
+      at TypeScriptParserMixin.allowInAnd (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12421:16)
+      at TypeScriptParserMixin.parseExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:17)
+      at TypeScriptParserMixin.parseReturnStatement (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13142:28)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12798:21)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12100:24)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12086:10)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9172:18)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13445:12
+      at TypeScriptParserMixin.withSmartMixTopicForbiddingContext (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12403:14)
+      at TypeScriptParserMixin.parseFunction (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13444:10)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13907:19)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9402:18)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13828:25)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9385:20)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12878:27)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseModuleItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12744:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:36)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseProgram (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12622:10)
+      at TypeScriptParserMixin.parseTopLevel (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12612:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14488:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10126:18)
+      at parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14522:38)
+      at parser (/home/computer/one-ummah/node_modules/@babel/core/lib/parser/index.js:41:34)
+4:46:31 AM [vite] Internal server error: /home/computer/one-ummah/src/components/InstagramCamera.tsx: Unexpected token, expected "," (395:6)
+
+  393 |       </div>
+  394 |
+> 395 |       {/* Timer & Max Duration */}
+      |       ^
+  396 |       <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |         <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+  398 |           <p className="text-white text-2xl font-bold font-mono">
+  Plugin: vite:react-babel
+  File: /home/computer/one-ummah/src/components/InstagramCamera.tsx:395:6
+  393 |        </div>
+  394 |  
+  395 |        {/* Timer & Max Duration */}
+      |        ^
+  396 |        <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |          <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+      at constructor (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:365:19)
+      at TypeScriptParserMixin.raise (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6619:16)
+      at TypeScriptParserMixin.expect (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6899:12)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11661:14)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11331:23)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9786:20)
+      at TypeScriptParserMixin.parseExpressionBase (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10784:23)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:39
+      at TypeScriptParserMixin.allowInAnd (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12421:16)
+      at TypeScriptParserMixin.parseExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:17)
+      at TypeScriptParserMixin.parseReturnStatement (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13142:28)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12798:21)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12100:24)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12086:10)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9172:18)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13445:12
+      at TypeScriptParserMixin.withSmartMixTopicForbiddingContext (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12403:14)
+      at TypeScriptParserMixin.parseFunction (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13444:10)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13907:19)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9402:18)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13828:25)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9385:20)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12878:27)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseModuleItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12744:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:36)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseProgram (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12622:10)
+      at TypeScriptParserMixin.parseTopLevel (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12612:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14488:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10126:18)
+      at parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14522:38)
+      at parser (/home/computer/one-ummah/node_modules/@babel/core/lib/parser/index.js:41:34)
+4:46:31 AM [vite] Internal server error: /home/computer/one-ummah/src/components/InstagramCamera.tsx: Unexpected token, expected "," (395:6)
+
+  393 |       </div>
+  394 |
+> 395 |       {/* Timer & Max Duration */}
+      |       ^
+  396 |       <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |         <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+  398 |           <p className="text-white text-2xl font-bold font-mono">
+  Plugin: vite:react-babel
+  File: /home/computer/one-ummah/src/components/InstagramCamera.tsx:395:6
+  393 |        </div>
+  394 |  
+  395 |        {/* Timer & Max Duration */}
+      |        ^
+  396 |        <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |          <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+      at constructor (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:365:19)
+      at TypeScriptParserMixin.raise (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6619:16)
+      at TypeScriptParserMixin.expect (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6899:12)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11661:14)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11331:23)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9786:20)
+      at TypeScriptParserMixin.parseExpressionBase (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10784:23)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:39
+      at TypeScriptParserMixin.allowInAnd (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12421:16)
+      at TypeScriptParserMixin.parseExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:17)
+      at TypeScriptParserMixin.parseReturnStatement (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13142:28)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12798:21)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12100:24)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12086:10)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9172:18)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13445:12
+      at TypeScriptParserMixin.withSmartMixTopicForbiddingContext (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12403:14)
+      at TypeScriptParserMixin.parseFunction (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13444:10)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13907:19)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9402:18)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13828:25)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9385:20)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12878:27)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseModuleItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12744:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:36)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseProgram (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12622:10)
+      at TypeScriptParserMixin.parseTopLevel (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12612:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14488:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10126:18)
+      at parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14522:38)
+      at parser (/home/computer/one-ummah/node_modules/@babel/core/lib/parser/index.js:41:34)
+4:46:31 AM [vite] Internal server error: /home/computer/one-ummah/src/components/InstagramCamera.tsx: Unexpected token, expected "," (395:6)
+
+  393 |       </div>
+  394 |
+> 395 |       {/* Timer & Max Duration */}
+      |       ^
+  396 |       <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |         <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+  398 |           <p className="text-white text-2xl font-bold font-mono">
+  Plugin: vite:react-babel
+  File: /home/computer/one-ummah/src/components/InstagramCamera.tsx:395:6
+  393 |        </div>
+  394 |  
+  395 |        {/* Timer & Max Duration */}
+      |        ^
+  396 |        <div className="absolute top-32 left-0 right-0 flex justify-center z-10">
+  397 |          <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
+      at constructor (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:365:19)
+      at TypeScriptParserMixin.raise (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6599:19)
+      at TypeScriptParserMixin.unexpected (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6619:16)
+      at TypeScriptParserMixin.expect (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:6899:12)
+      at TypeScriptParserMixin.parseParenAndDistinguishExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11661:14)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11331:23)
+      at TypeScriptParserMixin.parseExprAtom (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:4764:20)
+      at TypeScriptParserMixin.parseExprSubscripts (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11081:23)
+      at TypeScriptParserMixin.parseUpdate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11066:21)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:11046:23)
+      at TypeScriptParserMixin.parseMaybeUnary (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9837:18)
+      at TypeScriptParserMixin.parseMaybeUnaryOrPrivate (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10899:61)
+      at TypeScriptParserMixin.parseExprOps (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10904:23)
+      at TypeScriptParserMixin.parseMaybeConditional (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10881:23)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10831:21)
+      at TypeScriptParserMixin.parseMaybeAssign (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9786:20)
+      at TypeScriptParserMixin.parseExpressionBase (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10784:23)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:39
+      at TypeScriptParserMixin.allowInAnd (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12421:16)
+      at TypeScriptParserMixin.parseExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10780:17)
+      at TypeScriptParserMixin.parseReturnStatement (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13142:28)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12798:21)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseStatementListItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12747:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:61)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseBlock (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13297:10)
+      at TypeScriptParserMixin.parseFunctionBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12100:24)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12086:10)
+      at TypeScriptParserMixin.parseFunctionBodyAndFinish (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9172:18)
+      at /home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13445:12
+      at TypeScriptParserMixin.withSmartMixTopicForbiddingContext (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12403:14)
+      at TypeScriptParserMixin.parseFunction (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13444:10)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13907:19)
+      at TypeScriptParserMixin.parseExportDefaultExpression (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9402:18)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13828:25)
+      at TypeScriptParserMixin.parseExport (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9385:20)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12878:27)
+      at TypeScriptParserMixin.parseStatementContent (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:9508:18)
+      at TypeScriptParserMixin.parseStatementLike (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12767:17)
+      at TypeScriptParserMixin.parseModuleItem (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12744:17)
+      at TypeScriptParserMixin.parseBlockOrModuleBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13316:36)
+      at TypeScriptParserMixin.parseBlockBody (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:13309:10)
+      at TypeScriptParserMixin.parseProgram (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12622:10)
+      at TypeScriptParserMixin.parseTopLevel (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:12612:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14488:25)
+      at TypeScriptParserMixin.parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:10126:18)
+      at parse (/home/computer/one-ummah/node_modules/@babel/parser/lib/index.js:14522:38)
+      at parser (/home/computer/one-ummah/node_modules/@babel/core/lib/parser/index.js:41:34)
+4:47:04 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+4:47:14 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+4:47:26 AM [vite] (client) page reload ios/App/App/public/index.html

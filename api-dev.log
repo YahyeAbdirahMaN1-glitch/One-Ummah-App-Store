@@ -397,3 +397,14 @@ Running generate... (Use --skip-generate to skip the generators)
 c🚀 API Server running on http://localhost:5002
 4:38:43 AM [tsx] change in ./src/api/procedures.ts Restarting...
 c🚀 API Server running on http://localhost:5002
+Prisma schema loaded from schema.prisma
+Datasource "db": SQLite database "development.db" at "file:./development.db"
+
+Already in sync, no schema change or pending migration was found.
+
+Running generate... (Use --skip-generate to skip the generators)
+[2K[1A[2K[GRunning generate... - Prisma Client
+[2K[1A[2K[G✔ Generated Prisma Client (v6.19.2) to ./generated in 224ms
+
+
+🚀 API Server running on http://localhost:5002
