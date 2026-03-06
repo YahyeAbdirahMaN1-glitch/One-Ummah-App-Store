@@ -417,33 +417,38 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
         </div>
       </div>
 
+      {/* Recording Controls - Moved Higher */}
+      {isRecording && !recordedBlob && (
+        <div className="absolute bottom-32 left-0 right-0 flex justify-center items-center gap-6 px-4" style={{ zIndex: 50 }}>
+          <button
+            onClick={startOver}
+            className="bg-black/70 backdrop-blur-lg px-5 py-2.5 rounded-2xl border border-white/40 hover:bg-black/85 transition-all shadow-lg hover:shadow-xl"
+          >
+            <span className="text-white font-light text-sm italic tracking-wide drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]">
+              ↻ start over
+            </span>
+          </button>
+
+          <button
+            onClick={stopRecording}
+            className="bg-red-600/90 backdrop-blur-lg px-6 py-2.5 rounded-2xl hover:bg-red-700 transition-all shadow-lg hover:shadow-xl border border-red-400/30"
+          >
+            <span className="text-white font-medium text-base tracking-[0.15em] drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]">
+              ■ STOP
+            </span>
+          </button>
+        </div>
+      )}
+
       {/* Bottom Controls */}
       <div className="absolute bottom-8 left-0 right-0 px-4" style={{ zIndex: 50 }}>
-        {/* Recording State - Start Over + Stop buttons */}
-        {isRecording && !recordedBlob && (
-          <div className="flex justify-center items-center gap-8">
-            <button
-              onClick={startOver}
-              className="bg-black/80 backdrop-blur-md px-8 py-4 rounded-full border-3 border-white hover:bg-black/90 transition-all shadow-2xl"
-            >
-              <span className="text-white font-bold text-xl tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Start Over</span>
-            </button>
-
-            <button
-              onClick={stopRecording}
-              className="bg-red-600 px-10 py-5 rounded-full hover:bg-red-700 transition-all scale-110 shadow-2xl shadow-red-900/50"
-            >
-              <span className="text-white font-black text-2xl tracking-widest drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">STOP</span>
-            </button>
-          </div>
-        )}
 
         {/* Preview State - Discard + Post buttons */}
         {recordedBlob && (
           <div className="flex justify-center items-center gap-6">
             <button
               onClick={discardVideo}
-              className="bg-gray-800 backdrop-blur-md px-10 py-5 rounded-full border-3 border-gray-300 hover:bg-gray-700 transition-all shadow-2xl"
+              className="bg-gray-800 backdrop-blur-md px-10 py-5 rounded-full border-2 border-gray-300 hover:bg-gray-700 transition-all shadow-2xl"
             >
               <span className="text-white font-black text-2xl tracking-wide drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">DISCARD</span>
             </button>
