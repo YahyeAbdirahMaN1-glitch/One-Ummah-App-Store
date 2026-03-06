@@ -274,37 +274,53 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
           </button>
         </div>
 
-        {/* Littles / Length Selector */}
+        {/* Littles / Length Selector - ULTRA CLEAR */}
         {!isRecording && (
-          <div className="flex justify-center gap-4 mt-4">
+          <div className="flex justify-center gap-6 mt-6 px-4">
+            {/* LITTLES BUTTON */}
             <button
               onClick={() => setVideoType('littles')}
-              className={`px-8 py-3 rounded-full backdrop-blur-sm transition-all ${
+              className={`flex-1 max-w-[180px] py-4 px-6 rounded-2xl backdrop-blur-md transition-all duration-200 ${
                 videoType === 'littles'
-                  ? 'bg-white text-black shadow-xl shadow-white/50 scale-105'
-                  : 'bg-black/40 border-2 border-white/40 text-white/60'
+                  ? 'bg-white text-black shadow-2xl shadow-white/70 scale-110 border-4 border-white'
+                  : 'bg-black/60 border-4 border-white/50 text-white hover:bg-black/40'
               }`}
             >
-              <span className={`font-extrabold tracking-wide text-lg ${
-                videoType === 'littles' ? 'text-black' : 'text-white/70'
-              }`}>
-                LITTLES
-              </span>
+              <div className="flex flex-col items-center gap-1">
+                <span className={`font-black tracking-widest text-2xl ${
+                  videoType === 'littles' ? 'text-black' : 'text-white'
+                }`}>
+                  LITTLES
+                </span>
+                <span className={`text-xs font-bold ${
+                  videoType === 'littles' ? 'text-black/70' : 'text-white/70'
+                }`}>
+                  3 MIN MAX
+                </span>
+              </div>
             </button>
 
+            {/* LENGTH BUTTON */}
             <button
               onClick={() => setVideoType('length')}
-              className={`px-8 py-3 rounded-full backdrop-blur-sm transition-all ${
+              className={`flex-1 max-w-[180px] py-4 px-6 rounded-2xl backdrop-blur-md transition-all duration-200 ${
                 videoType === 'length'
-                  ? 'bg-green-400 text-black shadow-xl shadow-green-400/50 scale-105'
-                  : 'bg-black/40 border-2 border-green-300/40 text-green-300/60'
+                  ? 'bg-green-400 text-black shadow-2xl shadow-green-400/70 scale-110 border-4 border-green-400'
+                  : 'bg-black/60 border-4 border-green-400/50 text-green-400 hover:bg-black/40'
               }`}
             >
-              <span className={`font-extrabold tracking-wide text-lg ${
-                videoType === 'length' ? 'text-black' : 'text-green-300/70'
-              }`}>
-                LENGTH
-              </span>
+              <div className="flex flex-col items-center gap-1">
+                <span className={`font-black tracking-widest text-2xl ${
+                  videoType === 'length' ? 'text-black' : 'text-green-400'
+                }`}>
+                  LENGTH
+                </span>
+                <span className={`text-xs font-bold ${
+                  videoType === 'length' ? 'text-black/70' : 'text-green-400/70'
+                }`}>
+                  UNLIMITED
+                </span>
+              </div>
             </button>
           </div>
         )}
