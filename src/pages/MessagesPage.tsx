@@ -35,20 +35,7 @@ export default function MessagesPage() {
   // Use message notifications hook
   useMessageNotifications(messageNotificationsEnabled);
 
-  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
-    {
-      id: '1',
-      text: 'Assalamu Alaikum! How are you?',
-      sender: 'them',
-      timestamp: new Date(Date.now() - 1000 * 60 * 10),
-    },
-    {
-      id: '2',
-      text: 'Wa Alaikum Assalam! Alhamdulillah, doing well!',
-      sender: 'me',
-      timestamp: new Date(Date.now() - 1000 * 60 * 5),
-    },
-  ]);
+  const [chatMessages, setChatMessages] = useState<ChatMessage[]>([]);
 
   const filteredMessages = messages.filter(msg =>
     msg.userName.toLowerCase().includes(searchQuery.toLowerCase())
