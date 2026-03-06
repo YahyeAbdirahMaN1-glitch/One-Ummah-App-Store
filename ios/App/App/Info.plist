@@ -61,6 +61,8 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>One Ummah would like to save photos and videos to your photo library.</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>One Ummah would like to access your location to find nearby Muslims and suggest friends.</string>
+	<string>One Ummah needs your location to provide accurate prayer times and suggest nearby friends in the Muslim community.</string>
+	<key>NSUserNotificationsUsageDescription</key>
+	<string>One Ummah would like to send you prayer time reminders so you never miss a prayer.</string>
 </dict>
 </plist>

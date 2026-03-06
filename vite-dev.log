@@ -2513,3 +2513,4 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 5:07:00 PM [vite] (client) hmr update /src/pages/PrayerTimesPage.tsx, /src/index.css
 5:07:10 PM [vite] (client) hmr update /src/pages/PrayerTimesPage.tsx, /src/index.css
 5:07:31 PM [vite] (client) page reload ios/App/App/public/index.html
+5:18:03 PM [vite] (client) page reload ios/App/App/public/index.html
