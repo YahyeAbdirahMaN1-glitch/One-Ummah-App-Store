@@ -399,9 +399,9 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       {/* Recording Indicator */}
       {isRecording && (
         <div className="absolute top-24 left-0 right-0 flex justify-center z-20">
-          <div className="flex items-center gap-2 bg-red-600/90 backdrop-blur-sm px-6 py-3 rounded-full shadow-lg">
-            <div className="w-4 h-4 bg-white rounded-full animate-pulse"></div>
-            <span className="text-white font-black text-2xl tracking-widest drop-shadow-[0_0_10px_rgba(255,255,255,0.8)]">
+          <div className="flex items-center gap-3 bg-red-600 backdrop-blur-md px-8 py-4 rounded-full shadow-2xl shadow-red-900/50 border-2 border-white/30">
+            <div className="w-5 h-5 bg-white rounded-full animate-pulse shadow-lg"></div>
+            <span className="text-white font-black text-3xl tracking-widest drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]">
               REC
             </span>
           </div>
@@ -410,8 +410,8 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
 
       {/* Timer & Max Duration */}
       <div className="absolute top-40 left-0 right-0 flex justify-center z-10">
-        <div className="bg-black/50 backdrop-blur-sm px-6 py-3 rounded-full">
-          <p className="text-white text-2xl font-bold font-mono">
+        <div className="bg-black/80 backdrop-blur-md px-8 py-4 rounded-full shadow-2xl border-2 border-white/20">
+          <p className="text-white text-3xl font-black font-mono tracking-wider drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
             {formatDuration(duration)} / {getMaxDuration()}
           </p>
         </div>
@@ -424,16 +424,16 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
           <div className="flex justify-center items-center gap-8">
             <button
               onClick={startOver}
-              className="bg-white/20 backdrop-blur-sm px-6 py-3 rounded-full border-2 border-white/30 hover:bg-white/30 transition-all"
+              className="bg-black/80 backdrop-blur-md px-8 py-4 rounded-full border-3 border-white hover:bg-black/90 transition-all shadow-2xl"
             >
-              <span className="text-white font-semibold">Start Over</span>
+              <span className="text-white font-bold text-xl tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">Start Over</span>
             </button>
 
             <button
               onClick={stopRecording}
-              className="bg-red-600 px-8 py-4 rounded-full hover:bg-red-700 transition-all scale-110"
+              className="bg-red-600 px-10 py-5 rounded-full hover:bg-red-700 transition-all scale-110 shadow-2xl shadow-red-900/50"
             >
-              <span className="text-white font-bold text-lg">STOP</span>
+              <span className="text-white font-black text-2xl tracking-widest drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">STOP</span>
             </button>
           </div>
         )}
@@ -443,16 +443,16 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
           <div className="flex justify-center items-center gap-6">
             <button
               onClick={discardVideo}
-              className="bg-gray-700/90 backdrop-blur-sm px-8 py-4 rounded-full border-2 border-gray-500 hover:bg-gray-600 transition-all"
+              className="bg-gray-800 backdrop-blur-md px-10 py-5 rounded-full border-3 border-gray-300 hover:bg-gray-700 transition-all shadow-2xl"
             >
-              <span className="text-white font-bold text-lg">DISCARD</span>
+              <span className="text-white font-black text-2xl tracking-wide drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">DISCARD</span>
             </button>
 
             <button
               onClick={postVideo}
-              className="bg-gradient-to-r from-amber-500 to-amber-600 px-12 py-4 rounded-full hover:from-amber-600 hover:to-amber-700 transition-all shadow-lg shadow-amber-500/50 scale-105"
+              className="bg-gradient-to-r from-amber-500 to-amber-600 px-14 py-5 rounded-full hover:from-amber-600 hover:to-amber-700 transition-all shadow-2xl shadow-amber-500/60 scale-110"
             >
-              <span className="text-white font-bold text-lg">POST</span>
+              <span className="text-white font-black text-2xl tracking-widest drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">POST</span>
             </button>
           </div>
         )}
