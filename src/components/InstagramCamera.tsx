@@ -289,24 +289,27 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
   }
 
   return (
-    <div className="fixed inset-0 bg-black z-[9999] overflow-hidden">
-      {/* Video Preview - z-index 0 (lowest, behind buttons) */}
+    <div className="fixed inset-0 bg-black z-[9999] overflow-hidden" style={{ width: '100vw', height: '100vh' }}>
+      {/* Video Preview - Must be visible */}
       <video
         ref={videoRef}
         autoPlay
         playsInline
         muted
-        className={`absolute inset-0 w-full h-full object-cover z-0 ${cameraFacing === 'user' ? 'scale-x-[-1]' : ''}`}
+        className={`absolute inset-0 w-full h-full object-cover ${cameraFacing === 'user' ? 'scale-x-[-1]' : ''}`}
         style={{ 
           objectPosition: 'center center',
           width: '100vw',
           height: '100vh',
           backgroundColor: '#000',
+          zIndex: 1,
+          display: 'block',
+          opacity: 1,
         }}
       />
 
       {/* Header - Close and Flip buttons only */}
-      <div className="absolute top-0 left-0 right-0 z-10">
+      <div className="absolute top-0 left-0 right-0" style={{ zIndex: 50 }}>
         <div className="flex justify-between items-center p-4 bg-gradient-to-b from-black/90 to-transparent">
           <button
             onClick={onClose}
@@ -327,7 +330,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
 
       {/* Littles / Length Selector - SEPARATE SOLID SECTION */}
       {!isRecording && (
-        <div className="absolute top-20 left-0 right-0 z-20 bg-black/95 py-6 px-4 border-b-2 border-amber-500/30">
+        <div className="absolute top-20 left-0 right-0 bg-black/95 py-6 px-4 border-b-2 border-amber-500/30" style={{ zIndex: 50 }}>
           <div className="flex justify-center gap-4">
             {/* LITTLES BUTTON */}
             <button
@@ -400,7 +403,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       </div>
 
       {/* Bottom Controls */}
-      <div className="absolute bottom-8 left-0 right-0 flex justify-center items-center gap-8 z-10">
+      <div className="absolute bottom-8 left-0 right-0 flex justify-center items-center gap-8" style={{ zIndex: 50 }}>
         {/* Start Over Button */}
         {isRecording && (
           <button
