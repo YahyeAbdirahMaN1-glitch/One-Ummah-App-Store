@@ -448,39 +448,39 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
         </>
       )}
 
+      {/* Preview State - Positioned Higher (Same as Recording Controls) */}
+      {recordedBlob && (
+        <div className="absolute bottom-32 left-0 right-0 flex justify-center items-center gap-4 px-4" style={{ zIndex: 50 }}>
+          {/* Discard - Instagram style */}
+          <button
+            onClick={discardVideo}
+            className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-6 py-3 rounded-full border border-white/50 hover:border-white hover:bg-black/70 transition-all shadow-xl"
+          >
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+            <span className="text-white font-semibold text-base tracking-tight drop-shadow-lg">
+              Discard
+            </span>
+          </button>
+
+          {/* Post - One Ummah Gold Gradient (Instagram inspired) */}
+          <button
+            onClick={postVideo}
+            className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:via-amber-700 hover:to-yellow-600 px-8 py-3 rounded-full shadow-2xl shadow-amber-500/50 hover:shadow-amber-500/70 border border-amber-300/40 transition-all scale-105 hover:scale-110"
+          >
+            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+            <span className="text-white font-bold text-lg tracking-wide drop-shadow-lg">
+              Post
+            </span>
+          </button>
+        </div>
+      )}
+
       {/* Bottom Controls */}
       <div className="absolute bottom-8 left-0 right-0 px-4" style={{ zIndex: 50 }}>
-
-        {/* Preview State - Instagram Style with One Ummah Gold */}
-        {recordedBlob && (
-          <div className="flex justify-center items-center gap-4">
-            {/* Discard - Instagram style */}
-            <button
-              onClick={discardVideo}
-              className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-6 py-3 rounded-full border border-white/50 hover:border-white hover:bg-black/70 transition-all shadow-xl"
-            >
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-              <span className="text-white font-semibold text-base tracking-tight drop-shadow-lg">
-                Discard
-              </span>
-            </button>
-
-            {/* Post - One Ummah Gold Gradient (Instagram inspired) */}
-            <button
-              onClick={postVideo}
-              className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:via-amber-700 hover:to-yellow-600 px-8 py-3 rounded-full shadow-2xl shadow-amber-500/50 hover:shadow-amber-500/70 border border-amber-300/40 transition-all scale-105 hover:scale-110"
-            >
-              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              <span className="text-white font-bold text-lg tracking-wide drop-shadow-lg">
-                Post
-              </span>
-            </button>
-          </div>
-        )}
 
         {/* Initial State - Instagram Record Button with Gold Accent */}
         {!isRecording && !recordedBlob && (
