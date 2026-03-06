@@ -1,6 +1,6 @@
 import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
-import { Settings } from 'lucide-react';
+import { Settings, FileText, Shield, AlertCircle, ChevronRight } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
@@ -23,11 +23,48 @@ export default function SettingsPage() {
           Settings
         </h2>
 
-        <div className="space-y-4">
+        <div className="space-y-3">
+          {/* Privacy Policy */}
+          <button
+            onClick={() => navigate('/privacy-policy')}
+            className="w-full flex items-center justify-between p-4 bg-black/30 hover:bg-black/50 border border-amber-900/20 hover:border-amber-800/40 rounded-lg transition-all"
+          >
+            <div className="flex items-center gap-3">
+              <Shield className="w-5 h-5 text-amber-400" />
+              <span className="text-white font-medium">Privacy Policy</span>
+            </div>
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </button>
+
+          {/* Terms of Service */}
+          <button
+            onClick={() => navigate('/terms-of-service')}
+            className="w-full flex items-center justify-between p-4 bg-black/30 hover:bg-black/50 border border-amber-900/20 hover:border-amber-800/40 rounded-lg transition-all"
+          >
+            <div className="flex items-center gap-3">
+              <FileText className="w-5 h-5 text-amber-400" />
+              <span className="text-white font-medium">Terms of Service</span>
+            </div>
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </button>
+
+          {/* Report a Problem */}
+          <button
+            onClick={() => navigate('/report-problem')}
+            className="w-full flex items-center justify-between p-4 bg-black/30 hover:bg-black/50 border border-amber-900/20 hover:border-amber-800/40 rounded-lg transition-all"
+          >
+            <div className="flex items-center gap-3">
+              <AlertCircle className="w-5 h-5 text-amber-400" />
+              <span className="text-white font-medium">Report a Problem</span>
+            </div>
+            <ChevronRight className="w-5 h-5 text-gray-400" />
+          </button>
+
+          {/* Logout */}
           <Button
             onClick={handleLogout}
             variant="destructive"
-            className="w-full"
+            className="w-full mt-6"
           >
             Logout
           </Button>

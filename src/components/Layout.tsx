@@ -1,5 +1,5 @@
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Home, MessageCircle, Users, Settings } from 'lucide-react';
+import { Home, Clock, MessageCircle, Users, Settings } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useEffect } from 'react';
 
@@ -35,6 +35,7 @@ export default function Layout() {
 
   const navItems = [
     { icon: Home, label: 'Home', path: '/' },
+    { icon: Clock, label: 'Prayer Times', path: '/prayer-times' },
     { icon: MessageCircle, label: 'Messages', path: '/messages' },
     { icon: Users, label: 'Friends', path: '/friends' },
     { icon: Settings, label: 'Settings', path: '/settings' },
