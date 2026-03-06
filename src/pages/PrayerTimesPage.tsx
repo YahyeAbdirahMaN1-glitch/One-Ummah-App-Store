@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, Play, Pause, MapPin, Volume2, ArrowLeft, Bell, BellOff } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
+import { Search, MapPin, Bell, BellOff } from 'lucide-react';
 import { Card } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
@@ -12,94 +11,13 @@ interface PrayerTime {
   time: string;
 }
 
-interface AdhanReciter {
-  id: string;
-  name: string;
-  location: string;
-  country: string;
-  region: string;
-  audioFile: string;
-}
-
-const ADHAN_RECITERS: AdhanReciter[] = [
-  {
-    id: '1',
-    name: 'Mishary Rashid Alafasy',
-    location: 'Kuwait City',
-    country: 'Kuwait',
-    region: 'Gulf',
-    audioFile: '/adhans/mishary-alafasy.mp3',
-  },
-  {
-    id: '2',
-    name: 'Abdul Basit Abdul Samad',
-    location: 'Cairo',
-    country: 'Egypt',
-    region: 'Middle East',
-    audioFile: '/adhans/abdul-basit.mp3',
-  },
-  {
-    id: '3',
-    name: 'Ali Ahmed Mulla',
-    location: 'Mecca',
-    country: 'Saudi Arabia',
-    region: 'Hejaz',
-    audioFile: '/adhans/ali-ahmed-mulla.mp3',
-  },
-  {
-    id: '4',
-    name: 'Essam Bukhari',
-    location: 'Medina',
-    country: 'Saudi Arabia',
-    region: 'Hejaz',
-    audioFile: '/adhans/essam-bukhari.mp3',
-  },
-  {
-    id: '5',
-    name: 'Nasser Al-Qatami',
-    location: 'Riyadh',
-    country: 'Saudi Arabia',
-    region: 'Najd',
-    audioFile: '/adhans/nasser-alqatami.mp3',
-  },
-  {
-    id: '6',
-    name: 'Hafiz Mustafa Ozcan',
-    location: 'Istanbul',
-    country: 'Turkey',
-    region: 'Anatolia',
-    audioFile: '/adhans/hafiz-mustafa-ozcan.mp3',
-  },
-  {
-    id: '7',
-    name: 'Muammar Za',
-    location: 'Jakarta',
-    country: 'Indonesia',
-    region: 'Southeast Asia',
-    audioFile: '/adhans/muammar-za.mp3',
-  },
-  {
-    id: '8',
-    name: 'Muhammad Siddiq Al-Minshawi',
-    location: 'Alexandria',
-    country: 'Egypt',
-    region: 'North Africa',
-    audioFile: '/adhans/muhammad-siddiq.mp3',
-  },
-];
-
 export default function PrayerTimesPage() {
-  const navigate = useNavigate();
   const { permission, requestPermission, sendPrayerNotification } = useNotifications();
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
   const [loading, setLoading] = useState(false);
-  const [selectedReciter, setSelectedReciter] = useState<string | null>(null);
-  const [playingReciter, setPlayingReciter] = useState<string | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const audioRef = useRef<HTMLAudioElement | null>(null);
   const notificationTimersRef = useRef<NodeJS.Timeout[]>([]);
 
   const fetchPrayerTimes = async () => {
@@ -129,294 +47,151 @@ export default function PrayerTimesPage() {
         { name: 'Isha', time: timings.Isha },
       ]);
 
-      toast.success('Prayer times loaded successfully');
+      toast.success(`Prayer times loaded for ${city}, ${country}`);
     } catch (error) {
-      toast.error('Failed to load prayer times');
-      console.error(error);
+      console.error('Error fetching prayer times:', error);
+      toast.error('Failed to load prayer times. Please try again.');
     } finally {
       setLoading(false);
     }
   };
 
-  const toggleAdhanAudio = async (reciter: AdhanReciter) => {
-    try {
-      console.log('[iOS Adhan] Toggle audio for:', reciter.name);
-      console.log('[iOS Adhan] Audio file path:', reciter.audioFile);
-      
-      // If currently playing this reciter, pause
-      if (playingReciter === reciter.id && audioRef.current) {
-        console.log('[iOS Adhan] Pausing current audio');
-        audioRef.current.pause();
-        setPlayingReciter(null);
+  const toggleNotifications = async () => {
+    if (!notificationsEnabled) {
+      // Request permission first
+      const granted = await requestPermission();
+      if (!granted) {
+        toast.error('Notification permission denied');
         return;
       }
 
-      // If playing different reciter, stop it first
-      if (audioRef.current) {
-        console.log('[iOS Adhan] Stopping previous audio');
-        audioRef.current.pause();
-        audioRef.current = null;
+      if (prayerTimes.length === 0) {
+        toast.error('Please fetch prayer times first');
+        return;
       }
 
-      // Create new audio element with iOS-specific attributes
-      const audio = document.createElement('audio');
-      audio.setAttribute('playsinline', '');
-      audio.setAttribute('webkit-playsinline', '');
-      audio.setAttribute('preload', 'auto');
-      audio.crossOrigin = 'anonymous';
-      
-      audioRef.current = audio;
-      
-      console.log('[iOS Adhan] Created audio element with iOS attributes');
-      
-      // Set source
-      audio.src = reciter.audioFile;
-      console.log('[iOS Adhan] Audio src set to:', audio.src);
-
-      // Setup event handlers
-      audio.addEventListener('loadstart', () => {
-        console.log('[iOS Adhan] Audio loading started');
-      });
-
-      audio.addEventListener('loadeddata', () => {
-        console.log('[iOS Adhan] Audio data loaded');
-      });
-
-      audio.addEventListener('canplay', () => {
-        console.log('[iOS Adhan] Audio can play');
-      });
-
-      audio.addEventListener('ended', () => {
-        console.log('[iOS Adhan] Audio playback ended');
-        setPlayingReciter(null);
-        audioRef.current = null;
-      });
-
-      audio.addEventListener('error', (e) => {
-        const target = e.target as HTMLAudioElement;
-        console.error('[iOS Adhan] Audio error event:', {
-          error: target.error,
-          code: target.error?.code,
-          message: target.error?.message,
-          networkState: target.networkState,
-          readyState: target.readyState,
-          src: target.src
-        });
-        
-        setPlayingReciter(null);
-        audioRef.current = null;
-        
-        let errorMsg = 'Failed to load Adhan audio. ';
-        if (target.error?.code === 4) {
-          errorMsg += 'Audio format not supported on this device.';
-        } else if (target.error?.code === 2) {
-          errorMsg += 'Network error. Please check your internet connection.';
-        } else if (target.error?.code === 3) {
-          errorMsg += 'Audio file corrupted.';
-        } else {
-          errorMsg += 'Please try again.';
-        }
-        
-        toast.error(errorMsg);
-      });
-
-      // Try to load and play
-      try {
-        console.log('[iOS Adhan] Starting playback...');
-        setPlayingReciter(reciter.id);
-        
-        // Load the audio first
-        audio.load();
-        
-        // Wait a bit for iOS to process
-        await new Promise(resolve => setTimeout(resolve, 100));
-        
-        // Try to play
-        await audio.play();
-        console.log('[iOS Adhan] Playback started successfully');
-        toast.success(`Playing ${reciter.name}`);
-      } catch (playError: any) {
-        console.error('[iOS Adhan] Play error:', {
-          name: playError.name,
-          message: playError.message,
-          stack: playError.stack
-        });
-        
-        setPlayingReciter(null);
-        audioRef.current = null;
-        
-        if (playError.name === 'NotAllowedError') {
-          toast.error('Please tap the play button again to start audio (browser requires user interaction)');
-        } else if (playError.name === 'AbortError') {
-          toast.error('Playback interrupted. Please try again.');
-        } else if (playError.name === 'NotSupportedError') {
-          toast.error('Audio format not supported on your device.');
-        } else {
-          toast.error(`Failed to play Adhan: ${playError.message}`);
-        }
-      }
-    } catch (error: any) {
-      console.error('[iOS Adhan] General error:', error);
-      setPlayingReciter(null);
-      audioRef.current = null;
-      toast.error('An error occurred. Please try again.');
+      // Schedule notifications
+      schedulePrayerNotifications();
+      setNotificationsEnabled(true);
+      toast.success('Prayer notifications enabled');
+    } else {
+      // Clear all timers
+      notificationTimersRef.current.forEach(clearTimeout);
+      notificationTimersRef.current = [];
+      setNotificationsEnabled(false);
+      toast.success('Prayer notifications disabled');
     }
+  };
+
+  const schedulePrayerNotifications = () => {
+    // Clear existing timers
+    notificationTimersRef.current.forEach(clearTimeout);
+    notificationTimersRef.current = [];
+
+    const now = new Date();
+    const currentTime = now.getHours() * 60 + now.getMinutes();
+
+    prayerTimes.forEach((prayer) => {
+      const [hours, minutes] = prayer.time.split(':').map(Number);
+      const prayerMinutes = hours * 60 + minutes;
+
+      // Schedule notification 5 minutes before
+      const minutesUntilReminder = prayerMinutes - currentTime - 5;
+      if (minutesUntilReminder > 0) {
+        const timeout = setTimeout(() => {
+          sendPrayerNotification(
+            `${prayer.name} in 5 minutes`,
+            `${prayer.name} prayer time is in 5 minutes (${prayer.time})`
+          );
+        }, minutesUntilReminder * 60 * 1000);
+        notificationTimersRef.current.push(timeout);
+      }
+
+      // Schedule notification at prayer time
+      const minutesUntilPrayer = prayerMinutes - currentTime;
+      if (minutesUntilPrayer > 0) {
+        const timeout = setTimeout(() => {
+          sendPrayerNotification(
+            `Time for ${prayer.name}`,
+            `It's time for ${prayer.name} prayer (${prayer.time})`
+          );
+        }, minutesUntilPrayer * 60 * 1000);
+        notificationTimersRef.current.push(timeout);
+      }
+    });
   };
 
   useEffect(() => {
     return () => {
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-      // Clear all notification timers
-      notificationTimersRef.current.forEach(timer => clearTimeout(timer));
+      notificationTimersRef.current.forEach(clearTimeout);
     };
   }, []);
 
-  const schedulePrayerNotifications = () => {
-    // Clear existing timers
-    notificationTimersRef.current.forEach(timer => clearTimeout(timer));
-    notificationTimersRef.current = [];
-
-    if (!notificationsEnabled || prayerTimes.length === 0) return;
-
-    const now = new Date();
-    
-    prayerTimes.forEach(prayer => {
-      // Parse prayer time (format: "HH:MM")
-      const [hours, minutes] = prayer.time.split(':').map(Number);
-      const prayerDate = new Date();
-      prayerDate.setHours(hours, minutes, 0, 0);
-
-      // Calculate milliseconds until prayer time
-      let msUntilPrayer = prayerDate.getTime() - now.getTime();
-
-      // If prayer time has passed today, skip it
-      if (msUntilPrayer < 0) return;
-
-      // Schedule notification 5 minutes before prayer
-      const msUntilNotification = msUntilPrayer - (5 * 60 * 1000);
-      
-      if (msUntilNotification > 0) {
-        const timer = setTimeout(() => {
-          sendPrayerNotification(prayer.name, prayer.time);
-          toast.info(`${prayer.name} prayer in 5 minutes! 🕌`);
-        }, msUntilNotification);
-        
-        notificationTimersRef.current.push(timer);
-      }
-
-      // Schedule notification at exact prayer time
-      if (msUntilPrayer > 0) {
-        const timer = setTimeout(() => {
-          sendPrayerNotification(prayer.name, prayer.time);
-          toast.success(`It's time for ${prayer.name} prayer! 🕌`);
-          
-          // Auto-play selected reciter if available
-          if (selectedReciter) {
-            const reciter = ADHAN_RECITERS.find(r => r.id === selectedReciter);
-            if (reciter) {
-              toggleAdhanAudio(reciter);
-            }
-          }
-        }, msUntilPrayer);
-        
-        notificationTimersRef.current.push(timer);
-      }
-    });
-
-    toast.success(`Prayer notifications scheduled for ${prayerTimes.length} prayers today! 🔔`);
-  };
-
-  const toggleNotifications = async () => {
-    if (!notificationsEnabled) {
-      // Request permission and enable
-      const granted = await requestPermission();
-      if (granted) {
-        setNotificationsEnabled(true);
-        // Schedule notifications after enabling
-        setTimeout(schedulePrayerNotifications, 100);
-      }
-    } else {
-      // Disable notifications
-      setNotificationsEnabled(false);
-      notificationTimersRef.current.forEach(timer => clearTimeout(timer));
-      notificationTimersRef.current = [];
-      toast.info('Prayer notifications disabled');
-    }
-  };
-
-  // Re-schedule notifications when prayer times change
-  useEffect(() => {
-    if (notificationsEnabled && prayerTimes.length > 0) {
-      schedulePrayerNotifications();
-    }
-  }, [prayerTimes, notificationsEnabled, selectedReciter]);
-
-  const filteredReciters = ADHAN_RECITERS.filter((reciter) =>
-    reciter.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    reciter.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    reciter.country.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
   return (
-    <div className="space-y-6 pb-8">
-      <button
-        onClick={() => navigate(-1)}
-        className="mb-4 flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors"
-      >
-        <ArrowLeft className="w-5 h-5" />
-        <span>Back</span>
-      </button>
-      
-      <Card className="bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-6">
-        <h2 className="text-2xl font-bold text-amber-400 mb-4 flex items-center gap-2">
-          <MapPin className="w-6 h-6" />
-          Prayer Times
-        </h2>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-white py-6 px-4 shadow-lg">
+        <h1 className="text-3xl font-bold text-center">Prayer Times</h1>
+        <p className="text-center text-amber-100 mt-2">Find prayer times for your location</p>
+      </div>
 
-        <div className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <Input
-              type="text"
-              placeholder="City"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-              className="bg-black/50 border-amber-900/30 text-white placeholder:text-gray-500"
-            />
-            <Input
-              type="text"
-              placeholder="Country"
-              value={country}
-              onChange={(e) => setCountry(e.target.value)}
-              className="bg-black/50 border-amber-900/30 text-white placeholder:text-gray-500"
-            />
+      {/* Main Content */}
+      <div className="max-w-4xl mx-auto p-4 space-y-6">
+        {/* Search Section */}
+        <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-amber-500/20 p-6">
+          <div className="space-y-4">
+            <div className="flex items-center gap-2 text-amber-400 mb-4">
+              <MapPin className="w-5 h-5" />
+              <h2 className="text-xl font-semibold">Location</h2>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="text-sm text-gray-400 mb-1 block">City</label>
+                <Input
+                  placeholder="e.g., London"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  className="bg-gray-900/50 border-gray-700 text-white"
+                  onKeyDown={(e) => e.key === 'Enter' && fetchPrayerTimes()}
+                />
+              </div>
+              <div>
+                <label className="text-sm text-gray-400 mb-1 block">Country</label>
+                <Input
+                  placeholder="e.g., United Kingdom"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  className="bg-gray-900/50 border-gray-700 text-white"
+                  onKeyDown={(e) => e.key === 'Enter' && fetchPrayerTimes()}
+                />
+              </div>
+            </div>
+
+            <Button
+              onClick={fetchPrayerTimes}
+              disabled={loading}
+              className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-700 hover:to-amber-600 text-white"
+            >
+              <Search className="w-4 h-4 mr-2" />
+              {loading ? 'Loading...' : 'Get Prayer Times'}
+            </Button>
           </div>
+        </Card>
 
-          <Button
-            onClick={fetchPrayerTimes}
-            disabled={loading}
-            className="w-full bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white"
-          >
-            <Search className="w-4 h-4 mr-2" />
-            {loading ? 'Loading...' : 'Get Prayer Times'}
-          </Button>
-        </div>
-
+        {/* Prayer Times Display */}
         {prayerTimes.length > 0 && (
-          <div className="mt-6 space-y-3">
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-amber-300">Today's Prayer Times</h3>
+          <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-amber-500/20 p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-amber-400">Today's Prayer Times</h2>
               <Button
                 onClick={toggleNotifications}
                 variant="outline"
-                size="sm"
                 className={`${
                   notificationsEnabled
-                    ? 'bg-amber-500/20 border-amber-500 text-amber-400'
-                    : 'bg-black/30 border-amber-900/30 text-gray-400'
-                } hover:bg-amber-500/30`}
+                    ? 'bg-amber-500 text-white border-amber-500'
+                    : 'bg-gray-800 text-gray-300 border-gray-700'
+                } hover:bg-amber-600`}
               >
                 {notificationsEnabled ? (
                   <>
@@ -426,76 +201,39 @@ export default function PrayerTimesPage() {
                 ) : (
                   <>
                     <BellOff className="w-4 h-4 mr-2" />
-                    Enable Notifications
+                    Notifications Off
                   </>
                 )}
               </Button>
             </div>
-            {prayerTimes.map((prayer) => (
-              <div
-                key={prayer.name}
-                className="flex justify-between items-center bg-black/30 border border-amber-900/20 rounded-lg p-4"
-              >
-                <span className="text-white font-medium">{prayer.name}</span>
-                <span className="text-amber-400 font-bold text-lg">{prayer.time}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </Card>
 
-      <Card className="bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-6">
-        <h2 className="text-2xl font-bold text-amber-400 mb-4 flex items-center gap-2">
-          <Volume2 className="w-6 h-6" />
-          Adhan Reciters
-        </h2>
-
-        <Input
-          type="text"
-          placeholder="Search reciters..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          className="bg-black/50 border-amber-900/30 text-white placeholder:text-gray-500 mb-4"
-        />
-
-        <div className="space-y-3">
-          {filteredReciters.map((reciter) => (
-            <div
-              key={reciter.id}
-              className={`bg-black/30 border rounded-lg p-4 transition-all ${
-                selectedReciter === reciter.id
-                  ? 'border-amber-500/50 bg-amber-950/20'
-                  : 'border-amber-900/20 hover:border-amber-800/40'
-              }`}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex-1">
-                  <h3 className="text-white font-semibold text-lg">{reciter.name}</h3>
-                  <p className="text-amber-400/80 text-sm mt-1">
-                    {reciter.location}, {reciter.country}
-                  </p>
-                  <p className="text-gray-500 text-xs mt-1">{reciter.region}</p>
-                </div>
-
-                <button
-                  onClick={() => toggleAdhanAudio(reciter)}
-                  className={`ml-4 p-3 rounded-full transition-all ${
-                    playingReciter === reciter.id
-                      ? 'bg-amber-500 hover:bg-amber-600'
-                      : 'bg-amber-900/30 hover:bg-amber-800/40 border border-amber-800/50'
-                  }`}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {prayerTimes.map((prayer) => (
+                <div
+                  key={prayer.name}
+                  className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 rounded-xl p-4 border border-amber-500/20 hover:border-amber-500/40 transition-all"
                 >
-                  {playingReciter === reciter.id ? (
-                    <Pause className="w-5 h-5 text-white" />
-                  ) : (
-                    <Play className="w-5 h-5 text-amber-400" />
-                  )}
-                </button>
-              </div>
+                  <div className="text-center">
+                    <h3 className="text-lg font-semibold text-amber-300 mb-2">{prayer.name}</h3>
+                    <p className="text-3xl font-bold text-white">{prayer.time}</p>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </Card>
+
+            <div className="mt-6 p-4 bg-gray-900/50 rounded-lg border border-gray-700">
+              <p className="text-sm text-gray-400 text-center">
+                Prayer times for <span className="text-amber-400 font-semibold">{city}, {country}</span>
+              </p>
+              {notificationsEnabled && (
+                <p className="text-xs text-green-400 text-center mt-2">
+                  ✓ You'll be notified 5 minutes before each prayer and at prayer time
+                </p>
+              )}
+            </div>
+          </Card>
+        )}
+      </div>
     </div>
   );
 }
