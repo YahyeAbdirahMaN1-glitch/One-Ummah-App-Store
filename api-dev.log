@@ -393,3 +393,7 @@ Running generate... (Use --skip-generate to skip the generators)
 
 
 🚀 API Server running on http://localhost:5002
+4:38:38 AM [tsx] change in ./src/api/procedures.ts Restarting...
+c🚀 API Server running on http://localhost:5002
+4:38:43 AM [tsx] change in ./src/api/procedures.ts Restarting...
+c🚀 API Server running on http://localhost:5002

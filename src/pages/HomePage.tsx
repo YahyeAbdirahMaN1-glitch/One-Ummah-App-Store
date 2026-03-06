@@ -24,6 +24,7 @@ interface Post {
   userId: string;
   userName: string;
   userImage?: string;
+  userIsOnline?: boolean;
   content: string;
   videoUrl?: string;
   videoType?: 'littles' | 'length';
@@ -68,6 +69,7 @@ export default function HomePage() {
           userId: post.userId,
           userName: post.user?.name || 'Anonymous',
           userImage: post.user?.profilePicture || undefined,
+          userIsOnline: post.user?.isOnline || false,
           content: post.content,
           videoUrl: post.videoUrls || undefined,
           videoType: post.videoType as 'littles' | 'length' | undefined,
@@ -396,19 +398,30 @@ export default function HomePage() {
 
               {/* User Profile Section */}
               <div className="flex items-center gap-3 mb-4 pb-3 border-b border-amber-900/30">
-                {post.userImage ? (
-                  <img
-                    src={post.userImage}
-                    alt={post.userName}
-                    className="w-12 h-12 rounded-full border-2 border-amber-500 object-cover"
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center border-2 border-amber-500">
-                    <User className="w-6 h-6 text-white" />
-                  </div>
-                )}
+                <div className="relative">
+                  {post.userImage ? (
+                    <img
+                      src={post.userImage}
+                      alt={post.userName}
+                      className="w-12 h-12 rounded-full border-2 border-amber-500 object-cover"
+                    />
+                  ) : (
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center border-2 border-amber-500">
+                      <User className="w-6 h-6 text-white" />
+                    </div>
+                  )}
+                  {/* Online/Offline Indicator */}
+                  <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black ${
+                    post.userIsOnline ? 'bg-green-400' : 'bg-red-500'
+                  }`} />
+                </div>
                 <div className="flex-1">
-                  <h3 className="text-white font-semibold">{post.userName}</h3>
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-white font-semibold">{post.userName}</h3>
+                    <span className={`text-xs font-semibold ${post.userIsOnline ? 'text-green-400' : 'text-red-400'}`}>
+                      {post.userIsOnline ? '● Online' : '● Offline'}
+                    </span>
+                  </div>
                   <p className="text-gray-400 text-sm">
                     {post.createdAt.toLocaleDateString()} at {post.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                   </p>

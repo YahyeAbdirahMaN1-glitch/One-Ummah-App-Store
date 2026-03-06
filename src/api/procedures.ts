@@ -411,6 +411,181 @@ export const getRecentMessages = router.post(
   }
 );
 
+// Get Conversations (list of people you've messaged)
+export const getConversations = router.post(
+  "/getConversations",
+  zValidator(
+    "json",
+    z.object({
+      userId: z.string(),
+    })
+  ),
+  async (c) => {
+    const { userId } = c.req.valid("json");
+
+    // Get all unique conversations
+    const messages = await prisma.message.findMany({
+      where: {
+        OR: [
+          { senderId: userId },
+          { receiverId: userId },
+        ],
+      },
+      include: {
+        sender: true,
+        receiver: true,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    // Group by conversation partner
+    const conversationsMap = new Map();
+    
+    messages.forEach(msg => {
+      const partnerId = msg.senderId === userId ? msg.receiverId : msg.senderId;
+      const partner = msg.senderId === userId ? msg.receiver : msg.sender;
+      
+      if (!conversationsMap.has(partnerId)) {
+        const unreadCount = messages.filter(m => 
+          m.senderId === partnerId && 
+          m.receiverId === userId && 
+          !m.readAt
+        ).length;
+        
+        conversationsMap.set(partnerId, {
+          userId: partnerId,
+          userName: partner.name || 'Anonymous',
+          userImage: partner.profilePicture || null,
+          isOnline: partner.isOnline || false,
+          lastMessage: msg.content,
+          timestamp: msg.createdAt,
+          unread: unreadCount,
+        });
+      }
+    });
+
+    const conversations = Array.from(conversationsMap.values());
+    
+    return c.json({ conversations });
+  }
+);
+
+// Get Chat Messages (conversation with specific user)
+export const getChatMessages = router.post(
+  "/getChatMessages",
+  zValidator(
+    "json",
+    z.object({
+      userId: z.string(),
+      partnerId: z.string(),
+    })
+  ),
+  async (c) => {
+    const { userId, partnerId } = c.req.valid("json");
+
+    const messages = await prisma.message.findMany({
+      where: {
+        OR: [
+          { senderId: userId, receiverId: partnerId },
+          { senderId: partnerId, receiverId: userId },
+        ],
+      },
+      include: {
+        sender: true,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    return c.json({ messages });
+  }
+);
+
+// Send Message
+export const sendMessage = router.post(
+  "/sendMessage",
+  zValidator(
+    "json",
+    z.object({
+      senderId: z.string(),
+      receiverId: z.string(),
+      content: z.string(),
+    })
+  ),
+  async (c) => {
+    const { senderId, receiverId, content } = c.req.valid("json");
+
+    const message = await prisma.message.create({
+      data: {
+        id: generateId(),
+        senderId,
+        receiverId,
+        content,
+      },
+      include: {
+        sender: true,
+        receiver: true,
+      },
+    });
+
+    return c.json({ message });
+  }
+);
+
+// Mark Messages as Read (with notification option)
+export const markMessagesAsRead = router.post(
+  "/markMessagesAsRead",
+  zValidator(
+    "json",
+    z.object({
+      userId: z.string(),
+      partnerId: z.string(),
+      withoutNotifying: z.boolean().optional(),
+    })
+  ),
+  async (c) => {
+    const { userId, partnerId, withoutNotifying = false } = c.req.valid("json");
+
+    await prisma.message.updateMany({
+      where: {
+        senderId: partnerId,
+        receiverId: userId,
+        readAt: null,
+      },
+      data: {
+        readAt: new Date(),
+        openedWithoutNotifying: withoutNotifying,
+      },
+    });
+
+    return c.json({ success: true });
+  }
+);
+
+// Update Online Status
+export const updateOnlineStatus = router.post(
+  "/updateOnlineStatus",
+  zValidator(
+    "json",
+    z.object({
+      userId: z.string(),
+      isOnline: z.boolean(),
+    })
+  ),
+  async (c) => {
+    const { userId, isOnline } = c.req.valid("json");
+
+    await prisma.user.update({
+      where: { id: userId },
+      data: {
+        isOnline,
+        lastSeen: new Date(),
+      },
+    });
+
+    return c.json({ success: true });
+  }
+);
+
 // ==================== EXPORT ====================
 
 export default {
@@ -425,4 +600,9 @@ export default {
   getComments,
   getUnreadMessagesCount,
   getRecentMessages,
+  getConversations,
+  getChatMessages,
+  sendMessage,
+  markMessagesAsRead,
+  updateOnlineStatus,
 };
