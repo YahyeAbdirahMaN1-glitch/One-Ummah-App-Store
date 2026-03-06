@@ -144,23 +144,41 @@ Next steps:
 **Version:** 1.0  
 **Build Number:** Auto-generated timestamp (always unique)  
 **Backend:** https://one-ummah-yahyeabdirahman1526404989.on.adaptive.ai/rpc  
-**Last Commit:** c45ac377 - "Back button + notification fixes"  
+**Last Commit:** 8286d990 - "Camera timer + video posting fixes"  
 
 ---
 
-## Latest Fixes (March 6, 2026 - 3:58 PM)
+## Latest Fixes (March 6, 2026 - 4:20 PM - FINAL)
 
-✅ **Back Button Fixed:**
-- Back button no longer appears on main navigation pages (Home, Prayer Times, Messages, Friends, Settings)
-- Back button hidden on login/signup/profile-setup pages
-- Only appears on detail pages (post details, user profiles, etc.)
+✅ **Back Button Fixed (3:58 PM):**
+- Back button no longer appears on main navigation pages
+- Hidden on login/signup/profile-setup pages
+- Only appears on detail pages
 
-✅ **Notification Button Improved:**
-- Added comprehensive debug logging (check Safari Console for errors)
-- Added test notification when permission granted (confirms it works immediately)
-- Better error messages for iOS-specific issues
-- Shows helpful Settings path if permission denied
-- Added check for Notification API support before requesting permission
+✅ **Notification Button Improved (3:58 PM):**
+- Added comprehensive debug logging
+- Test notification when permission granted
+- Better iOS-specific error messages
+- Shows Settings path if permission denied
+
+✅ **Camera Timer Made HUGE (4:20 PM):**
+- Timer now CENTERED at top (not in corner)
+- Font size: 2xl (huge, easy to see)
+- Shows current AND max time (e.g., "0:15 / 0:30")
+- Red pulsing badge with white glow
+
+✅ **Video Posting Fixed (4:20 PM):**
+- "Use Video" button now BIGGER and IMPOSSIBLE to miss
+- Added pulsing animation to Use Video button
+- Shows file size when video recorded
+- Added empty blob validation (prevents silent failures)
+- Comprehensive debug logging for entire flow
+- Success toast when video ready to post
+
+✅ **All Camera Buttons Working (4:20 PM):**
+- Record, Stop, Retake, Use Video, Close, Flip all tested
+- Added error alerts if video fails to record
+- Better visual feedback at every step
 
 ---
 
