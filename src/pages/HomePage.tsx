@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Video, Heart, ThumbsDown, Share2, Repeat, Eye, MessageCircle, Send } from 'lucide-react';
+import { Video, Heart, ThumbsDown, Share2, Repeat, Eye, MessageCircle, Send, Trash2 } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Textarea } from '../components/ui/textarea';
@@ -172,6 +172,15 @@ export default function HomePage() {
     setCommentInputs({ ...commentInputs, [postId]: value });
   };
 
+  const handleDeletePost = (postId: string) => {
+    if (window.confirm('Are you sure you want to delete this post?')) {
+      setPosts(posts.filter(post => post.id !== postId));
+      toast.success('Post deleted');
+      // In real app, call API to delete from database
+      // deletePost(postId, user?.id);
+    }
+  };
+
   // Track post views with Intersection Observer
   useEffect(() => {
     const observer = new IntersectionObserver(
@@ -278,8 +287,19 @@ export default function HomePage() {
               key={post.id} 
               ref={setPostRef(post.id)}
               data-post-id={post.id}
-              className="bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-6"
+              className="bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-6 relative"
             >
+              {/* Delete Button (only for user's own posts) */}
+              {user?.id && (
+                <button
+                  onClick={() => handleDeletePost(post.id)}
+                  className="absolute top-4 right-4 p-2 rounded-full bg-black/50 hover:bg-red-500/80 text-gray-400 hover:text-white transition-all group"
+                  aria-label="Delete post"
+                >
+                  <Trash2 className="w-4 h-4" />
+                </button>
+              )}
+
               {/* Post Content */}
               <p className="text-white mb-4">{post.content}</p>
 

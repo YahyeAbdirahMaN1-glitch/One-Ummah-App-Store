@@ -269,31 +269,31 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
           <div className="flex justify-center gap-4 mt-4">
             <button
               onClick={() => setVideoType('littles')}
-              className={`px-6 py-2 rounded-full backdrop-blur-sm transition-all ${
+              className={`px-8 py-3 rounded-full backdrop-blur-sm transition-all ${
                 videoType === 'littles'
-                  ? 'bg-white/20 border-2 border-white shadow-lg shadow-white/20'
-                  : 'bg-black/30 border border-white/30'
+                  ? 'bg-white text-black shadow-xl shadow-white/50 scale-105'
+                  : 'bg-black/40 border-2 border-white/40 text-white/60'
               }`}
             >
-              <span className={`font-bold tracking-wider ${
-                videoType === 'littles' ? 'text-white text-lg' : 'text-gray-400 text-base'
-              }`} style={{ fontFamily: 'cursive' }}>
-                Littles
+              <span className={`font-extrabold tracking-wide text-lg ${
+                videoType === 'littles' ? 'text-black' : 'text-white/70'
+              }`}>
+                LITTLES
               </span>
             </button>
 
             <button
               onClick={() => setVideoType('length')}
-              className={`px-6 py-2 rounded-full backdrop-blur-sm transition-all ${
+              className={`px-8 py-3 rounded-full backdrop-blur-sm transition-all ${
                 videoType === 'length'
-                  ? 'bg-green-400/20 border-2 border-green-300 shadow-lg shadow-green-300/20'
-                  : 'bg-black/30 border border-green-300/30'
+                  ? 'bg-green-400 text-black shadow-xl shadow-green-400/50 scale-105'
+                  : 'bg-black/40 border-2 border-green-300/40 text-green-300/60'
               }`}
             >
-              <span className={`font-bold tracking-wider ${
-                videoType === 'length' ? 'text-green-300 text-lg' : 'text-gray-400 text-base'
-              }`} style={{ fontFamily: 'cursive' }}>
-                Length
+              <span className={`font-extrabold tracking-wide text-lg ${
+                videoType === 'length' ? 'text-black' : 'text-green-300/70'
+              }`}>
+                LENGTH
               </span>
             </button>
           </div>
