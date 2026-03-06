@@ -144,7 +144,25 @@ Next steps:
 **Version:** 1.0  
 **Build Number:** Auto-generated timestamp (always unique)  
 **Backend:** https://one-ummah-yahyeabdirahman1526404989.on.adaptive.ai/rpc  
-**Last Commit:** a21e314b - "Re-enable auto-upload to TestFlight"  
+**Last Commit:** c45ac377 - "Back button + notification fixes"  
+
+---
+
+## Latest Fixes (March 6, 2026 - 3:58 PM)
+
+✅ **Back Button Fixed:**
+- Back button no longer appears on main navigation pages (Home, Prayer Times, Messages, Friends, Settings)
+- Back button hidden on login/signup/profile-setup pages
+- Only appears on detail pages (post details, user profiles, etc.)
+
+✅ **Notification Button Improved:**
+- Added comprehensive debug logging (check Safari Console for errors)
+- Added test notification when permission granted (confirms it works immediately)
+- Better error messages for iOS-specific issues
+- Shows helpful Settings path if permission denied
+- Added check for Notification API support before requesting permission
+
+---
 
 **Everything is ready to go!** Just needs 24 hours for Apple's counter to reset.
 
