@@ -140,8 +140,12 @@ export default function PrayerTimesPage() {
 
   const toggleAdhanAudio = async (reciter: AdhanReciter) => {
     try {
+      console.log('[iOS Adhan] Toggle audio for:', reciter.name);
+      console.log('[iOS Adhan] Audio file path:', reciter.audioFile);
+      
       // If currently playing this reciter, pause
       if (playingReciter === reciter.id && audioRef.current) {
+        console.log('[iOS Adhan] Pausing current audio');
         audioRef.current.pause();
         setPlayingReciter(null);
         return;
@@ -149,6 +153,7 @@ export default function PrayerTimesPage() {
 
       // If playing different reciter, stop it first
       if (audioRef.current) {
+        console.log('[iOS Adhan] Stopping previous audio');
         audioRef.current.pause();
         audioRef.current = null;
       }
@@ -157,46 +162,101 @@ export default function PrayerTimesPage() {
       const audio = document.createElement('audio');
       audio.setAttribute('playsinline', '');
       audio.setAttribute('webkit-playsinline', '');
-      audio.preload = 'auto';
+      audio.setAttribute('preload', 'auto');
+      audio.crossOrigin = 'anonymous';
       
       audioRef.current = audio;
       
+      console.log('[iOS Adhan] Created audio element with iOS attributes');
+      
       // Set source
       audio.src = reciter.audioFile;
+      console.log('[iOS Adhan] Audio src set to:', audio.src);
 
       // Setup event handlers
+      audio.addEventListener('loadstart', () => {
+        console.log('[iOS Adhan] Audio loading started');
+      });
+
+      audio.addEventListener('loadeddata', () => {
+        console.log('[iOS Adhan] Audio data loaded');
+      });
+
+      audio.addEventListener('canplay', () => {
+        console.log('[iOS Adhan] Audio can play');
+      });
+
       audio.addEventListener('ended', () => {
+        console.log('[iOS Adhan] Audio playback ended');
         setPlayingReciter(null);
         audioRef.current = null;
       });
 
       audio.addEventListener('error', (e) => {
-        console.error('Audio error:', e);
+        const target = e.target as HTMLAudioElement;
+        console.error('[iOS Adhan] Audio error event:', {
+          error: target.error,
+          code: target.error?.code,
+          message: target.error?.message,
+          networkState: target.networkState,
+          readyState: target.readyState,
+          src: target.src
+        });
+        
         setPlayingReciter(null);
         audioRef.current = null;
-        toast.error('Failed to load Adhan audio. Please check your internet connection.');
+        
+        let errorMsg = 'Failed to load Adhan audio. ';
+        if (target.error?.code === 4) {
+          errorMsg += 'Audio format not supported on this device.';
+        } else if (target.error?.code === 2) {
+          errorMsg += 'Network error. Please check your internet connection.';
+        } else if (target.error?.code === 3) {
+          errorMsg += 'Audio file corrupted.';
+        } else {
+          errorMsg += 'Please try again.';
+        }
+        
+        toast.error(errorMsg);
       });
 
-      // Try to play
+      // Try to load and play
       try {
+        console.log('[iOS Adhan] Starting playback...');
         setPlayingReciter(reciter.id);
+        
+        // Load the audio first
+        audio.load();
+        
+        // Wait a bit for iOS to process
+        await new Promise(resolve => setTimeout(resolve, 100));
+        
+        // Try to play
         await audio.play();
+        console.log('[iOS Adhan] Playback started successfully');
         toast.success(`Playing ${reciter.name}`);
       } catch (playError: any) {
-        console.error('Play error:', playError);
+        console.error('[iOS Adhan] Play error:', {
+          name: playError.name,
+          message: playError.message,
+          stack: playError.stack
+        });
+        
         setPlayingReciter(null);
         audioRef.current = null;
         
         if (playError.name === 'NotAllowedError') {
-          toast.error('Please tap the play button again to start audio (browser security requirement)');
+          toast.error('Please tap the play button again to start audio (browser requires user interaction)');
         } else if (playError.name === 'AbortError') {
           toast.error('Playback interrupted. Please try again.');
+        } else if (playError.name === 'NotSupportedError') {
+          toast.error('Audio format not supported on your device.');
         } else {
-          toast.error('Failed to play Adhan. Please try again.');
+          toast.error(`Failed to play Adhan: ${playError.message}`);
         }
       }
     } catch (error: any) {
-      console.error('Adhan playback error:', error);
+      console.error('[iOS Adhan] General error:', error);
       setPlayingReciter(null);
       audioRef.current = null;
       toast.error('An error occurred. Please try again.');

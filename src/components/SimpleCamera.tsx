@@ -66,6 +66,14 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
     try {
       stopCamera();
       
+      console.log('[iOS Camera] Requesting camera access...');
+      console.log('[iOS Camera] Facing:', cameraFacing);
+      
+      // Check if getUserMedia is available
+      if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+        throw new Error('Camera API not supported. Please update your browser.');
+      }
+      
       const stream = await navigator.mediaDevices.getUserMedia({
         video: {
           facingMode: cameraFacing,
@@ -75,26 +83,48 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
         audio: true,
       });
       
+      console.log('[iOS Camera] Camera stream obtained');
       streamRef.current = stream;
       
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        
+        // Wait for video to load metadata before playing
+        await new Promise((resolve, reject) => {
+          if (!videoRef.current) return reject('Video ref lost');
+          
+          videoRef.current.onloadedmetadata = () => {
+            console.log('[iOS Camera] Video metadata loaded');
+            resolve(true);
+          };
+          
+          videoRef.current.onerror = () => {
+            reject('Video element error');
+          };
+          
+          // Timeout after 5 seconds
+          setTimeout(() => reject('Timeout waiting for video'), 5000);
+        });
+        
         await videoRef.current.play();
+        console.log('[iOS Camera] Camera started successfully');
       }
       
       setIsLoadingCamera(false);
     } catch (err: any) {
-      console.error('Camera error:', err);
+      console.error('[iOS Camera] Error:', err);
       let errorMessage = 'Failed to access camera';
       
       if (err.name === 'NotAllowedError') {
-        errorMessage = 'Camera access denied. Please allow camera and microphone permissions.';
+        errorMessage = 'Camera access denied. Please:\n1. Tap Settings on your iPhone\n2. Find this app (One Ummah)\n3. Enable Camera and Microphone permissions\n4. Return and try again';
       } else if (err.name === 'NotFoundError') {
         errorMessage = 'No camera found on this device.';
       } else if (err.name === 'NotReadableError') {
-        errorMessage = 'Camera is already in use by another application.';
+        errorMessage = 'Camera is already in use. Please close other apps using the camera and try again.';
+      } else if (err === 'Timeout waiting for video') {
+        errorMessage = 'Camera is taking too long to start. Please check your internet connection and try again.';
       } else {
-        errorMessage = err.message || 'Unknown camera error';
+        errorMessage = err.message || 'Unknown camera error. Please try restarting the app.';
       }
       
       setError(errorMessage);
@@ -114,28 +144,78 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
   };
 
   const startRecording = async () => {
+    if (mode === 'PHOTO') {
+      // For photo mode, use Capacitor Camera API (iOS native)
+      try {
+        console.log('[iOS Camera] Using Capacitor Camera.getPhoto()');
+        const result = await Camera.getPhoto({
+          quality: 90,
+          allowEditing: false,
+          resultType: CameraResultType.Uri,
+          source: CameraSource.Camera,
+        });
+
+        if (result.webPath) {
+          console.log('[iOS Camera] Photo captured:', result.webPath);
+          const response = await fetch(result.webPath);
+          const blob = await response.blob();
+          
+          if (onPhotoTaken) {
+            onPhotoTaken(blob);
+            onClose();
+          }
+        }
+      } catch (err) {
+        console.error('[iOS Camera] Photo capture error:', err);
+        alert('Failed to capture photo: ' + (err as Error).message);
+      }
+      return;
+    }
+
+    // For video mode, use MediaRecorder (web API)
+    if (!streamRef.current) {
+      alert('Camera not ready. Please wait for camera to start.');
+      return;
+    }
+
     try {
-      // Use Capacitor Camera for iOS compatibility
-      const result = await Camera.getPhoto({
-        quality: 90,
-        allowEditing: false,
-        resultType: CameraResultType.Uri,
-        source: CameraSource.Camera,
+      console.log('[iOS Camera] Starting video recording...');
+      chunksRef.current = [];
+      setDuration(0);
+
+      const mediaRecorder = new MediaRecorder(streamRef.current, {
+        mimeType: 'video/webm;codecs=vp8,opus',
       });
 
-      if (result.webPath) {
-        // Convert to blob
-        const response = await fetch(result.webPath);
-        const blob = await response.blob();
-        
-        if (onPhotoTaken) {
-          onPhotoTaken(blob);
-          onClose();
+      mediaRecorderRef.current = mediaRecorder;
+
+      mediaRecorder.ondataavailable = (event) => {
+        if (event.data.size > 0) {
+          chunksRef.current.push(event.data);
         }
-      }
+      };
+
+      mediaRecorder.onstop = () => {
+        console.log('[iOS Camera] Recording stopped, creating video blob...');
+        const blob = new Blob(chunksRef.current, { type: 'video/webm' });
+        const url = URL.createObjectURL(blob);
+        setRecordedVideo({ blob, url });
+        chunksRef.current = [];
+      };
+
+      mediaRecorder.start();
+      setIsRecording(true);
+
+      // Duration counter
+      const interval = setInterval(() => {
+        setDuration(prev => prev + 1);
+      }, 1000);
+      (mediaRecorder as any).durationInterval = interval;
+
+      console.log('[iOS Camera] Video recording started successfully');
     } catch (err) {
-      console.error('Camera error:', err);
-      alert('Failed to capture photo: ' + (err as Error).message);
+      console.error('[iOS Camera] Failed to start recording:', err);
+      alert('Failed to start recording: ' + (err as Error).message);
     }
   };
 
@@ -150,11 +230,14 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
   };
 
   const retakeVideo = () => {
+    console.log('[iOS Camera] Retaking video - clearing preview and restarting camera');
     if (recordedVideo) {
       URL.revokeObjectURL(recordedVideo.url);
     }
     setRecordedVideo(null);
     setDuration(0);
+    // Restart camera after clearing recorded video
+    startCamera();
   };
 
   const confirmVideo = () => {

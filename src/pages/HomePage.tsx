@@ -48,6 +48,8 @@ export default function HomePage() {
   const [posts, setPosts] = useState<Post[]>([]);
   const [viewedPosts, setViewedPosts] = useState<Set<string>>(new Set());
   const [commentInputs, setCommentInputs] = useState<{ [postId: string]: string }>({});
+  const [loadingPosts, setLoadingPosts] = useState(true);
+  const [postsError, setPostsError] = useState<string | null>(null);
   const postRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
   // Load all posts from database on component mount
@@ -57,13 +59,24 @@ export default function HomePage() {
 
   const loadPosts = async () => {
     try {
+      console.log('[iOS DEBUG] Starting to load posts...');
+      console.log('[iOS DEBUG] API_URL:', API_URL);
+      
+      setLoadingPosts(true);
+      setPostsError(null);
+
       const response = await CapacitorHttp.post({
         url: `${API_URL}/getPosts`,
         headers: { 'Content-Type': 'application/json' },
         data: { limit: 50, offset: 0 },
       });
 
+      console.log('[iOS DEBUG] Response status:', response.status);
+      console.log('[iOS DEBUG] Response data:', JSON.stringify(response.data).substring(0, 200));
+
       if (response.data && response.data.posts) {
+        console.log('[iOS DEBUG] Found', response.data.posts.length, 'posts');
+        
         const formattedPosts: Post[] = response.data.posts.map((post: any) => ({
           id: post.id,
           userId: post.userId,
@@ -93,10 +106,72 @@ export default function HomePage() {
         }));
 
         setPosts(formattedPosts);
+        console.log('[iOS DEBUG] Posts loaded successfully:', formattedPosts.length);
+      } else {
+        console.log('[iOS DEBUG] No posts in response, using mock data');
+        // Use mock data for testing if API returns no posts
+        const mockPosts: Post[] = [
+          {
+            id: 'mock-1',
+            userId: 'system',
+            userName: 'One Ummah',
+            userImage: undefined,
+            userIsOnline: true,
+            content: 'Welcome to One Ummah! This is a test post. Your posts will appear here.',
+            videoUrl: undefined,
+            videoType: undefined,
+            likes: 5,
+            dislikes: 0,
+            shares: 2,
+            reposts: 1,
+            views: 10,
+            comments: [],
+            liked: false,
+            disliked: false,
+            showComments: false,
+            createdAt: new Date(),
+          }
+        ];
+        setPosts(mockPosts);
       }
-    } catch (error) {
-      console.error('Failed to load posts:', error);
-      toast.error('Failed to load posts');
+      
+      setLoadingPosts(false);
+    } catch (error: any) {
+      console.error('[iOS DEBUG] Failed to load posts:', error);
+      console.error('[iOS DEBUG] Error details:', {
+        name: error.name,
+        message: error.message,
+        stack: error.stack
+      });
+      
+      setPostsError('Failed to load posts. Using offline mode.');
+      setLoadingPosts(false);
+      
+      // Show mock data even on error so users can test the app
+      const mockPosts: Post[] = [
+        {
+          id: 'mock-error-1',
+          userId: 'system',
+          userName: 'One Ummah',
+          userImage: undefined,
+          userIsOnline: false,
+          content: 'Unable to connect to server. This is test data. Your posts will sync when connection is restored.',
+          videoUrl: undefined,
+          videoType: undefined,
+          likes: 0,
+          dislikes: 0,
+          shares: 0,
+          reposts: 0,
+          views: 0,
+          comments: [],
+          liked: false,
+          disliked: false,
+          showComments: false,
+          createdAt: new Date(),
+        }
+      ];
+      setPosts(mockPosts);
+      toast.error('Could not load posts. Showing test data.');
     }
   };
 
@@ -374,7 +449,27 @@ export default function HomePage() {
 
       {/* Posts Feed */}
       <div className="space-y-4">
-        {posts.length === 0 ? (
+        {loadingPosts ? (
+          <Card className="bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-12">
+            <div className="flex flex-col items-center justify-center space-y-4">
+              <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-amber-400"></div>
+              <p className="text-amber-400 text-lg font-semibold">Loading posts...</p>
+              <p className="text-gray-400 text-sm">Connecting to One Ummah</p>
+            </div>
+          </Card>
+        ) : postsError ? (
+          <Card className="bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-6">
+            <div className="text-center">
+              <p className="text-amber-400 mb-2">{postsError}</p>
+              <Button 
+                onClick={loadPosts}
+                className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white mt-4"
+              >
+                Retry
+              </Button>
+            </div>
+          </Card>
+        ) : posts.length === 0 ? (
           <div className="text-center text-gray-500 py-8">
             <p>Your posts will appear here</p>
             <p className="text-sm mt-2">Share moments with the One Ummah community</p>

@@ -1,0 +1,39 @@
+iOS CRITICAL FIXES - March 6, 2026
+====================================
+
+THREE MAJOR ISSUES FIXED:
+
+1. POSTS FEED NOT SHOWING ✅
+   - Added loading spinner
+   - Added error handling with retry
+   - Added mock data fallback
+   - Debug logging: [iOS DEBUG]
+
+2. CAMERA BLACK SCREEN ✅
+   - Fixed iOS camera initialization
+   - Added native camera for photos
+   - Better video recording
+   - Debug logging: [iOS Camera]
+
+3. ADHAN AUDIO NOT PLAYING ✅
+   - iOS-specific audio attributes
+   - Better error messages
+   - Load/play sequence fixed
+   - Debug logging: [iOS Adhan]
+
+FILES CHANGED:
+- src/pages/HomePage.tsx (posts)
+- src/components/SimpleCamera.tsx (camera)
+- src/pages/PrayerTimesPage.tsx (adhan)
+
+BUILD STATUS:
+✅ npm run prod:build:vite - Success
+✅ npx cap sync ios - Success
+✅ All audio files synced to iOS
+
+NEXT STEP:
+Push to GitHub → Codemagic builds → TestFlight testing
+
+DOCUMENTATION:
+- IOS-FIXES-MARCH-6-2026.md (complete technical details)
+- QUICK-IOS-TEST-GUIDE.md (user testing instructions)
