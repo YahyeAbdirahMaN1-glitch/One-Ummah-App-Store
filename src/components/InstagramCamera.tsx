@@ -20,6 +20,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isStartingOver, setIsStartingOver] = useState(false);
 
   // Lock body scroll
   useEffect(() => {
@@ -165,8 +166,11 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       };
       
       recorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: 'video/webm' });
-        onVideoRecorded(blob, videoType);
+        // Don't trigger callback if we're just starting over
+        if (!isStartingOver) {
+          const blob = new Blob(chunksRef.current, { type: 'video/webm' });
+          onVideoRecorded(blob, videoType);
+        }
       };
       
       recorder.start();
@@ -206,24 +210,30 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
   const startOver = async () => {
     console.log('Start Over clicked');
     
+    // Set flag to prevent onstop from calling onVideoRecorded
+    setIsStartingOver(true);
+    
     // Stop current recording
     if (isRecording && mediaRecorderRef.current) {
       const interval = (mediaRecorderRef.current as any).durationInterval;
       if (interval) clearInterval(interval);
       
       mediaRecorderRef.current.stop();
-      setIsRecording(false);
-      setDuration(0);
-      chunksRef.current = [];
       mediaRecorderRef.current = null;
       
       console.log('Stopped current recording');
     }
     
-    // Wait a moment for cleanup
-    await new Promise(resolve => setTimeout(resolve, 100));
+    // Reset state
+    setIsRecording(false);
+    setDuration(0);
+    chunksRef.current = [];
     
-    // Start new recording
+    // Wait a moment for cleanup
+    await new Promise(resolve => setTimeout(resolve, 200));
+    
+    // Clear the flag and start new recording
+    setIsStartingOver(false);
     console.log('Starting new recording');
     startRecording();
   };
