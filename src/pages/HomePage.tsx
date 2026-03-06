@@ -28,6 +28,7 @@ interface Post {
   userImage?: string;
   userIsOnline?: boolean;
   content: string;
+  imageUrls?: string[]; // Array of image URLs
   videoUrl?: string;
   videoType?: 'littles' | 'length';
   likes: number;
@@ -83,33 +84,47 @@ export default function HomePage() {
       if (response.status === 200 && response.data && response.data.posts) {
         console.log('[iOS DEBUG] Found', response.data.posts.length, 'posts');
         
-        const formattedPosts: Post[] = response.data.posts.map((post: any) => ({
-          id: post.id,
-          userId: post.userId,
-          userName: post.user?.name || 'Anonymous',
-          userImage: post.user?.profilePicture || undefined,
-          userIsOnline: post.user?.isOnline || false,
-          content: post.content,
-          videoUrl: post.videoUrls || undefined,
-          videoType: post.videoType as 'littles' | 'length' | undefined,
-          likes: post.likesCount || 0,
-          dislikes: post.dislikesCount || 0,
-          shares: post.sharesCount || 0,
-          reposts: post.repostsCount || 0,
-          views: post.viewsCount || 0,
-          comments: post.comments?.map((c: any) => ({
-            id: c.id,
-            userId: c.userId,
-            userName: c.user?.name || 'Anonymous',
-            userImage: c.user?.profilePicture || undefined,
-            content: c.content,
-            createdAt: new Date(c.createdAt),
-          })) || [],
-          liked: false,
-          disliked: false,
-          showComments: false,
-          createdAt: new Date(post.createdAt),
-        }));
+        const formattedPosts: Post[] = response.data.posts.map((post: any) => {
+          // Parse imageUrls JSON array
+          let imageUrls: string[] = [];
+          try {
+            if (post.imageUrls) {
+              const parsed = JSON.parse(post.imageUrls);
+              imageUrls = Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+            }
+          } catch (e) {
+            console.error('[IMAGE] Failed to parse imageUrls:', e);
+          }
+
+          return {
+            id: post.id,
+            userId: post.userId,
+            userName: post.user?.name || 'Anonymous',
+            userImage: post.user?.profilePicture || undefined,
+            userIsOnline: post.user?.isOnline || false,
+            content: post.content,
+            imageUrls: imageUrls.length > 0 ? imageUrls : undefined,
+            videoUrl: post.videoUrls || undefined,
+            videoType: post.videoType as 'littles' | 'length' | undefined,
+            likes: post.likesCount || 0,
+            dislikes: post.dislikesCount || 0,
+            shares: post.sharesCount || 0,
+            reposts: post.repostsCount || 0,
+            views: post.viewsCount || 0,
+            comments: post.comments?.map((c: any) => ({
+              id: c.id,
+              userId: c.userId,
+              userName: c.user?.name || 'Anonymous',
+              userImage: c.user?.profilePicture || undefined,
+              content: c.content,
+              createdAt: new Date(c.createdAt),
+            })) || [],
+            liked: false,
+            disliked: false,
+            showComments: false,
+            createdAt: new Date(post.createdAt),
+          };
+        });
 
         setPosts(formattedPosts);
         console.log('[iOS DEBUG] Posts loaded successfully:', formattedPosts.length);
@@ -225,7 +240,7 @@ export default function HomePage() {
         data: {
           userId: user.id,
           content: postContent,
-          imageUrls: selectedPhoto || null,
+          imageUrls: selectedPhoto ? JSON.stringify([selectedPhoto]) : "[]", // JSON array format
           videoUrls: videoBase64 || null,
           videoType: recordedVideo?.type || null,
         },
@@ -248,6 +263,17 @@ export default function HomePage() {
         const dbPost = response.data.post;
         
         // Add to local state immediately (use data from database response)
+        // Parse imageUrls from database
+        let imageUrls: string[] = [];
+        try {
+          if (dbPost.imageUrls) {
+            const parsed = JSON.parse(dbPost.imageUrls);
+            imageUrls = Array.isArray(parsed) ? parsed.filter(Boolean) : [];
+          }
+        } catch (e) {
+          console.error('[IMAGE] Failed to parse imageUrls from dbPost:', e);
+        }
+
         const newPost: Post = {
           id: dbPost.id,
           userId: dbPost.userId || user.id,
@@ -255,6 +281,7 @@ export default function HomePage() {
           userImage: dbPost.user?.profilePicture || user.profilePicture || undefined,
           userIsOnline: dbPost.user?.isOnline ?? true, // Use ONLY fresh DB data, default to true if posting
           content: dbPost.content || postContent,
+          imageUrls: imageUrls.length > 0 ? imageUrls : undefined,
           videoUrl: dbPost.videoUrls || videoBase64 || undefined,
           videoType: dbPost.videoType as 'littles' | 'length' | undefined,
           likes: dbPost.likesCount || 0,
@@ -659,6 +686,28 @@ export default function HomePage() {
 
               {/* Post Content */}
               <p className="text-white mb-4">{post.content}</p>
+
+              {/* Images */}
+              {post.imageUrls && post.imageUrls.length > 0 && (
+                <div className="mb-4 rounded-lg overflow-hidden bg-black">
+                  {post.imageUrls.map((imageUrl, index) => (
+                    <img
+                      key={index}
+                      src={imageUrl}
+                      alt={`Post image ${index + 1}`}
+                      className="w-full object-contain max-h-96"
+                      onError={(e) => {
+                        console.error('[IMAGE ERROR] Post ID:', post.id, 'Image index:', index);
+                        console.error('[IMAGE ERROR] URL length:', imageUrl?.length);
+                        console.error('[IMAGE ERROR] URL prefix:', imageUrl?.substring(0, 50));
+                      }}
+                      onLoad={() => {
+                        console.log('[IMAGE SUCCESS] Loaded image', index, 'for post:', post.id);
+                      }}
+                    />
+                  ))}
+                </div>
+              )}
 
               {/* Video */}
               {post.videoUrl && (
