@@ -5,7 +5,6 @@ import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { useAuth } from '../hooks/useAuth';
 import { toast } from 'sonner';
-import { ArrowLeft } from 'lucide-react';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -45,14 +44,6 @@ export default function LoginPage() {
   return (
     <div className="min-h-screen bg-black flex items-center justify-center p-4">
       <Card className="w-full max-w-md bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-8">
-        <button
-          onClick={() => navigate(-1)}
-          className="mb-4 flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors"
-        >
-          <ArrowLeft className="w-5 h-5" />
-          <span>Back</span>
-        </button>
-        
         <div className="text-center mb-8">
           <h1 className="text-4xl font-bold text-amber-400 mb-2">🕌 One Ummah</h1>
           <p className="text-gray-400">Welcome back to the community</p>
@@ -95,12 +86,6 @@ export default function LoginPage() {
               Sign Up
             </Link>
           </p>
-        </div>
-
-        <div className="mt-6 pt-6 border-t border-amber-900/30">
-          <Link to="/prayer-times" className="block text-center text-amber-400 hover:text-amber-300">
-            View Prayer Times
-          </Link>
         </div>
       </Card>
     </div>

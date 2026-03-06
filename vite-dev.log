@@ -1037,3 +1037,11 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
 1:09:25 AM [vite] (client) page reload ios/App/App/public/index.html
 1:32:40 AM [vite] (client) page reload ios/App/App/public/index.html
+1:49:15 AM [vite] (client) hmr update /src/pages/SignUpPage.tsx, /src/index.css
+1:49:18 AM [vite] (client) hmr update /src/pages/SignUpPage.tsx, /src/index.css
+1:49:20 AM [vite] (client) hmr update /src/pages/LoginPage.tsx, /src/index.css
+1:49:26 AM [vite] (client) hmr update /src/pages/LoginPage.tsx, /src/index.css
+1:49:28 AM [vite] (client) hmr update /src/pages/LoginPage.tsx, /src/index.css
+1:49:42 AM [vite] (client) hmr update /src/App.tsx, /src/pages/LoginPage.tsx, /src/pages/SettingsPage.tsx, /src/pages/SignUpPage.tsx, /src/components/Layout.tsx, /src/index.css
+1:49:52 AM [vite] (client) hmr update /src/App.tsx, /src/pages/LoginPage.tsx, /src/pages/SettingsPage.tsx, /src/pages/SignUpPage.tsx, /src/components/Layout.tsx, /src/index.css
+1:49:58 AM [vite] (client) page reload ios/App/App/public/index.html
