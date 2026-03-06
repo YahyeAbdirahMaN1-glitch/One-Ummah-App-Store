@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { API_URL } from '../config';
+import { CapacitorHttp } from '@capacitor/core';
 
 export interface User {
   id: string;
@@ -32,19 +33,16 @@ export function useAuth() {
         return;
       }
       
-      const response = await fetch(`${API_URL}/getUser`, {
-        method: 'POST',
+      const response = await CapacitorHttp.post({
+        url: `${API_URL}/getUser`,
         headers: { 
           'Content-Type': 'application/json',
-          'Accept': 'application/json'
         },
-        body: JSON.stringify({ userId }),
-        mode: 'cors',
+        data: { userId },
       });
       
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
+      if (response.status === 200) {
+        setUser(response.data.user);
       } else {
         setUser(null);
         localStorage.removeItem('userId');
@@ -62,22 +60,23 @@ export function useAuth() {
       console.log('LOGIN: Starting...', email);
       console.log('LOGIN: API_URL:', API_URL);
       
-      const response = await fetch(`${API_URL}/signIn`, {
-        method: 'POST',
+      // Use CapacitorHttp for better iOS compatibility
+      const response = await CapacitorHttp.post({
+        url: `${API_URL}/signIn`,
         headers: { 
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password }),
+        data: { email, password },
       });
 
       console.log('LOGIN: Response status:', response.status);
 
-      if (!response.ok) {
-        const error = await response.json().catch(() => ({ error: 'Login failed' }));
-        throw new Error(error.error || 'Invalid email or password');
+      if (response.status !== 200) {
+        const error = response.data?.error || 'Invalid email or password';
+        throw new Error(error);
       }
 
-      const data = await response.json();
+      const data = response.data;
       console.log('LOGIN: Success, userId:', data.userId);
       
       if (data.userId) {
@@ -97,22 +96,23 @@ export function useAuth() {
       console.log('SIGNUP: Starting...', email, name);
       console.log('SIGNUP: API_URL:', API_URL);
       
-      const response = await fetch(`${API_URL}/signUp`, {
-        method: 'POST',
+      // Use CapacitorHttp for better iOS compatibility
+      const response = await CapacitorHttp.post({
+        url: `${API_URL}/signUp`,
         headers: { 
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email, password, name, gender }),
+        data: { email, password, name, gender },
       });
 
       console.log('SIGNUP: Response status:', response.status);
 
-      if (!response.ok) {
-        const error = await response.json().catch(() => ({ error: 'Signup failed' }));
-        throw new Error(error.error || 'Could not create account');
+      if (response.status !== 200) {
+        const error = response.data?.error || 'Could not create account';
+        throw new Error(error);
       }
 
-      const data = await response.json();
+      const data = response.data;
       console.log('SIGNUP: Success, userId:', data.userId);
       
       if (data.userId) {
@@ -120,17 +120,16 @@ export function useAuth() {
       }
       
       // Fetch full user data
-      const userResponse = await fetch(`${API_URL}/getUser`, {
-        method: 'POST',
+      const userResponse = await CapacitorHttp.post({
+        url: `${API_URL}/getUser`,
         headers: { 
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ userId: data.userId }),
+        data: { userId: data.userId },
       });
       
-      if (userResponse.ok) {
-        const userData = await userResponse.json();
-        setUser(userData.user);
+      if (userResponse.status === 200) {
+        setUser(userResponse.data.user);
       }
       
       return data;

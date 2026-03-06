@@ -1048,3 +1048,10 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 2:03:28 AM [vite] (client) hmr update /src/App.tsx, /src/pages/LoginPage.tsx, /src/pages/SettingsPage.tsx, /src/pages/SignUpPage.tsx, /src/components/Layout.tsx, /src/index.css
 2:03:34 AM [vite] (client) hmr update /src/App.tsx, /src/pages/LoginPage.tsx, /src/pages/SettingsPage.tsx, /src/pages/SignUpPage.tsx, /src/components/Layout.tsx, /src/index.css
 2:03:43 AM [vite] (client) page reload ios/App/App/public/index.html
+2:29:26 AM [vite] (client) hmr update /src/App.tsx, /src/pages/LoginPage.tsx, /src/pages/SettingsPage.tsx, /src/pages/SignUpPage.tsx, /src/components/Layout.tsx, /src/index.css
+2:29:27 AM [vite] (client) ✨ new dependencies optimized: @capacitor/core
+2:29:27 AM [vite] (client) ✨ optimized dependencies changed. reloading
+2:29:33 AM [vite] (client) hmr update /src/App.tsx, /src/pages/LoginPage.tsx, /src/pages/SettingsPage.tsx, /src/pages/SignUpPage.tsx, /src/components/Layout.tsx, /src/index.css
+2:29:41 AM [vite] (client) hmr update /src/App.tsx, /src/pages/LoginPage.tsx, /src/pages/SettingsPage.tsx, /src/pages/SignUpPage.tsx, /src/components/Layout.tsx, /src/index.css
+2:29:49 AM [vite] (client) hmr update /src/App.tsx, /src/pages/LoginPage.tsx, /src/pages/SettingsPage.tsx, /src/pages/SignUpPage.tsx, /src/components/Layout.tsx, /src/index.css
+2:29:54 AM [vite] (client) page reload ios/App/App/public/index.html
