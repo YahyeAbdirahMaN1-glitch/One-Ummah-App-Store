@@ -2496,3 +2496,20 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 4:50:21 PM [vite] (client) page reload ios/App/App/public/index.html
 4:55:41 PM [vite] (client) hmr update /src/pages/PrayerTimesPage.tsx, /src/index.css
 4:55:51 PM [vite] (client) page reload ios/App/App/public/index.html
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 306 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.3:4500/
+5:00:38 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:5002
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+5:00:39 PM [vite] http proxy error: /api/health
+Error: connect ECONNREFUSED 127.0.0.1:5002
+    at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+5:06:37 PM [vite] (client) hmr update /src/pages/PrayerTimesPage.tsx, /src/index.css
+5:06:54 PM [vite] (client) hmr update /src/pages/PrayerTimesPage.tsx, /src/index.css
+5:07:00 PM [vite] (client) hmr update /src/pages/PrayerTimesPage.tsx, /src/index.css
+5:07:10 PM [vite] (client) hmr update /src/pages/PrayerTimesPage.tsx, /src/index.css
+5:07:31 PM [vite] (client) page reload ios/App/App/public/index.html

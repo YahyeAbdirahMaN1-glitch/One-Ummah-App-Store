@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, MapPin, Bell, BellOff } from 'lucide-react';
+import { Search, MapPin, Bell, BellOff, Locate } from 'lucide-react';
 import { Card } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
@@ -17,8 +17,94 @@ export default function PrayerTimesPage() {
   const [country, setCountry] = useState('');
   const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadingLocation, setLoadingLocation] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const notificationTimersRef = useRef<NodeJS.Timeout[]>([]);
+
+  const useCurrentLocation = async () => {
+    if (!navigator.geolocation) {
+      toast.error('Geolocation is not supported by your browser');
+      return;
+    }
+
+    setLoadingLocation(true);
+    toast.info('Getting your location...');
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        
+        try {
+          // Get location name from coordinates using reverse geocoding
+          const geoResponse = await fetch(
+            `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+          );
+          
+          if (!geoResponse.ok) throw new Error('Failed to get location name');
+          
+          const geoData = await geoResponse.json();
+          const detectedCity = geoData.address.city || geoData.address.town || geoData.address.village || 'Unknown';
+          const detectedCountry = geoData.address.country || 'Unknown';
+          
+          setCity(detectedCity);
+          setCountry(detectedCountry);
+          
+          // Automatically fetch prayer times
+          await fetchPrayerTimesByCoordinates(latitude, longitude, detectedCity, detectedCountry);
+          
+        } catch (error) {
+          console.error('Error getting location name:', error);
+          // Still try to get prayer times with coordinates
+          await fetchPrayerTimesByCoordinates(latitude, longitude, 'Your location', 'Detected');
+        } finally {
+          setLoadingLocation(false);
+        }
+      },
+      (error) => {
+        console.error('Geolocation error:', error);
+        setLoadingLocation(false);
+        
+        if (error.code === error.PERMISSION_DENIED) {
+          toast.error('Location permission denied. Please enable location access in your browser settings.');
+        } else if (error.code === error.POSITION_UNAVAILABLE) {
+          toast.error('Location information unavailable. Please enter your city manually.');
+        } else {
+          toast.error('Failed to get your location. Please enter your city manually.');
+        }
+      },
+      {
+        enableHighAccuracy: true,
+        timeout: 10000,
+        maximumAge: 0
+      }
+    );
+  };
+
+  const fetchPrayerTimesByCoordinates = async (lat: number, lon: number, cityName: string, countryName: string) => {
+    try {
+      const response = await fetch(
+        `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`
+      );
+
+      if (!response.ok) throw new Error('Failed to fetch prayer times');
+
+      const data = await response.json();
+      const timings = data.data.timings;
+
+      setPrayerTimes([
+        { name: 'Fajr', time: timings.Fajr },
+        { name: 'Dhuhr', time: timings.Dhuhr },
+        { name: 'Asr', time: timings.Asr },
+        { name: 'Maghrib', time: timings.Maghrib },
+        { name: 'Isha', time: timings.Isha },
+      ]);
+
+      toast.success(`Prayer times loaded for ${cityName}, ${countryName}`);
+    } catch (error) {
+      console.error('Error fetching prayer times:', error);
+      toast.error('Failed to load prayer times. Please try again.');
+    }
+  };
 
   const fetchPrayerTimes = async () => {
     if (!city.trim() || !country.trim()) {
@@ -57,25 +143,36 @@ export default function PrayerTimesPage() {
   };
 
   const toggleNotifications = async () => {
-    if (!notificationsEnabled) {
-      // Request permission first
-      const granted = await requestPermission();
-      if (!granted) {
-        toast.error('Notification permission denied');
-        return;
-      }
+    console.log('Toggle notifications clicked', { 
+      current: notificationsEnabled, 
+      permission,
+      prayerTimesCount: prayerTimes.length 
+    });
 
+    if (!notificationsEnabled) {
       if (prayerTimes.length === 0) {
         toast.error('Please fetch prayer times first');
         return;
       }
 
+      // Request permission first
+      console.log('Requesting notification permission...');
+      const granted = await requestPermission();
+      console.log('Permission result:', granted);
+      
+      if (!granted) {
+        toast.error('Notification permission denied. Please enable notifications in your browser settings.');
+        return;
+      }
+
       // Schedule notifications
+      console.log('Scheduling prayer notifications...');
       schedulePrayerNotifications();
       setNotificationsEnabled(true);
-      toast.success('Prayer notifications enabled');
+      toast.success('Prayer notifications enabled! You will be notified 5 minutes before each prayer.');
     } else {
       // Clear all timers
+      console.log('Clearing notifications, timers count:', notificationTimersRef.current.length);
       notificationTimersRef.current.forEach(clearTimeout);
       notificationTimersRef.current = [];
       setNotificationsEnabled(false);
@@ -168,14 +265,26 @@ export default function PrayerTimesPage() {
               </div>
             </div>
 
-            <Button
-              onClick={fetchPrayerTimes}
-              disabled={loading}
-              className="w-full bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-700 hover:to-amber-600 text-white"
-            >
-              <Search className="w-4 h-4 mr-2" />
-              {loading ? 'Loading...' : 'Get Prayer Times'}
-            </Button>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+              <Button
+                onClick={useCurrentLocation}
+                disabled={loadingLocation || loading}
+                variant="outline"
+                className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white border-green-500"
+              >
+                <Locate className="w-4 h-4 mr-2" />
+                {loadingLocation ? 'Getting Location...' : 'Use My Location'}
+              </Button>
+
+              <Button
+                onClick={fetchPrayerTimes}
+                disabled={loading || loadingLocation}
+                className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-700 hover:to-amber-600 text-white"
+              >
+                <Search className="w-4 h-4 mr-2" />
+                {loading ? 'Loading...' : 'Search City'}
+              </Button>
+            </div>
           </div>
         </Card>
 
