@@ -83,12 +83,12 @@ export function useAuth() {
         localStorage.setItem('userId', data.userId);
         setUser(data.user);
         
-        // Set user as online
-        await CapacitorHttp.post({
+        // Set user as online (don't await to avoid blocking)
+        CapacitorHttp.post({
           url: `${API_URL}/updateOnlineStatus`,
           headers: { 'Content-Type': 'application/json' },
           data: { userId: data.userId, isOnline: true },
-        });
+        }).catch(err => console.error('Failed to set online status:', err));
       }
       
       return data;
@@ -138,12 +138,12 @@ export function useAuth() {
       if (userResponse.status === 200) {
         setUser(userResponse.data.user);
         
-        // Set user as online
-        await CapacitorHttp.post({
+        // Set user as online (don't await to avoid blocking)
+        CapacitorHttp.post({
           url: `${API_URL}/updateOnlineStatus`,
           headers: { 'Content-Type': 'application/json' },
           data: { userId: data.userId, isOnline: true },
-        });
+        }).catch(err => console.error('Failed to set online status:', err));
       }
       
       return data;
@@ -154,6 +154,20 @@ export function useAuth() {
   };
 
   const logout = async () => {
+    // Set user offline before logging out
+    const userId = localStorage.getItem('userId');
+    if (userId) {
+      try {
+        await CapacitorHttp.post({
+          url: `${API_URL}/updateOnlineStatus`,
+          headers: { 'Content-Type': 'application/json' },
+          data: { userId, isOnline: false },
+        });
+      } catch (error) {
+        console.error('Failed to set offline status on logout:', error);
+      }
+    }
+    
     localStorage.removeItem('userId');
     setUser(null);
   };
