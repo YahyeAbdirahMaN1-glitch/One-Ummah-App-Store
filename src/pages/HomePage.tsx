@@ -323,12 +323,44 @@ export default function HomePage() {
     setCommentInputs({ ...commentInputs, [postId]: value });
   };
 
-  const handleDeletePost = (postId: string) => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
-      setPosts(posts.filter(post => post.id !== postId));
-      toast.success('Post deleted');
-      // In real app, call API to delete from database
-      // deletePost(postId, user?.id);
+  const handleDeletePost = async (postId: string) => {
+    if (!user) {
+      toast.error('Please sign in to delete posts');
+      return;
+    }
+
+    if (!window.confirm('Are you sure you want to delete this post?')) {
+      return;
+    }
+
+    try {
+      toast.loading('Deleting post...');
+
+      const response = await CapacitorHttp.post({
+        url: `${API_URL}/deletePost`,
+        headers: { 'Content-Type': 'application/json' },
+        data: { postId, userId: user.id },
+      });
+
+      if (response.status === 200) {
+        // Remove from UI
+        setPosts(posts.filter(post => post.id !== postId));
+        toast.dismiss();
+        toast.success('Post deleted successfully!');
+      } else if (response.status === 403) {
+        toast.dismiss();
+        toast.error('You can only delete your own posts');
+      } else if (response.status === 404) {
+        toast.dismiss();
+        toast.error('Post not found');
+      } else {
+        toast.dismiss();
+        toast.error('Failed to delete post');
+      }
+    } catch (error) {
+      console.error('Delete post error:', error);
+      toast.dismiss();
+      toast.error('Failed to delete post');
     }
   };
 

@@ -201,6 +201,41 @@ export const createPost = router.post(
   }
 );
 
+// Delete Post
+export const deletePost = router.post(
+  "/deletePost",
+  zValidator(
+    "json",
+    z.object({
+      postId: z.string(),
+      userId: z.string(),
+    })
+  ),
+  async (c) => {
+    const { postId, userId } = c.req.valid("json");
+
+    // Verify the post belongs to the user
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    if (!post) {
+      return c.json({ error: "Post not found" }, 404);
+    }
+
+    if (post.userId !== userId) {
+      return c.json({ error: "Unauthorized" }, 403);
+    }
+
+    // Delete the post (cascade delete comments, likes, etc.)
+    await prisma.post.delete({
+      where: { id: postId },
+    });
+
+    return c.json({ success: true });
+  }
+);
+
 // Get Posts (Feed)
 export const getPosts = router.post(
   "/getPosts",
@@ -675,6 +710,7 @@ export default {
   getUser,
   updateProfile,
   createPost,
+  deletePost,
   getPosts,
   trackPostView,
   createComment,
