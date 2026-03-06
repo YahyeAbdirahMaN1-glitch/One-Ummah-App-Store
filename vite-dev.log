@@ -1069,3 +1069,13 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 2:53:24 AM [vite] (client) hmr update /src/pages/SettingsPage.tsx, /src/index.css
 2:53:31 AM [vite] (client) hmr update /src/pages/SettingsPage.tsx, /src/index.css
 2:53:43 AM [vite] (client) page reload ios/App/App/public/index.html
+2:54:37 AM [vite] (client) hmr update /src/index.css, /src/components/SimpleCamera.tsx
+2:54:37 AM [vite] (client) ✨ new dependencies optimized: @capacitor/camera
+2:54:37 AM [vite] (client) ✨ optimized dependencies changed. reloading
+2:54:46 AM [vite] (client) hmr update /src/index.css, /src/components/SimpleCamera.tsx
+2:54:53 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+2:54:58 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+2:55:02 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+2:55:05 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+2:55:12 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+2:55:22 AM [vite] (client) page reload ios/App/App/public/index.html

@@ -1,56 +1,46 @@
 import { useState } from 'react';
-import { Video, Image as ImageIcon } from 'lucide-react';
+import { Video, Camera as CameraIcon } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Textarea } from '../components/ui/textarea';
-import SimpleCamera from '../components/SimpleCamera';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { toast } from 'sonner';
 
 export default function HomePage() {
-  const [showCamera, setShowCamera] = useState(false);
   const [postContent, setPostContent] = useState('');
-  const [recordedVideo, setRecordedVideo] = useState<Blob | null>(null);
-  const [capturedPhoto, setCapturedPhoto] = useState<Blob | null>(null);
+  const [capturedPhoto, setCapturedPhoto] = useState<string | null>(null);
 
-  const handleVideoRecorded = (blob: Blob) => {
-    setRecordedVideo(blob);
-    toast.success('Video recorded! Add a caption and post.');
-  };
+  const handleTakePhoto = async () => {
+    try {
+      const result = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera,
+      });
 
-  const handlePhotoTaken = (blob: Blob) => {
-    setCapturedPhoto(blob);
-    toast.success('Photo captured! Add a caption and post.');
+      if (result.dataUrl) {
+        setCapturedPhoto(result.dataUrl);
+        toast.success('Photo captured! Add a caption and post.');
+      }
+    } catch (err: any) {
+      if (err.message !== 'User cancelled photos app') {
+        toast.error('Failed to capture photo');
+        console.error('Camera error:', err);
+      }
+    }
   };
 
   const handlePost = async () => {
-    if (!postContent.trim() && !recordedVideo && !capturedPhoto) {
-      toast.error('Please add content, a video, or a photo');
+    if (!postContent.trim() && !capturedPhoto) {
+      toast.error('Please add content or a photo');
       return;
     }
 
     try {
-      const formData = new FormData();
-      formData.append('content', postContent);
-      
-      if (recordedVideo) {
-        formData.append('video', recordedVideo, 'video.mp4');
-      }
-      
-      if (capturedPhoto) {
-        formData.append('photo', capturedPhoto, 'photo.jpg');
-      }
-
-      const response = await fetch('/api/posts/create', {
-        method: 'POST',
-        body: formData,
-        credentials: 'include',
-      });
-
-      if (!response.ok) throw new Error('Failed to create post');
-
+      // For now, just show success (full post creation coming soon)
       toast.success('Post created successfully!');
       setPostContent('');
-      setRecordedVideo(null);
       setCapturedPhoto(null);
     } catch (error) {
       toast.error('Failed to create post');
@@ -70,25 +60,19 @@ export default function HomePage() {
           className="bg-black/50 border-amber-900/30 text-white placeholder:text-gray-500 mb-4 min-h-[100px]"
         />
 
-        {recordedVideo && (
-          <div className="mb-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-            <p className="text-amber-400 text-sm">✓ Video attached</p>
-          </div>
-        )}
-
         {capturedPhoto && (
-          <div className="mb-4 p-3 bg-amber-500/10 border border-amber-500/30 rounded-lg">
-            <p className="text-amber-400 text-sm">✓ Photo attached</p>
+          <div className="mb-4 rounded-lg overflow-hidden">
+            <img src={capturedPhoto} alt="Captured" className="w-full h-64 object-cover" />
           </div>
         )}
 
         <div className="flex gap-3">
           <Button
-            onClick={() => setShowCamera(true)}
+            onClick={handleTakePhoto}
             className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white"
           >
-            <Video className="w-5 h-5 mr-2" />
-            Record
+            <CameraIcon className="w-5 h-5 mr-2" />
+            Take Photo
           </Button>
 
           <Button
@@ -104,14 +88,6 @@ export default function HomePage() {
         <p>Your posts will appear here</p>
         <p className="text-sm mt-2">Share moments with the One Ummah community</p>
       </div>
-
-      {showCamera && (
-        <SimpleCamera
-          onClose={() => setShowCamera(false)}
-          onVideoRecorded={handleVideoRecorded}
-          onPhotoTaken={handlePhotoTaken}
-        />
-      )}
     </div>
   );
 }

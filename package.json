@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@adaptive-ai/sdk": "0.1.26",
+    "@capacitor/camera": "^8.0.1",
     "@capacitor/cli": "^8.1.0",
     "@capacitor/core": "^8.1.0",
     "@capacitor/http": "^0.0.2",

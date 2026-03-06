@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { X, RotateCw, Check, RotateCcw, Play, Pause, Sparkles, Clock } from 'lucide-react';
+import { X, RotateCw, Check, RotateCcw, Play, Pause, Sparkles, Clock, Camera as CameraIcon } from 'lucide-react';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 interface SimpleCameraProps {
   onClose: () => void;
@@ -112,55 +113,29 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
     setCameraFacing(prev => prev === 'user' ? 'environment' : 'user');
   };
 
-  const startRecording = () => {
-    if (!streamRef.current) {
-      alert('Camera not ready. Please wait.');
-      return;
-    }
-
-    if (mode !== 'VIDEO') {
-      alert('Switch to VIDEO mode to record');
-      return;
-    }
-
+  const startRecording = async () => {
     try {
-      setDuration(0);
-      chunksRef.current = [];
-      
-      const mimeType = MediaRecorder.isTypeSupported('video/mp4') 
-        ? 'video/mp4' 
-        : 'video/webm';
-      
-      const recorder = new MediaRecorder(streamRef.current, {
-        mimeType,
-        videoBitsPerSecond: 2500000,
+      // Use Capacitor Camera for iOS compatibility
+      const result = await Camera.getPhoto({
+        quality: 90,
+        allowEditing: false,
+        resultType: CameraResultType.Uri,
+        source: CameraSource.Camera,
       });
-      
-      recorder.ondataavailable = (e) => {
-        if (e.data.size > 0) {
-          chunksRef.current.push(e.data);
+
+      if (result.webPath) {
+        // Convert to blob
+        const response = await fetch(result.webPath);
+        const blob = await response.blob();
+        
+        if (onPhotoTaken) {
+          onPhotoTaken(blob);
+          onClose();
         }
-      };
-      
-      recorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: mimeType });
-        const url = URL.createObjectURL(blob);
-        setRecordedVideo({ blob, url });
-        setIsPlaying(true);
-      };
-      
-      recorder.start();
-      mediaRecorderRef.current = recorder;
-      setIsRecording(true);
-      
-      const interval = setInterval(() => {
-        setDuration(prev => prev + 1);
-      }, 1000);
-      
-      (recorder as any).durationInterval = interval;
+      }
     } catch (err) {
-      console.error('Recording error:', err);
-      alert('Failed to start recording: ' + (err as Error).message);
+      console.error('Camera error:', err);
+      alert('Failed to capture photo: ' + (err as Error).message);
     }
   };
 
