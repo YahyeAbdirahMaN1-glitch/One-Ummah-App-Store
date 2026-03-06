@@ -311,7 +311,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
         autoPlay
         playsInline
         muted
-        className={`absolute inset-0 w-full h-full object-cover ${cameraFacing === 'user' ? 'scale-x-[-1]' : ''}`}
+        className="absolute inset-0 w-full h-full object-cover"
         style={{ 
           objectPosition: 'center center',
           width: '100vw',
