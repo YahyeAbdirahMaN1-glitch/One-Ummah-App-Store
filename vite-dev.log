@@ -1152,3 +1152,12 @@ Port 4501 is in use, trying another one...
 3:40:05 AM [vite] (client) page reload ios/App/App/public/index.html
 3:40:05 AM [vite] (client) page reload ios/App/App/public/index.html
 3:40:05 AM [vite] (client) page reload ios/App/App/public/index.html
+3:42:01 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+3:42:07 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+3:42:13 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+3:42:19 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+3:42:27 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+3:42:47 AM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
+3:43:19 AM [vite] (client) page reload ios/App/App/public/index.html
+3:43:19 AM [vite] (client) page reload ios/App/App/public/index.html
+3:43:19 AM [vite] (client) page reload ios/App/App/public/index.html

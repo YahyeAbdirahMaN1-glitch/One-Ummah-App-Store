@@ -289,6 +289,70 @@ export const trackPostView = router.post(
   }
 );
 
+// Create Comment
+export const createComment = router.post(
+  "/createComment",
+  zValidator(
+    "json",
+    z.object({
+      postId: z.string(),
+      userId: z.string(),
+      content: z.string(),
+    })
+  ),
+  async (c) => {
+    const { postId, userId, content } = c.req.valid("json");
+
+    // Check if post exists
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    if (!post) {
+      return c.json({ error: "Post not found" }, 404);
+    }
+
+    // Create comment
+    const comment = await prisma.comment.create({
+      data: {
+        id: generateId(),
+        postId,
+        userId,
+        content,
+      },
+      include: {
+        user: true,
+      },
+    });
+
+    return c.json({ comment });
+  }
+);
+
+// Get Comments for Post
+export const getComments = router.post(
+  "/getComments",
+  zValidator(
+    "json",
+    z.object({
+      postId: z.string(),
+    })
+  ),
+  async (c) => {
+    const { postId } = c.req.valid("json");
+
+    const comments = await prisma.comment.findMany({
+      where: { postId },
+      include: {
+        user: true,
+      },
+      orderBy: { createdAt: "asc" },
+    });
+
+    return c.json({ comments });
+  }
+);
+
 // ==================== MESSAGE PROCEDURES ====================
 
 // Get Unread Messages Count
@@ -357,6 +421,8 @@ export default {
   createPost,
   getPosts,
   trackPostView,
+  createComment,
+  getComments,
   getUnreadMessagesCount,
   getRecentMessages,
 };

@@ -1,11 +1,21 @@
 import { useState, useEffect, useRef } from 'react';
-import { Video, Heart, ThumbsDown, Share2, Repeat, Eye } from 'lucide-react';
+import { Video, Heart, ThumbsDown, Share2, Repeat, Eye, MessageCircle, Send } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Textarea } from '../components/ui/textarea';
+import { Input } from '../components/ui/input';
 import InstagramCamera from '../components/InstagramCamera';
 import { toast } from 'sonner';
 import { useAuth } from '../hooks/useAuth';
+
+interface Comment {
+  id: string;
+  userId: string;
+  userName: string;
+  userImage?: string;
+  content: string;
+  createdAt: Date;
+}
 
 interface Post {
   id: string;
@@ -17,8 +27,10 @@ interface Post {
   shares: number;
   reposts: number;
   views: number;
+  comments: Comment[];
   liked: boolean;
   disliked: boolean;
+  showComments?: boolean;
   createdAt: Date;
 }
 
@@ -29,6 +41,7 @@ export default function HomePage() {
   const [showCamera, setShowCamera] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
   const [viewedPosts, setViewedPosts] = useState<Set<string>>(new Set());
+  const [commentInputs, setCommentInputs] = useState<{ [postId: string]: string }>({});
   const postRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
   const handleVideoRecorded = (blob: Blob, type: 'littles' | 'length') => {
@@ -54,8 +67,10 @@ export default function HomePage() {
         shares: 0,
         reposts: 0,
         views: 0,
+        comments: [],
         liked: false,
         disliked: false,
+        showComments: false,
         createdAt: new Date(),
       };
 
@@ -113,6 +128,48 @@ export default function HomePage() {
       post.id === postId ? { ...post, reposts: post.reposts + 1 } : post
     ));
     toast.success('Post reposted!');
+  };
+
+  const toggleComments = (postId: string) => {
+    setPosts(posts.map(post => 
+      post.id === postId ? { ...post, showComments: !post.showComments } : post
+    ));
+  };
+
+  const handleAddComment = (postId: string) => {
+    const commentText = commentInputs[postId]?.trim();
+    if (!commentText) {
+      toast.error('Please enter a comment');
+      return;
+    }
+
+    if (!user) {
+      toast.error('Please login to comment');
+      return;
+    }
+
+    const newComment: Comment = {
+      id: Date.now().toString(),
+      userId: user.id,
+      userName: user.name || 'Anonymous',
+      userImage: user.profilePicture || undefined,
+      content: commentText,
+      createdAt: new Date(),
+    };
+
+    setPosts(posts.map(post => 
+      post.id === postId 
+        ? { ...post, comments: [...post.comments, newComment], showComments: true }
+        : post
+    ));
+
+    // Clear comment input
+    setCommentInputs({ ...commentInputs, [postId]: '' });
+    toast.success('Comment added!');
+  };
+
+  const updateCommentInput = (postId: string, value: string) => {
+    setCommentInputs({ ...commentInputs, [postId]: value });
   };
 
   // Track post views with Intersection Observer
@@ -292,6 +349,15 @@ export default function HomePage() {
                     <Repeat className="w-5 h-5" />
                     <span className="text-sm">{post.reposts}</span>
                   </button>
+
+                  {/* Comments */}
+                  <button
+                    onClick={() => toggleComments(post.id)}
+                    className="flex items-center gap-2 text-gray-400 hover:text-amber-400 transition-all group"
+                  >
+                    <MessageCircle className="w-5 h-5" />
+                    <span className="text-sm">{post.comments.length}</span>
+                  </button>
                 </div>
 
                 {/* Views */}
@@ -300,6 +366,71 @@ export default function HomePage() {
                   <span className="text-sm">{post.views} views</span>
                 </div>
               </div>
+
+              {/* Comments Section */}
+              {post.showComments && (
+                <div className="mt-4 border-t border-amber-900/30 pt-4 space-y-4">
+                  {/* Comment Input */}
+                  <div className="flex gap-2">
+                    <Input
+                      type="text"
+                      placeholder="Add a comment..."
+                      value={commentInputs[post.id] || ''}
+                      onChange={(e) => updateCommentInput(post.id, e.target.value)}
+                      onKeyPress={(e) => e.key === 'Enter' && handleAddComment(post.id)}
+                      className="bg-black/30 border-amber-900/30 text-white placeholder:text-gray-500"
+                    />
+                    <Button
+                      onClick={() => handleAddComment(post.id)}
+                      size="sm"
+                      className="bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700"
+                    >
+                      <Send className="w-4 h-4" />
+                    </Button>
+                  </div>
+
+                  {/* Comments List */}
+                  {post.comments.length > 0 ? (
+                    <div className="space-y-3 max-h-96 overflow-y-auto">
+                      {post.comments.map(comment => (
+                        <div key={comment.id} className="flex gap-3 bg-black/20 rounded-lg p-3">
+                          {/* User Avatar */}
+                          <div className="flex-shrink-0">
+                            {comment.userImage ? (
+                              <img
+                                src={comment.userImage}
+                                alt={comment.userName}
+                                className="w-8 h-8 rounded-full border-2 border-amber-500"
+                              />
+                            ) : (
+                              <div className="w-8 h-8 rounded-full bg-gradient-to-br from-amber-500 to-amber-600 flex items-center justify-center text-white font-bold text-sm">
+                                {comment.userName.charAt(0).toUpperCase()}
+                              </div>
+                            )}
+                          </div>
+
+                          {/* Comment Content */}
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2 mb-1">
+                              <span className="text-amber-400 font-semibold text-sm">
+                                {comment.userName}
+                              </span>
+                              <span className="text-gray-500 text-xs">
+                                {comment.createdAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                              </span>
+                            </div>
+                            <p className="text-white text-sm">{comment.content}</p>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <p className="text-gray-500 text-sm text-center py-4">
+                      No comments yet. Be the first to comment!
+                    </p>
+                  )}
+                </div>
+              )}
 
               {/* Timestamp */}
               <p className="text-gray-500 text-xs mt-3">
