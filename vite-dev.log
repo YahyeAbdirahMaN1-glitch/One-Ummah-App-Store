@@ -1704,3 +1704,7 @@ Started vite server in mode: development
 11:11:30 AM [vite] http proxy error: /api/health
 Error: connect ECONNREFUSED 127.0.0.1:5002
     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
+11:13:34 AM [vite] (client) hmr update /src/pages/PrivacySettingsPage.tsx, /src/index.css
+11:13:39 AM [vite] (client) hmr update /src/pages/PrivacySettingsPage.tsx, /src/index.css
+11:13:51 AM [vite] (client) hmr update /src/pages/PrivacySettingsPage.tsx, /src/index.css
+11:14:03 AM [vite] (client) hmr update /src/pages/PrivacySettingsPage.tsx, /src/index.css
