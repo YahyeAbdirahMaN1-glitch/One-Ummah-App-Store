@@ -26,7 +26,7 @@ export default function SettingsPage() {
         <div className="space-y-3">
           {/* Privacy Policy */}
           <button
-            onClick={() => navigate('/privacy-policy')}
+            onClick={() => navigate('/privacy')}
             className="w-full flex items-center justify-between p-4 bg-black/30 hover:bg-black/50 border border-amber-900/20 hover:border-amber-800/40 rounded-lg transition-all"
           >
             <div className="flex items-center gap-3">
@@ -38,7 +38,7 @@ export default function SettingsPage() {
 
           {/* Terms of Service */}
           <button
-            onClick={() => navigate('/terms-of-service')}
+            onClick={() => navigate('/terms')}
             className="w-full flex items-center justify-between p-4 bg-black/30 hover:bg-black/50 border border-amber-900/20 hover:border-amber-800/40 rounded-lg transition-all"
           >
             <div className="flex items-center gap-3">
