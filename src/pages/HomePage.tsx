@@ -6,6 +6,7 @@ import { Textarea } from '../components/ui/textarea';
 import { Input } from '../components/ui/input';
 import InstagramCamera from '../components/InstagramCamera';
 import ProfileQuickSettings from '../components/ProfileQuickSettings';
+import ProfilePictureChange from '../components/ProfilePictureChange';
 import { toast } from 'sonner';
 import { useAuth } from '../hooks/useAuth';
 import { CapacitorHttp } from '@capacitor/core';
@@ -53,6 +54,7 @@ export default function HomePage() {
   const [postsError, setPostsError] = useState<string | null>(null);
   const postRefs = useRef<Map<string, HTMLDivElement>>(new Map());
   const [showProfileSettings, setShowProfileSettings] = useState<{ userId: string; userName: string; isOnline: boolean } | null>(null);
+  const [showProfilePictureChange, setShowProfilePictureChange] = useState<{ userId: string; userName: string; currentImage?: string } | null>(null);
 
   // Load all posts from database on component mount
   useEffect(() => {
@@ -469,7 +471,19 @@ export default function HomePage() {
 
               {/* User Profile Section */}
               <div className="flex items-center gap-3 mb-4 pb-3 border-b border-amber-900/30">
-                <div className="relative">
+                <button
+                  onClick={() => {
+                    // Only allow changing own profile picture
+                    if (user && post.userId === user.id) {
+                      setShowProfilePictureChange({
+                        userId: post.userId,
+                        userName: post.userName,
+                        currentImage: post.userImage
+                      });
+                    }
+                  }}
+                  className={`relative ${user && post.userId === user.id ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}`}
+                >
                   {post.userImage ? (
                     <img
                       src={post.userImage}
@@ -485,7 +499,7 @@ export default function HomePage() {
                   <div className={`absolute bottom-0 right-0 w-3.5 h-3.5 rounded-full border-2 border-black ${
                     post.userIsOnline ? 'bg-green-400' : 'bg-red-500'
                   }`} />
-                </div>
+                </button>
                 <div className="flex-1">
                   <div className="flex items-center gap-2">
                     <button
@@ -689,6 +703,16 @@ export default function HomePage() {
           userName={showProfileSettings.userName}
           isOnline={showProfileSettings.isOnline}
           onClose={() => setShowProfileSettings(null)}
+        />
+      )}
+
+      {/* Profile Picture Change Modal */}
+      {showProfilePictureChange && (
+        <ProfilePictureChange
+          userId={showProfilePictureChange.userId}
+          userName={showProfilePictureChange.userName}
+          currentImage={showProfilePictureChange.currentImage}
+          onClose={() => setShowProfilePictureChange(null)}
         />
       )}
     </div>

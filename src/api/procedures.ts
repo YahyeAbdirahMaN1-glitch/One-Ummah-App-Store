@@ -645,6 +645,28 @@ export const reportIssue = router.post(
   }
 );
 
+// Update Profile Picture
+export const updateProfilePicture = router.post(
+  "/updateProfilePicture",
+  zValidator(
+    "json",
+    z.object({
+      userId: z.string(),
+      profilePicture: z.string(),
+    })
+  ),
+  async (c) => {
+    const { userId, profilePicture } = c.req.valid("json");
+
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { profilePicture },
+    });
+
+    return c.json({ success: true, user });
+  }
+);
+
 // ==================== EXPORT ====================
 
 export default {
@@ -666,4 +688,5 @@ export default {
   updateOnlineStatus,
   updatePrivacySettings,
   reportIssue,
+  updateProfilePicture,
 };
