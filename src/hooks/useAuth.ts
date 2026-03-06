@@ -58,74 +58,86 @@ export function useAuth() {
   };
 
   const login = async (email: string, password: string) => {
-    console.log('LOGIN: Starting...', email);
-    
-    const response = await fetch(`${API_URL}/signIn`, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      console.log('LOGIN: Starting...', email);
+      console.log('LOGIN: API_URL:', API_URL);
+      
+      const response = await fetch(`${API_URL}/signIn`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    console.log('LOGIN: Response status:', response.status);
+      console.log('LOGIN: Response status:', response.status);
 
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Login failed' }));
-      throw new Error(error.error || 'Invalid email or password');
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ error: 'Login failed' }));
+        throw new Error(error.error || 'Invalid email or password');
+      }
+
+      const data = await response.json();
+      console.log('LOGIN: Success, userId:', data.userId);
+      
+      if (data.userId) {
+        localStorage.setItem('userId', data.userId);
+        setUser(data.user);
+      }
+      
+      return data;
+    } catch (error: any) {
+      console.error('LOGIN: Error:', error);
+      throw new Error(error.message || 'Unable to connect to server');
     }
-
-    const data = await response.json();
-    console.log('LOGIN: Success, userId:', data.userId);
-    
-    if (data.userId) {
-      localStorage.setItem('userId', data.userId);
-      setUser(data.user);
-    }
-    
-    return data;
   };
 
   const signup = async (email: string, password: string, name: string, gender: string) => {
-    console.log('SIGNUP: Starting...', email, name);
-    
-    const response = await fetch(`${API_URL}/signUp`, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ email, password, name, gender }),
-    });
+    try {
+      console.log('SIGNUP: Starting...', email, name);
+      console.log('SIGNUP: API_URL:', API_URL);
+      
+      const response = await fetch(`${API_URL}/signUp`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email, password, name, gender }),
+      });
 
-    console.log('SIGNUP: Response status:', response.status);
+      console.log('SIGNUP: Response status:', response.status);
 
-    if (!response.ok) {
-      const error = await response.json().catch(() => ({ error: 'Signup failed' }));
-      throw new Error(error.error || 'Could not create account');
-    }
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ error: 'Signup failed' }));
+        throw new Error(error.error || 'Could not create account');
+      }
 
-    const data = await response.json();
-    console.log('SIGNUP: Success, userId:', data.userId);
-    
-    if (data.userId) {
-      localStorage.setItem('userId', data.userId);
+      const data = await response.json();
+      console.log('SIGNUP: Success, userId:', data.userId);
+      
+      if (data.userId) {
+        localStorage.setItem('userId', data.userId);
+      }
+      
+      // Fetch full user data
+      const userResponse = await fetch(`${API_URL}/getUser`, {
+        method: 'POST',
+        headers: { 
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId: data.userId }),
+      });
+      
+      if (userResponse.ok) {
+        const userData = await userResponse.json();
+        setUser(userData.user);
+      }
+      
+      return data;
+    } catch (error: any) {
+      console.error('SIGNUP: Error:', error);
+      throw new Error(error.message || 'Unable to connect to server');
     }
-    
-    // Fetch full user data
-    const userResponse = await fetch(`${API_URL}/getUser`, {
-      method: 'POST',
-      headers: { 
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: data.userId }),
-    });
-    
-    if (userResponse.ok) {
-      const userData = await userResponse.json();
-      setUser(userData.user);
-    }
-    
-    return data;
   };
 
   const logout = async () => {
