@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Video, Heart, ThumbsDown, Share2, Repeat, Eye } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Textarea } from '../components/ui/textarea';
 import InstagramCamera from '../components/InstagramCamera';
 import { toast } from 'sonner';
+import { useAuth } from '../hooks/useAuth';
 
 interface Post {
   id: string;
@@ -22,10 +23,13 @@ interface Post {
 }
 
 export default function HomePage() {
+  const { user } = useAuth();
   const [postContent, setPostContent] = useState('');
   const [recordedVideo, setRecordedVideo] = useState<{ blob: Blob; type: 'littles' | 'length' } | null>(null);
   const [showCamera, setShowCamera] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
+  const [viewedPosts, setViewedPosts] = useState<Set<string>>(new Set());
+  const postRefs = useRef<Map<string, HTMLDivElement>>(new Map());
 
   const handleVideoRecorded = (blob: Blob, type: 'littles' | 'length') => {
     setRecordedVideo({ blob, type });
@@ -105,10 +109,57 @@ export default function HomePage() {
   };
 
   const handleRepost = (postId: string) => {
-    setPosts(posts.map(post =>
+    setPosts(posts.map(post => 
       post.id === postId ? { ...post, reposts: post.reposts + 1 } : post
     ));
     toast.success('Post reposted!');
+  };
+
+  // Track post views with Intersection Observer
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const postId = entry.target.getAttribute('data-post-id');
+          if (!postId) return;
+
+          // If post is visible and hasn't been viewed yet
+          if (entry.isIntersecting && !viewedPosts.has(postId)) {
+            // Mark as viewed
+            setViewedPosts(prev => new Set([...prev, postId]));
+            
+            // Increment view count
+            setPosts(prev => prev.map(post => 
+              post.id === postId ? { ...post, views: post.views + 1 } : post
+            ));
+
+            // In a real app, send view to backend here
+            // trackPostView(postId, user?.id);
+          }
+        });
+      },
+      {
+        threshold: 0.5, // Post must be 50% visible to count as viewed
+        rootMargin: '0px',
+      }
+    );
+
+    // Observe all posts
+    postRefs.current.forEach((element) => {
+      if (element) observer.observe(element);
+    });
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [posts.length, viewedPosts]);
+
+  const setPostRef = (postId: string) => (el: HTMLDivElement | null) => {
+    if (el) {
+      postRefs.current.set(postId, el);
+    } else {
+      postRefs.current.delete(postId);
+    }
   };
 
   return (
@@ -166,7 +217,12 @@ export default function HomePage() {
           </div>
         ) : (
           posts.map(post => (
-            <Card key={post.id} className="bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-6">
+            <Card 
+              key={post.id} 
+              ref={setPostRef(post.id)}
+              data-post-id={post.id}
+              className="bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-6"
+            >
               {/* Post Content */}
               <p className="text-white mb-4">{post.content}</p>
 

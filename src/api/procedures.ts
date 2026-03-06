@@ -218,12 +218,132 @@ export const getPosts = router.post(
           },
         },
         likes: true,
+        dislikes: true,
         shares: true,
         reposts: true,
+        views: true,
       },
     });
 
-    return c.json({ posts });
+    // Calculate counts
+    const postsWithCounts = posts.map(post => ({
+      ...post,
+      likesCount: post.likes.length,
+      dislikesCount: post.dislikes.length,
+      sharesCount: post.shares.length,
+      repostsCount: post.reposts.length,
+      viewsCount: post.views.length,
+      commentsCount: post.comments.length,
+    }));
+
+    return c.json({ posts: postsWithCounts });
+  }
+);
+
+// Track Post View
+export const trackPostView = router.post(
+  "/trackPostView",
+  zValidator(
+    "json",
+    z.object({
+      postId: z.string(),
+      userId: z.string().optional(),
+    })
+  ),
+  async (c) => {
+    const { postId, userId } = c.req.valid("json");
+
+    // Check if post exists
+    const post = await prisma.post.findUnique({
+      where: { id: postId },
+    });
+
+    if (!post) {
+      return c.json({ error: "Post not found" }, 404);
+    }
+
+    // Check if user already viewed this post (prevent duplicate views)
+    if (userId) {
+      const existingView = await prisma.view.findFirst({
+        where: {
+          postId,
+          userId,
+        },
+      });
+
+      if (existingView) {
+        return c.json({ message: "Already viewed" });
+      }
+    }
+
+    // Create view record
+    await prisma.view.create({
+      data: {
+        id: generateId(),
+        postId,
+        userId: userId || null,
+      },
+    });
+
+    return c.json({ success: true });
+  }
+);
+
+// ==================== MESSAGE PROCEDURES ====================
+
+// Get Unread Messages Count
+export const getUnreadMessagesCount = router.post(
+  "/getUnreadMessagesCount",
+  zValidator(
+    "json",
+    z.object({
+      userId: z.string(),
+    })
+  ),
+  async (c) => {
+    const { userId } = c.req.valid("json");
+
+    const count = await prisma.message.count({
+      where: {
+        receiverId: userId,
+        read: false,
+      },
+    });
+
+    return c.json({ count });
+  }
+);
+
+// Get Recent Messages
+export const getRecentMessages = router.post(
+  "/getRecentMessages",
+  zValidator(
+    "json",
+    z.object({
+      userId: z.string(),
+      lastChecked: z.string().optional(), // ISO timestamp
+    })
+  ),
+  async (c) => {
+    const { userId, lastChecked } = c.req.valid("json");
+
+    const messages = await prisma.message.findMany({
+      where: {
+        receiverId: userId,
+        ...(lastChecked && {
+          createdAt: {
+            gt: new Date(lastChecked),
+          },
+        }),
+      },
+      include: {
+        sender: true,
+      },
+      orderBy: { createdAt: "desc" },
+      take: 10,
+    });
+
+    return c.json({ messages });
   }
 );
 
@@ -233,6 +353,10 @@ export default {
   signUp,
   signIn,
   getUser,
+  updateProfile,
   createPost,
   getPosts,
+  trackPostView,
+  getUnreadMessagesCount,
+  getRecentMessages,
 };

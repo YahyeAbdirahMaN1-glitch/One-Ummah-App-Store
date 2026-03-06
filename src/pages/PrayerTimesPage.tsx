@@ -1,10 +1,11 @@
 import { useState, useEffect, useRef } from 'react';
-import { Search, Play, Pause, MapPin, Volume2, ArrowLeft } from 'lucide-react';
+import { Search, Play, Pause, MapPin, Volume2, ArrowLeft, Bell, BellOff } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { Card } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
 import { toast } from 'sonner';
+import { useNotifications } from '../hooks/useNotifications';
 
 interface PrayerTime {
   name: string;
@@ -89,6 +90,7 @@ const ADHAN_RECITERS: AdhanReciter[] = [
 
 export default function PrayerTimesPage() {
   const navigate = useNavigate();
+  const { permission, requestPermission, sendPrayerNotification } = useNotifications();
   const [city, setCity] = useState('');
   const [country, setCountry] = useState('');
   const [prayerTimes, setPrayerTimes] = useState<PrayerTime[]>([]);
@@ -96,7 +98,9 @@ export default function PrayerTimesPage() {
   const [selectedReciter, setSelectedReciter] = useState<string | null>(null);
   const [playingReciter, setPlayingReciter] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const notificationTimersRef = useRef<NodeJS.Timeout[]>([]);
 
   const fetchPrayerTimes = async () => {
     if (!city.trim() || !country.trim()) {
@@ -205,8 +209,90 @@ export default function PrayerTimesPage() {
         audioRef.current.pause();
         audioRef.current = null;
       }
+      // Clear all notification timers
+      notificationTimersRef.current.forEach(timer => clearTimeout(timer));
     };
   }, []);
+
+  const schedulePrayerNotifications = () => {
+    // Clear existing timers
+    notificationTimersRef.current.forEach(timer => clearTimeout(timer));
+    notificationTimersRef.current = [];
+
+    if (!notificationsEnabled || prayerTimes.length === 0) return;
+
+    const now = new Date();
+    
+    prayerTimes.forEach(prayer => {
+      // Parse prayer time (format: "HH:MM")
+      const [hours, minutes] = prayer.time.split(':').map(Number);
+      const prayerDate = new Date();
+      prayerDate.setHours(hours, minutes, 0, 0);
+
+      // Calculate milliseconds until prayer time
+      let msUntilPrayer = prayerDate.getTime() - now.getTime();
+
+      // If prayer time has passed today, skip it
+      if (msUntilPrayer < 0) return;
+
+      // Schedule notification 5 minutes before prayer
+      const msUntilNotification = msUntilPrayer - (5 * 60 * 1000);
+      
+      if (msUntilNotification > 0) {
+        const timer = setTimeout(() => {
+          sendPrayerNotification(prayer.name, prayer.time);
+          toast.info(`${prayer.name} prayer in 5 minutes! 🕌`);
+        }, msUntilNotification);
+        
+        notificationTimersRef.current.push(timer);
+      }
+
+      // Schedule notification at exact prayer time
+      if (msUntilPrayer > 0) {
+        const timer = setTimeout(() => {
+          sendPrayerNotification(prayer.name, prayer.time);
+          toast.success(`It's time for ${prayer.name} prayer! 🕌`);
+          
+          // Auto-play selected reciter if available
+          if (selectedReciter) {
+            const reciter = ADHAN_RECITERS.find(r => r.id === selectedReciter);
+            if (reciter) {
+              toggleAdhanAudio(reciter);
+            }
+          }
+        }, msUntilPrayer);
+        
+        notificationTimersRef.current.push(timer);
+      }
+    });
+
+    toast.success(`Prayer notifications scheduled for ${prayerTimes.length} prayers today! 🔔`);
+  };
+
+  const toggleNotifications = async () => {
+    if (!notificationsEnabled) {
+      // Request permission and enable
+      const granted = await requestPermission();
+      if (granted) {
+        setNotificationsEnabled(true);
+        // Schedule notifications after enabling
+        setTimeout(schedulePrayerNotifications, 100);
+      }
+    } else {
+      // Disable notifications
+      setNotificationsEnabled(false);
+      notificationTimersRef.current.forEach(timer => clearTimeout(timer));
+      notificationTimersRef.current = [];
+      toast.info('Prayer notifications disabled');
+    }
+  };
+
+  // Re-schedule notifications when prayer times change
+  useEffect(() => {
+    if (notificationsEnabled && prayerTimes.length > 0) {
+      schedulePrayerNotifications();
+    }
+  }, [prayerTimes, notificationsEnabled, selectedReciter]);
 
   const filteredReciters = ADHAN_RECITERS.filter((reciter) =>
     reciter.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -260,7 +346,31 @@ export default function PrayerTimesPage() {
 
         {prayerTimes.length > 0 && (
           <div className="mt-6 space-y-3">
-            <h3 className="text-lg font-semibold text-amber-300">Today's Prayer Times</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-lg font-semibold text-amber-300">Today's Prayer Times</h3>
+              <Button
+                onClick={toggleNotifications}
+                variant="outline"
+                size="sm"
+                className={`${
+                  notificationsEnabled
+                    ? 'bg-amber-500/20 border-amber-500 text-amber-400'
+                    : 'bg-black/30 border-amber-900/30 text-gray-400'
+                } hover:bg-amber-500/30`}
+              >
+                {notificationsEnabled ? (
+                  <>
+                    <Bell className="w-4 h-4 mr-2" />
+                    Notifications On
+                  </>
+                ) : (
+                  <>
+                    <BellOff className="w-4 h-4 mr-2" />
+                    Enable Notifications
+                  </>
+                )}
+              </Button>
+            </div>
             {prayerTimes.map((prayer) => (
               <div
                 key={prayer.name}

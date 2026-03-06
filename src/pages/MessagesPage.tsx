@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Card } from '../components/ui/card';
 import { Input } from '../components/ui/input';
 import { Button } from '../components/ui/button';
-import { MessageCircle, Search, Send } from 'lucide-react';
+import { MessageCircle, Search, Send, Bell, BellOff } from 'lucide-react';
+import { useNotifications } from '../hooks/useNotifications';
+import { useMessageNotifications } from '../hooks/useMessageNotifications';
+import { toast } from 'sonner';
 
 interface Message {
   id: string;
@@ -22,10 +25,15 @@ interface ChatMessage {
 }
 
 export default function MessagesPage() {
+  const { permission, requestPermission } = useNotifications();
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedChat, setSelectedChat] = useState<string | null>(null);
   const [newMessage, setNewMessage] = useState('');
   const [messages] = useState<Message[]>([]);
+  const [messageNotificationsEnabled, setMessageNotificationsEnabled] = useState(false);
+  
+  // Use message notifications hook
+  useMessageNotifications(messageNotificationsEnabled);
 
   const [chatMessages, setChatMessages] = useState<ChatMessage[]>([
     {
@@ -47,6 +55,30 @@ export default function MessagesPage() {
   );
 
   const selectedMessage = messages.find(m => m.id === selectedChat);
+
+  const toggleMessageNotifications = async () => {
+    if (!messageNotificationsEnabled) {
+      const granted = await requestPermission();
+      if (granted) {
+        setMessageNotificationsEnabled(true);
+        toast.success('Message notifications enabled! 🔔');
+        // Save preference to localStorage
+        localStorage.setItem('messageNotificationsEnabled', 'true');
+      }
+    } else {
+      setMessageNotificationsEnabled(false);
+      toast.info('Message notifications disabled');
+      localStorage.removeItem('messageNotificationsEnabled');
+    }
+  };
+
+  // Load notification preference on mount
+  useEffect(() => {
+    const enabled = localStorage.getItem('messageNotificationsEnabled') === 'true';
+    if (enabled && permission === 'granted') {
+      setMessageNotificationsEnabled(true);
+    }
+  }, [permission]);
 
   const sendMessage = () => {
     if (!newMessage.trim()) return;
@@ -144,7 +176,35 @@ export default function MessagesPage() {
   return (
     <div className="space-y-6">
       <Card className="bg-gradient-to-br from-amber-950/30 to-black border-amber-900/30 p-6">
-        <h2 className="text-2xl font-bold text-amber-400 flex items-center gap-2 mb-4">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-2xl font-bold text-amber-400 flex items-center gap-2">
+            <MessageCircle className="w-6 h-6" />
+            Messages
+          </h2>
+          <Button
+            onClick={toggleMessageNotifications}
+            variant="outline"
+            size="sm"
+            className={`${
+              messageNotificationsEnabled
+                ? 'bg-amber-500/20 border-amber-500 text-amber-400'
+                : 'bg-black/30 border-amber-900/30 text-gray-400'
+            } hover:bg-amber-500/30`}
+          >
+            {messageNotificationsEnabled ? (
+              <>
+                <Bell className="w-4 h-4 mr-2" />
+                Notifications On
+              </>
+            ) : (
+              <>
+                <BellOff className="w-4 h-4 mr-2" />
+                Enable Notifications
+              </>
+            )}
+          </Button>
+        </div>
+        <h2 className="text-2xl font-bold text-amber-400 flex items-center gap-2 mb-4" style={{ display: 'none' }}>
           <MessageCircle className="w-6 h-6" />
           Messages
         </h2>
