@@ -1654,3 +1654,19 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
 5:54:35 AM [vite] (client) hmr update /src/pages/PrayerTimesPage.tsx, /src/index.css
 5:54:50 AM [vite] (client) page reload ios/App/App/public/index.html
 6:00:25 AM [vite] (client) page reload ios/App/App/public/index.html
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 515 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.2:4500/
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 684 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.10:4500/
+10:51:42 AM [vite] (client) hmr update /src/index.css, /src/pages/HomePage.tsx
+10:52:04 AM [vite] (client) hmr update /src/index.css, /src/pages/HomePage.tsx
+10:52:23 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+10:52:37 AM [vite] (client) page reload ios/App/App/public/index.html

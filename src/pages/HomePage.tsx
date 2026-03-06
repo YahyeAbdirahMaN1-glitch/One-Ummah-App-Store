@@ -74,7 +74,7 @@ export default function HomePage() {
       console.log('[iOS DEBUG] Response status:', response.status);
       console.log('[iOS DEBUG] Response data:', JSON.stringify(response.data).substring(0, 200));
 
-      if (response.data && response.data.posts) {
+      if (response.status === 200 && response.data && response.data.posts) {
         console.log('[iOS DEBUG] Found', response.data.posts.length, 'posts');
         
         const formattedPosts: Post[] = response.data.posts.map((post: any) => ({
@@ -108,31 +108,8 @@ export default function HomePage() {
         setPosts(formattedPosts);
         console.log('[iOS DEBUG] Posts loaded successfully:', formattedPosts.length);
       } else {
-        console.log('[iOS DEBUG] No posts in response, using mock data');
-        // Use mock data for testing if API returns no posts
-        const mockPosts: Post[] = [
-          {
-            id: 'mock-1',
-            userId: 'system',
-            userName: 'One Ummah',
-            userImage: undefined,
-            userIsOnline: true,
-            content: 'Welcome to One Ummah! This is a test post. Your posts will appear here.',
-            videoUrl: undefined,
-            videoType: undefined,
-            likes: 5,
-            dislikes: 0,
-            shares: 2,
-            reposts: 1,
-            views: 10,
-            comments: [],
-            liked: false,
-            disliked: false,
-            showComments: false,
-            createdAt: new Date(),
-          }
-        ];
-        setPosts(mockPosts);
+        console.log('[iOS DEBUG] No posts found - empty feed');
+        setPosts([]);
       }
       
       setLoadingPosts(false);
@@ -144,34 +121,9 @@ export default function HomePage() {
         stack: error.stack
       });
       
-      setPostsError('Failed to load posts. Using offline mode.');
+      setPostsError(`Failed to load posts: ${error.message}`);
       setLoadingPosts(false);
-      
-      // Show mock data even on error so users can test the app
-      const mockPosts: Post[] = [
-        {
-          id: 'mock-error-1',
-          userId: 'system',
-          userName: 'One Ummah',
-          userImage: undefined,
-          userIsOnline: false,
-          content: 'Unable to connect to server. This is test data. Your posts will sync when connection is restored.',
-          videoUrl: undefined,
-          videoType: undefined,
-          likes: 0,
-          dislikes: 0,
-          shares: 0,
-          reposts: 0,
-          views: 0,
-          comments: [],
-          liked: false,
-          disliked: false,
-          showComments: false,
-          createdAt: new Date(),
-        }
-      ];
-      setPosts(mockPosts);
-      toast.error('Could not load posts. Showing test data.');
+      setPosts([]);
     }
   };
 

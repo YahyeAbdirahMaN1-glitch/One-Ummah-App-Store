@@ -289,20 +289,19 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
   }
 
   return (
-    <div className="fixed inset-0 bg-black z-50 overflow-hidden">
-      {/* Video Preview */}
+    <div className="fixed inset-0 bg-black z-[9999] overflow-hidden">
+      {/* Video Preview - z-index 0 (lowest, behind buttons) */}
       <video
         ref={videoRef}
         autoPlay
         playsInline
         muted
-        className={`absolute inset-0 w-full h-full object-cover ${cameraFacing === 'user' ? 'scale-x-[-1]' : ''}`}
+        className={`absolute inset-0 w-full h-full object-cover z-0 ${cameraFacing === 'user' ? 'scale-x-[-1]' : ''}`}
         style={{ 
           objectPosition: 'center center',
           width: '100vw',
           height: '100vh',
-          minWidth: '100%',
-          minHeight: '100%',
+          backgroundColor: '#000',
         }}
       />
 
