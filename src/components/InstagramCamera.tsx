@@ -13,6 +13,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
   const streamRef = useRef<MediaStream | null>(null);
   const mediaRecorderRef = useRef<MediaRecorder | null>(null);
   const chunksRef = useRef<Blob[]>([]);
+  const isStartingOverRef = useRef(false);
   
   const [videoType, setVideoType] = useState<VideoType>('littles');
   const [cameraFacing, setCameraFacing] = useState<'user' | 'environment'>('user');
@@ -20,7 +21,6 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
   const [duration, setDuration] = useState(0);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isStartingOver, setIsStartingOver] = useState(false);
 
   // Lock body scroll
   useEffect(() => {
@@ -167,10 +167,12 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       
       recorder.onstop = () => {
         // Don't trigger callback if we're just starting over
-        if (!isStartingOver) {
+        if (!isStartingOverRef.current) {
           const blob = new Blob(chunksRef.current, { type: 'video/webm' });
           onVideoRecorded(blob, videoType);
         }
+        // Reset the flag after handling
+        isStartingOverRef.current = false;
       };
       
       recorder.start();
@@ -211,7 +213,7 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
     console.log('Start Over clicked');
     
     // Set flag to prevent onstop from calling onVideoRecorded
-    setIsStartingOver(true);
+    isStartingOverRef.current = true;
     
     // Stop current recording
     if (isRecording && mediaRecorderRef.current) {
@@ -230,10 +232,9 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
     chunksRef.current = [];
     
     // Wait a moment for cleanup
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise(resolve => setTimeout(resolve, 300));
     
-    // Clear the flag and start new recording
-    setIsStartingOver(false);
+    // Start new recording (flag will be cleared in onstop handler)
     console.log('Starting new recording');
     startRecording();
   };
