@@ -396,49 +396,53 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
         </div>
       )}
 
-      {/* Recording Indicator */}
+      {/* Recording Indicator - Instagram Style */}
       {isRecording && (
         <div className="absolute top-24 left-0 right-0 flex justify-center z-20">
-          <div className="flex items-center gap-3 bg-red-600 backdrop-blur-md px-8 py-4 rounded-full shadow-2xl shadow-red-900/50 border-2 border-white/30">
-            <div className="w-5 h-5 bg-white rounded-full animate-pulse shadow-lg"></div>
-            <span className="text-white font-black text-3xl tracking-widest drop-shadow-[0_4px_8px_rgba(0,0,0,0.9)]">
+          <div className="flex items-center gap-2 bg-gradient-to-r from-red-600 to-red-700 backdrop-blur-lg px-5 py-2 rounded-full shadow-xl shadow-red-900/40 border border-red-400/30">
+            <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+            <span className="text-white font-bold text-base tracking-wide drop-shadow-lg">
               REC
             </span>
           </div>
         </div>
       )}
 
-      {/* Timer & Max Duration */}
+      {/* Timer - Instagram Style with Gold Accent */}
       <div className="absolute top-40 left-0 right-0 flex justify-center z-10">
-        <div className="bg-black/80 backdrop-blur-md px-8 py-4 rounded-full shadow-2xl border-2 border-white/20">
-          <p className="text-white text-3xl font-black font-mono tracking-wider drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">
+        <div className="bg-gradient-to-r from-black/70 to-black/60 backdrop-blur-lg px-6 py-2 rounded-full shadow-xl border border-amber-400/30">
+          <p className="text-amber-100 text-xl font-semibold font-mono tracking-wide drop-shadow-lg">
             {formatDuration(duration)} / {getMaxDuration()}
           </p>
         </div>
       </div>
 
-      {/* Recording Controls - Positioned Left and Right */}
+      {/* Recording Controls - Instagram Style with One Ummah Branding */}
       {isRecording && !recordedBlob && (
         <>
-          {/* Start Over - Left Side */}
+          {/* Start Over - Left Side (Instagram style) */}
           <button
             onClick={startOver}
-            className="absolute bottom-32 left-4 bg-black/70 backdrop-blur-lg px-5 py-2.5 rounded-2xl border border-white/40 hover:bg-black/85 transition-all shadow-lg hover:shadow-xl"
+            className="absolute bottom-32 left-6 flex items-center gap-2 bg-gradient-to-r from-black/60 to-black/40 backdrop-blur-md px-4 py-2 rounded-full border border-white/50 hover:border-amber-400/70 hover:bg-black/70 transition-all shadow-xl"
             style={{ zIndex: 50 }}
           >
-            <span className="text-white font-light text-sm italic tracking-wide drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]">
-              ↻ start over
+            <div className="w-5 h-5 rounded-full border-2 border-white flex items-center justify-center">
+              <span className="text-white text-xs">↻</span>
+            </div>
+            <span className="text-white font-semibold text-sm tracking-tight drop-shadow-lg">
+              Start Over
             </span>
           </button>
 
-          {/* STOP - Right Side */}
+          {/* STOP - Right Side (Instagram style with gold accent) */}
           <button
             onClick={stopRecording}
-            className="absolute bottom-32 right-4 bg-red-600/90 backdrop-blur-lg px-6 py-2.5 rounded-2xl hover:bg-red-700 transition-all shadow-lg hover:shadow-xl border border-red-400/30"
+            className="absolute bottom-32 right-6 flex items-center gap-2 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 px-5 py-2 rounded-full shadow-2xl shadow-amber-500/40 hover:shadow-amber-500/60 border border-amber-300/30 transition-all"
             style={{ zIndex: 50 }}
           >
-            <span className="text-white font-medium text-base tracking-[0.15em] drop-shadow-[0_2px_3px_rgba(0,0,0,0.8)]">
-              ■ STOP
+            <div className="w-2 h-2 bg-white rounded-sm animate-pulse"></div>
+            <span className="text-white font-bold text-sm tracking-wide drop-shadow-lg">
+              STOP
             </span>
           </button>
         </>
@@ -447,33 +451,45 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       {/* Bottom Controls */}
       <div className="absolute bottom-8 left-0 right-0 px-4" style={{ zIndex: 50 }}>
 
-        {/* Preview State - Discard + Post buttons */}
+        {/* Preview State - Instagram Style with One Ummah Gold */}
         {recordedBlob && (
-          <div className="flex justify-center items-center gap-6">
+          <div className="flex justify-center items-center gap-4">
+            {/* Discard - Instagram style */}
             <button
               onClick={discardVideo}
-              className="bg-gray-800 backdrop-blur-md px-10 py-5 rounded-full border-2 border-gray-300 hover:bg-gray-700 transition-all shadow-2xl"
+              className="flex items-center gap-2 bg-black/60 backdrop-blur-md px-6 py-3 rounded-full border border-white/50 hover:border-white hover:bg-black/70 transition-all shadow-xl"
             >
-              <span className="text-white font-black text-2xl tracking-wide drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">DISCARD</span>
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+              <span className="text-white font-semibold text-base tracking-tight drop-shadow-lg">
+                Discard
+              </span>
             </button>
 
+            {/* Post - One Ummah Gold Gradient (Instagram inspired) */}
             <button
               onClick={postVideo}
-              className="bg-gradient-to-r from-amber-500 to-amber-600 px-14 py-5 rounded-full hover:from-amber-600 hover:to-amber-700 transition-all shadow-2xl shadow-amber-500/60 scale-110"
+              className="flex items-center gap-2 bg-gradient-to-r from-amber-500 via-amber-600 to-yellow-500 hover:from-amber-600 hover:via-amber-700 hover:to-yellow-600 px-8 py-3 rounded-full shadow-2xl shadow-amber-500/50 hover:shadow-amber-500/70 border border-amber-300/40 transition-all scale-105 hover:scale-110"
             >
-              <span className="text-white font-black text-2xl tracking-widest drop-shadow-[0_3px_6px_rgba(0,0,0,0.9)]">POST</span>
+              <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+              <span className="text-white font-bold text-lg tracking-wide drop-shadow-lg">
+                Post
+              </span>
             </button>
           </div>
         )}
 
-        {/* Initial State - Record button */}
+        {/* Initial State - Instagram Record Button with Gold Accent */}
         {!isRecording && !recordedBlob && (
           <div className="flex justify-center">
             <button
               onClick={startRecording}
-              className="relative w-20 h-20 rounded-full flex items-center justify-center bg-white/20 border-4 border-white transition-all hover:scale-105"
+              className="relative w-20 h-20 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5 border-4 border-amber-400 hover:border-amber-300 transition-all hover:scale-105 shadow-2xl shadow-amber-500/30"
             >
-              <div className="w-16 h-16 bg-red-600 rounded-full"></div>
+              <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-700 rounded-full shadow-lg"></div>
             </button>
           </div>
         )}
