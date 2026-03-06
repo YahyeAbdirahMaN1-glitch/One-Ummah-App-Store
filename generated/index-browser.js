@@ -135,6 +135,7 @@ exports.Prisma.UserScalarFieldEnum = {
   isOnline: 'isOnline',
   typingStatus: 'typingStatus',
   lastSeen: 'lastSeen',
+  readReceiptsEnabled: 'readReceiptsEnabled',
   createdAt: 'createdAt'
 };
 

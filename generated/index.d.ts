@@ -2112,6 +2112,7 @@ export namespace Prisma {
     isOnline: boolean | null
     typingStatus: string | null
     lastSeen: Date | null
+    readReceiptsEnabled: boolean | null
     createdAt: Date | null
   }
 
@@ -2132,6 +2133,7 @@ export namespace Prisma {
     isOnline: boolean | null
     typingStatus: string | null
     lastSeen: Date | null
+    readReceiptsEnabled: boolean | null
     createdAt: Date | null
   }
 
@@ -2152,6 +2154,7 @@ export namespace Prisma {
     isOnline: number
     typingStatus: number
     lastSeen: number
+    readReceiptsEnabled: number
     createdAt: number
     _all: number
   }
@@ -2174,6 +2177,7 @@ export namespace Prisma {
     isOnline?: true
     typingStatus?: true
     lastSeen?: true
+    readReceiptsEnabled?: true
     createdAt?: true
   }
 
@@ -2194,6 +2198,7 @@ export namespace Prisma {
     isOnline?: true
     typingStatus?: true
     lastSeen?: true
+    readReceiptsEnabled?: true
     createdAt?: true
   }
 
@@ -2214,6 +2219,7 @@ export namespace Prisma {
     isOnline?: true
     typingStatus?: true
     lastSeen?: true
+    readReceiptsEnabled?: true
     createdAt?: true
     _all?: true
   }
@@ -2307,6 +2313,7 @@ export namespace Prisma {
     isOnline: boolean
     typingStatus: string
     lastSeen: Date
+    readReceiptsEnabled: boolean
     createdAt: Date
     _count: UserCountAggregateOutputType | null
     _min: UserMinAggregateOutputType | null
@@ -2344,6 +2351,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: boolean
     lastSeen?: boolean
+    readReceiptsEnabled?: boolean
     createdAt?: boolean
     posts?: boolean | User$postsArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
@@ -2379,6 +2387,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: boolean
     lastSeen?: boolean
+    readReceiptsEnabled?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -2399,6 +2408,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: boolean
     lastSeen?: boolean
+    readReceiptsEnabled?: boolean
     createdAt?: boolean
   }, ExtArgs["result"]["user"]>
 
@@ -2419,10 +2429,11 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: boolean
     lastSeen?: boolean
+    readReceiptsEnabled?: boolean
     createdAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "image" | "handle" | "email" | "password" | "rememberPassword" | "gender" | "birthDate" | "bio" | "profilePicture" | "city" | "country" | "isOnline" | "typingStatus" | "lastSeen" | "createdAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "name" | "image" | "handle" | "email" | "password" | "rememberPassword" | "gender" | "birthDate" | "bio" | "profilePicture" | "city" | "country" | "isOnline" | "typingStatus" | "lastSeen" | "readReceiptsEnabled" | "createdAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     posts?: boolean | User$postsArgs<ExtArgs>
     comments?: boolean | User$commentsArgs<ExtArgs>
@@ -2478,6 +2489,7 @@ export namespace Prisma {
       isOnline: boolean
       typingStatus: string
       lastSeen: Date
+      readReceiptsEnabled: boolean
       createdAt: Date
     }, ExtArgs["result"]["user"]>
     composites: {}
@@ -2932,6 +2944,7 @@ export namespace Prisma {
     readonly isOnline: FieldRef<"User", 'Boolean'>
     readonly typingStatus: FieldRef<"User", 'String'>
     readonly lastSeen: FieldRef<"User", 'DateTime'>
+    readonly readReceiptsEnabled: FieldRef<"User", 'Boolean'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
   }
     
@@ -15559,6 +15572,7 @@ export namespace Prisma {
     isOnline: 'isOnline',
     typingStatus: 'typingStatus',
     lastSeen: 'lastSeen',
+    readReceiptsEnabled: 'readReceiptsEnabled',
     createdAt: 'createdAt'
   };
 
@@ -15758,6 +15772,7 @@ export namespace Prisma {
     isOnline?: BoolFilter<"User"> | boolean
     typingStatus?: StringFilter<"User"> | string
     lastSeen?: DateTimeFilter<"User"> | Date | string
+    readReceiptsEnabled?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     posts?: PostListRelationFilter
     comments?: CommentListRelationFilter
@@ -15792,6 +15807,7 @@ export namespace Prisma {
     isOnline?: SortOrder
     typingStatus?: SortOrder
     lastSeen?: SortOrder
+    readReceiptsEnabled?: SortOrder
     createdAt?: SortOrder
     posts?: PostOrderByRelationAggregateInput
     comments?: CommentOrderByRelationAggregateInput
@@ -15829,6 +15845,7 @@ export namespace Prisma {
     isOnline?: BoolFilter<"User"> | boolean
     typingStatus?: StringFilter<"User"> | string
     lastSeen?: DateTimeFilter<"User"> | Date | string
+    readReceiptsEnabled?: BoolFilter<"User"> | boolean
     createdAt?: DateTimeFilter<"User"> | Date | string
     posts?: PostListRelationFilter
     comments?: CommentListRelationFilter
@@ -15863,6 +15880,7 @@ export namespace Prisma {
     isOnline?: SortOrder
     typingStatus?: SortOrder
     lastSeen?: SortOrder
+    readReceiptsEnabled?: SortOrder
     createdAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
     _max?: UserMaxOrderByAggregateInput
@@ -15889,6 +15907,7 @@ export namespace Prisma {
     isOnline?: BoolWithAggregatesFilter<"User"> | boolean
     typingStatus?: StringWithAggregatesFilter<"User"> | string
     lastSeen?: DateTimeWithAggregatesFilter<"User"> | Date | string
+    readReceiptsEnabled?: BoolWithAggregatesFilter<"User"> | boolean
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
 
@@ -16564,6 +16583,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -16598,6 +16618,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -16632,6 +16653,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -16666,6 +16688,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -16700,6 +16723,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
   }
 
@@ -16720,6 +16744,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -16740,6 +16765,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
@@ -17550,6 +17576,7 @@ export namespace Prisma {
     isOnline?: SortOrder
     typingStatus?: SortOrder
     lastSeen?: SortOrder
+    readReceiptsEnabled?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -17570,6 +17597,7 @@ export namespace Prisma {
     isOnline?: SortOrder
     typingStatus?: SortOrder
     lastSeen?: SortOrder
+    readReceiptsEnabled?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -17590,6 +17618,7 @@ export namespace Prisma {
     isOnline?: SortOrder
     typingStatus?: SortOrder
     lastSeen?: SortOrder
+    readReceiptsEnabled?: SortOrder
     createdAt?: SortOrder
   }
 
@@ -19947,6 +19976,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     comments?: CommentCreateNestedManyWithoutUserInput
     likes?: LikeCreateNestedManyWithoutUserInput
@@ -19980,6 +20010,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
@@ -20157,6 +20188,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     comments?: CommentUpdateManyWithoutUserNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
@@ -20190,6 +20222,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
@@ -20356,6 +20389,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     likes?: LikeCreateNestedManyWithoutUserInput
@@ -20389,6 +20423,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     likes?: LikeUncheckedCreateNestedManyWithoutUserInput
@@ -20481,6 +20516,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     likes?: LikeUpdateManyWithoutUserNestedInput
@@ -20514,6 +20550,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     likes?: LikeUncheckedUpdateManyWithoutUserNestedInput
@@ -20547,6 +20584,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -20580,6 +20618,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -20618,6 +20657,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -20651,6 +20691,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -20700,6 +20741,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -20733,6 +20775,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -20777,6 +20820,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -20810,6 +20854,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -20843,6 +20888,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -20876,6 +20922,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -20914,6 +20961,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -20947,6 +20995,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -20996,6 +21045,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -21029,6 +21079,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -21073,6 +21124,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -21106,6 +21158,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -21139,6 +21192,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -21172,6 +21226,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -21221,6 +21276,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -21254,6 +21310,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -21287,6 +21344,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -21320,6 +21378,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -21406,6 +21465,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -21439,6 +21499,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -21515,6 +21576,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -21548,6 +21610,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -21634,6 +21697,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -21667,6 +21731,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -21743,6 +21808,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -21776,6 +21842,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -21862,6 +21929,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -21895,6 +21963,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -21971,6 +22040,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -22004,6 +22074,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -22090,6 +22161,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -22123,6 +22195,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -22199,6 +22272,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -22232,6 +22306,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -22318,6 +22393,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -22351,6 +22427,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -22427,6 +22504,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -22460,6 +22538,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -22498,6 +22577,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostCreateNestedManyWithoutUserInput
     comments?: CommentCreateNestedManyWithoutUserInput
@@ -22531,6 +22611,7 @@ export namespace Prisma {
     isOnline?: boolean
     typingStatus?: string
     lastSeen?: Date | string
+    readReceiptsEnabled?: boolean
     createdAt?: Date | string
     posts?: PostUncheckedCreateNestedManyWithoutUserInput
     comments?: CommentUncheckedCreateNestedManyWithoutUserInput
@@ -22580,6 +22661,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -22613,6 +22695,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput
@@ -22657,6 +22740,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUpdateManyWithoutUserNestedInput
     comments?: CommentUpdateManyWithoutUserNestedInput
@@ -22690,6 +22774,7 @@ export namespace Prisma {
     isOnline?: BoolFieldUpdateOperationsInput | boolean
     typingStatus?: StringFieldUpdateOperationsInput | string
     lastSeen?: DateTimeFieldUpdateOperationsInput | Date | string
+    readReceiptsEnabled?: BoolFieldUpdateOperationsInput | boolean
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     posts?: PostUncheckedUpdateManyWithoutUserNestedInput
     comments?: CommentUncheckedUpdateManyWithoutUserNestedInput

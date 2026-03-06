@@ -82,6 +82,13 @@ export function useAuth() {
       if (data.userId) {
         localStorage.setItem('userId', data.userId);
         setUser(data.user);
+        
+        // Set user as online
+        await CapacitorHttp.post({
+          url: `${API_URL}/updateOnlineStatus`,
+          headers: { 'Content-Type': 'application/json' },
+          data: { userId: data.userId, isOnline: true },
+        });
       }
       
       return data;
@@ -130,6 +137,13 @@ export function useAuth() {
       
       if (userResponse.status === 200) {
         setUser(userResponse.data.user);
+        
+        // Set user as online
+        await CapacitorHttp.post({
+          url: `${API_URL}/updateOnlineStatus`,
+          headers: { 'Content-Type': 'application/json' },
+          data: { userId: data.userId, isOnline: true },
+        });
       }
       
       return data;

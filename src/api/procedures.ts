@@ -595,6 +595,28 @@ export const updateOnlineStatus = router.post(
   }
 );
 
+// Update Privacy Settings
+export const updatePrivacySettings = router.post(
+  "/updatePrivacySettings",
+  zValidator(
+    "json",
+    z.object({
+      userId: z.string(),
+      readReceiptsEnabled: z.boolean(),
+    })
+  ),
+  async (c) => {
+    const { userId, readReceiptsEnabled } = c.req.valid("json");
+
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { readReceiptsEnabled },
+    });
+
+    return c.json({ success: true, user });
+  }
+);
+
 // ==================== EXPORT ====================
 
 export default {
@@ -614,4 +636,5 @@ export default {
   sendMessage,
   markMessagesAsRead,
   updateOnlineStatus,
+  updatePrivacySettings,
 };

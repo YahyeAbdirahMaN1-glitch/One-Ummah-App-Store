@@ -28,6 +28,7 @@ model User {
   isOnline         Boolean   @default(false)
   typingStatus     String    @default("NOT_TYPING") // "NOT_TYPING" or "TYPING"
   lastSeen         DateTime  @default(now())
+  readReceiptsEnabled Boolean @default(true) // Privacy: allow others to see when you've read their messages
   createdAt        DateTime  @default(now())
   
   // Relations

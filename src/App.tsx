@@ -8,6 +8,7 @@ import SignUpPage from './pages/SignUpPage';
 import ProfileSetupPage from './pages/ProfileSetupPage';
 import ProfilePage from './pages/ProfilePage';
 import ProfileSettingsPage from './pages/ProfileSettingsPage';
+import PrivacySettingsPage from './pages/PrivacySettingsPage';
 import MessagesPage from './pages/MessagesPage';
 import FriendsPage from './pages/FriendsPage';
 import PrayerTimesPage from './pages/PrayerTimesPage';
@@ -44,6 +45,7 @@ function App() {
             <Route path="/profile-setup" element={<ProfileSetupPage />} />
             <Route path="/profile/:userId" element={<ProfilePage />} />
             <Route path="/profile-settings" element={<ProfileSettingsPage />} />
+            <Route path="/privacy-settings" element={<PrivacySettingsPage />} />
             <Route path="/messages" element={<MessagesPage />} />
             <Route path="/messages/:userId" element={<MessagesPage />} />
             <Route path="/friends" element={<FriendsPage />} />
