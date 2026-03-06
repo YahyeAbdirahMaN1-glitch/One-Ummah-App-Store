@@ -191,6 +191,37 @@ script[src*="crisp"] {
   display: none !important;
 }
 
+/* MEGA AGGRESSIVE: Target Adaptive chat specifically */
+body > div:not(#root):not([class]):not([id]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  z-index: -99999 !important;
+  position: absolute !important;
+  left: -99999px !important;
+}
+
+/* Hide any elements that appear after #root */
+#root ~ div,
+#root ~ iframe,
+#root ~ button {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Adaptive-specific patterns */
+[data-adaptive*="chat"],
+[class*="AdaptiveChat"],
+[id*="AdaptiveChat"],
+div[style*="z-index: 2147483647"],
+div[style*="z-index:2147483647"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
 /* END CHAT WIDGET HIDING - Lines 122-228 */
 
 /* One Ummah brand colors */
