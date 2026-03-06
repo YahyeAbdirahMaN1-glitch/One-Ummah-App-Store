@@ -31,6 +31,8 @@
 - ✅ **Share button**: Share icon with counter
 - ✅ **Repost button**: Repost icon with counter
 - ✅ **Views counter**: Eye icon with view count
+- ✅ **Delete button**: Trash icon in top-right corner (red hover effect)
+- ✅ **Comment system**: Full comment threads with user avatars
 - ✅ All buttons functional on HomePage posts
 
 ### 4. Prayer Times
