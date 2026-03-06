@@ -62,8 +62,10 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         await videoRef.current.play();
-        setIsLoading(false);
       }
+      
+      // Always set loading to false after stream is created
+      setIsLoading(false);
     } catch (err: any) {
       console.error('Camera error:', err);
       setIsLoading(false);
@@ -87,9 +89,9 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
           if (videoRef.current) {
             videoRef.current.srcObject = simpleStream;
             await videoRef.current.play();
-            setIsLoading(false);
           }
           setError(null);
+          setIsLoading(false);
         } catch {
           setError('Failed to access camera with any settings.');
           setIsLoading(false);

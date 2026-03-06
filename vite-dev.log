@@ -1172,3 +1172,6 @@ Started vite server in mode: development
 Error: connect ECONNREFUSED 127.0.0.1:5002
     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
 3:48:26 AM [vite] (client) page reload ios/App/App/public/index.html
+3:56:37 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+3:56:43 AM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+3:56:54 AM [vite] (client) page reload ios/App/App/public/index.html
