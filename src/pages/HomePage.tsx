@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { Video, Heart, ThumbsDown, Share2, Repeat, Eye, MessageCircle, Send, Trash2, User, Camera } from 'lucide-react';
+import { Video, Heart, ThumbsDown, Share2, Repeat, Eye, MessageCircle, Send, Trash2, User, Camera, Bell } from 'lucide-react';
+import { notificationService } from '../utils/notifications';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Textarea } from '../components/ui/textarea';
@@ -62,7 +63,16 @@ export default function HomePage() {
   // Load all posts from database on component mount
   useEffect(() => {
     loadPosts();
-  }, []);
+    
+    // Request notification permission on first load
+    if (user) {
+      notificationService.requestPermission().then(granted => {
+        if (granted) {
+          console.log('[Notifications] Permission granted');
+        }
+      });
+    }
+  }, [user]);
 
   const loadPosts = async () => {
     try {

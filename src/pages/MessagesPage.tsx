@@ -7,6 +7,7 @@ import { useAuth } from '../hooks/useAuth';
 import { CapacitorHttp } from '@capacitor/core';
 import { API_URL } from '../config';
 import { toast } from 'sonner';
+import { notificationService } from '../utils/notifications';
 
 interface Conversation {
   userId: string;
@@ -37,19 +38,22 @@ export default function MessagesPage() {
   const [readReceiptsEnabled, setReadReceiptsEnabled] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  // Load conversations on mount
+  // Load conversations on mount and poll for new messages
   useEffect(() => {
     if (user) {
       loadConversations();
       updateOnlineStatus(true);
-    }
-
-    // Set user offline when leaving page
-    return () => {
-      if (user) {
+      
+      // Poll for new messages every 30 seconds
+      const pollInterval = setInterval(() => {
+        loadConversations();
+      }, 30000);
+      
+      return () => {
+        clearInterval(pollInterval);
         updateOnlineStatus(false);
-      }
-    };
+      };
+    }
   }, [user]);
 
   // Load chat messages when conversation selected
@@ -102,6 +106,14 @@ export default function MessagesPage() {
         }));
 
         setConversations(formattedConversations);
+        
+        // Check for new unread messages and show notifications
+        const unreadConversations = formattedConversations.filter(c => c.unread > 0);
+        if (unreadConversations.length > 0) {
+          // Only show notification for the most recent unread message
+          const mostRecent = unreadConversations[0];
+          notificationService.newMessage(mostRecent.userName, mostRecent.lastMessage);
+        }
       }
     } catch (error) {
       console.error('Failed to load conversations:', error);
