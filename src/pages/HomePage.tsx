@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { Video, Heart, ThumbsDown, Share2, Repeat, Eye, MessageCircle, Send, Trash2, User } from 'lucide-react';
+import { Video, Heart, ThumbsDown, Share2, Repeat, Eye, MessageCircle, Send, Trash2, User, Camera } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card } from '../components/ui/card';
 import { Textarea } from '../components/ui/textarea';
@@ -46,7 +46,9 @@ export default function HomePage() {
   const { user } = useAuth();
   const [postContent, setPostContent] = useState('');
   const [recordedVideo, setRecordedVideo] = useState<{ blob: Blob; type: 'littles' | 'length' } | null>(null);
+  const [selectedPhoto, setSelectedPhoto] = useState<string | null>(null);
   const [showCamera, setShowCamera] = useState(false);
+  const photoInputRef = useRef<HTMLInputElement>(null);
   const [posts, setPosts] = useState<Post[]>([]);
   const [viewedPosts, setViewedPosts] = useState<Set<string>>(new Set());
   const [commentInputs, setCommentInputs] = useState<{ [postId: string]: string }>({});
@@ -133,13 +135,38 @@ export default function HomePage() {
 
   const handleVideoRecorded = (blob: Blob, type: 'littles' | 'length') => {
     setRecordedVideo({ blob, type });
+    setSelectedPhoto(null); // Clear photo if video is recorded
     setShowCamera(false);
-    toast.success(`${type === 'littles' ? 'Littles' : 'Length'} video recorded! Add a caption and post.`);
+  };
+
+  const handlePhotoSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select an image file');
+      return;
+    }
+
+    // Check file size (max 10MB)
+    if (file.size > 10 * 1024 * 1024) {
+      toast.error('Image is too large! Please select an image under 10MB');
+      return;
+    }
+
+    // Convert to base64
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setSelectedPhoto(reader.result as string);
+      setRecordedVideo(null); // Clear video if photo is selected
+    };
+    reader.readAsDataURL(file);
   };
 
   const handlePost = async () => {
-    if (!postContent.trim() && !recordedVideo) {
-      toast.error('Please add content or a video');
+    if (!postContent.trim() && !recordedVideo && !selectedPhoto) {
+      toast.error('Please add content, a photo, or a video');
       return;
     }
 
@@ -161,11 +188,27 @@ export default function HomePage() {
       // Convert video to base64 if present
       let videoBase64: string | undefined;
       if (recordedVideo) {
+        console.log('[VIDEO] Original blob size:', recordedVideo.blob.size, 'bytes');
+        
+        // Check if video is too large (> 50MB)
+        if (recordedVideo.blob.size > 50 * 1024 * 1024) {
+          toast.dismiss();
+          toast.error('Video is too large! Please record a shorter video (max 3 min for Littles)');
+          return;
+        }
+        
         const reader = new FileReader();
         videoBase64 = await new Promise((resolve) => {
-          reader.onloadend = () => resolve(reader.result as string);
+          reader.onloadend = () => {
+            const result = reader.result as string;
+            console.log('[VIDEO] Base64 length:', result.length);
+            console.log('[VIDEO] Base64 prefix:', result.substring(0, 50));
+            resolve(result);
+          };
           reader.readAsDataURL(recordedVideo.blob);
         });
+        
+        console.log('[VIDEO] Conversion complete, sending to server...');
       }
 
       // Save to database
@@ -182,6 +225,7 @@ export default function HomePage() {
         data: {
           userId: user.id,
           content: postContent,
+          imageUrls: selectedPhoto || null,
           videoUrls: videoBase64 || null,
           videoType: recordedVideo?.type || null,
         },
@@ -230,6 +274,7 @@ export default function HomePage() {
         toast.success('Post created successfully!');
         setPostContent('');
         setRecordedVideo(null);
+        setSelectedPhoto(null);
       } else {
         toast.dismiss();
         toast.error('Server returned invalid response');
@@ -431,6 +476,28 @@ export default function HomePage() {
           className="bg-black/50 border-amber-900/30 text-white placeholder:text-gray-500 mb-4 min-h-[100px]"
         />
 
+        {selectedPhoto && (
+          <div className="mb-4 rounded-lg overflow-hidden bg-black/30 border border-amber-900/30">
+            <img
+              src={selectedPhoto}
+              alt="Selected photo"
+              className="w-full max-h-96 object-contain"
+            />
+            <div className="p-3 flex items-center justify-between">
+              <p className="text-amber-400 text-sm flex items-center gap-2">
+                <Camera className="w-4 h-4" />
+                Photo attached
+              </p>
+              <button
+                onClick={() => setSelectedPhoto(null)}
+                className="text-red-400 hover:text-red-300 text-sm"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+        )}
+
         {recordedVideo && (
           <div className="mb-4 rounded-lg overflow-hidden bg-black/30 border border-amber-900/30">
             <video
@@ -438,22 +505,36 @@ export default function HomePage() {
               controls
               className="w-full max-h-96 object-contain"
             />
-            <div className="p-3">
+            <div className="p-3 flex items-center justify-between">
               <p className="text-amber-400 text-sm flex items-center gap-2">
                 <Video className="w-4 h-4" />
                 {recordedVideo.type === 'littles' ? 'Littles' : 'Length'} video attached
               </p>
+              <button
+                onClick={() => setRecordedVideo(null)}
+                className="text-red-400 hover:text-red-300 text-sm"
+              >
+                Remove
+              </button>
             </div>
           </div>
         )}
 
-        <div className="flex gap-3">
+        <div className="flex gap-2">
+          <Button
+            onClick={() => photoInputRef.current?.click()}
+            className="flex-1 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white"
+          >
+            <Camera className="w-5 h-5 mr-2" />
+            Photo
+          </Button>
+
           <Button
             onClick={() => setShowCamera(true)}
             className="flex-1 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white"
           >
             <Video className="w-5 h-5 mr-2" />
-            Record
+            Video
           </Button>
 
           <Button
@@ -463,6 +544,15 @@ export default function HomePage() {
             Post
           </Button>
         </div>
+
+        {/* Hidden photo input */}
+        <input
+          ref={photoInputRef}
+          type="file"
+          accept="image/*"
+          onChange={handlePhotoSelect}
+          className="hidden"
+        />
       </Card>
 
       {/* Posts Feed */}
@@ -572,24 +662,42 @@ export default function HomePage() {
 
               {/* Video */}
               {post.videoUrl && (
-                <div className="mb-4 rounded-lg overflow-hidden">
-                  <video
-                    src={post.videoUrl}
-                    controls
-                    playsInline
-                    preload="metadata"
-                    webkit-playsinline="true"
-                    className="w-full max-h-96 object-contain bg-black"
-                    onError={(e) => {
-                      console.error('[VIDEO ERROR] Post ID:', post.id);
-                      console.error('[VIDEO ERROR] Video URL length:', post.videoUrl?.length);
-                      console.error('[VIDEO ERROR] Video URL prefix:', post.videoUrl?.substring(0, 50));
-                      console.error('[VIDEO ERROR] Error:', e);
-                    }}
-                    onLoadedData={() => {
-                      console.log('[VIDEO SUCCESS] Loaded for post:', post.id);
-                    }}
-                  />
+                <div className="mb-4 rounded-lg overflow-hidden bg-black">
+                  {post.videoUrl.startsWith('data:video') ? (
+                    <video
+                      src={post.videoUrl}
+                      controls
+                      playsInline
+                      preload="auto"
+                      muted={false}
+                      className="w-full max-h-96 object-contain"
+                      style={{ maxHeight: '384px' }}
+                      onError={(e) => {
+                        console.error('[VIDEO ERROR] Post ID:', post.id);
+                        console.error('[VIDEO ERROR] Video URL length:', post.videoUrl?.length);
+                        console.error('[VIDEO ERROR] Video URL starts with:', post.videoUrl?.substring(0, 100));
+                        const target = e.target as HTMLVideoElement;
+                        console.error('[VIDEO ERROR] Error code:', target.error?.code);
+                        console.error('[VIDEO ERROR] Error message:', target.error?.message);
+                      }}
+                      onLoadedMetadata={(e) => {
+                        const target = e.target as HTMLVideoElement;
+                        console.log('[VIDEO] Metadata loaded - Duration:', target.duration, 'seconds');
+                        console.log('[VIDEO] Video dimensions:', target.videoWidth, 'x', target.videoHeight);
+                      }}
+                      onLoadedData={() => {
+                        console.log('[VIDEO SUCCESS] Data loaded for post:', post.id);
+                      }}
+                      onCanPlay={() => {
+                        console.log('[VIDEO SUCCESS] Can play video for post:', post.id);
+                      }}
+                    />
+                  ) : (
+                    <div className="p-8 text-center text-gray-400">
+                      <p className="mb-2">⚠️ Video data is invalid</p>
+                      <p className="text-xs">Video URL doesn't start with expected format</p>
+                    </div>
+                  )}
                   {post.videoType && (
                     <div className="bg-black/50 px-3 py-1">
                       <span className={`text-sm font-semibold ${
