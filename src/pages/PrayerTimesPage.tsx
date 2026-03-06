@@ -68,7 +68,7 @@ const ADHAN_RECITERS: AdhanReciter[] = [
     location: 'Istanbul',
     country: 'Turkey',
     region: 'Anatolia',
-    audioFile: '/adhans/hafiz-mustafa.mp3',
+    audioFile: '/adhans/hafiz-mustafa-ozcan.mp3',
   },
   {
     id: '7',
@@ -84,7 +84,7 @@ const ADHAN_RECITERS: AdhanReciter[] = [
     location: 'Alexandria',
     country: 'Egypt',
     region: 'North Africa',
-    audioFile: '/adhans/minshawi.mp3',
+    audioFile: '/adhans/muhammad-siddiq.mp3',
   },
 ];
 
