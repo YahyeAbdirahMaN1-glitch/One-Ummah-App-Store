@@ -31,10 +31,16 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
     };
   }, []);
 
-  // Start camera
+  // Start camera (don't restart if recording)
   useEffect(() => {
-    startCamera();
-    return () => stopCamera();
+    if (!isRecording) {
+      startCamera();
+    }
+    return () => {
+      if (!isRecording) {
+        stopCamera();
+      }
+    };
   }, [cameraFacing]);
 
   const startCamera = async () => {
@@ -428,24 +434,24 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
         
         {/* Recording State - One Ummah Gold Accent */}
         {isRecording && !recordedBlob && (
-          <div className="flex items-center justify-between px-12">
-            {/* Thumbnail/Gallery placeholder (left) */}
-            <div className="w-12 h-12"></div>
+          <div className="relative">
+            {/* Stop Button (center) - Absolutely centered */}
+            <div className="flex items-center justify-center">
+              <button
+                onClick={stopRecording}
+                className="relative w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center hover:scale-105 transition-all shadow-[0_0_30px_rgba(251,191,36,0.5)]"
+              >
+                <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center">
+                  <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-sm shadow-lg"></div>
+                </div>
+              </button>
+            </div>
 
-            {/* Stop Button (center) - One Ummah gold ring */}
-            <button
-              onClick={stopRecording}
-              className="relative w-20 h-20 rounded-full bg-gradient-to-br from-amber-400 via-amber-500 to-amber-600 flex items-center justify-center hover:scale-105 transition-all shadow-[0_0_30px_rgba(251,191,36,0.5)]"
-            >
-              <div className="w-16 h-16 bg-black rounded-full flex items-center justify-center">
-                <div className="w-8 h-8 bg-gradient-to-br from-red-500 to-red-600 rounded-sm shadow-lg"></div>
-              </div>
-            </button>
-
-            {/* Flip Camera (right) - Gold accent */}
+            {/* Flip Camera (right side, absolute positioned) - Gold accent */}
             <button
               onClick={flipCamera}
-              className="w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-amber-500/30 flex items-center justify-center hover:bg-black/80 hover:border-amber-400/50 transition-all"
+              disabled={isRecording}
+              className="absolute right-12 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-black/70 backdrop-blur-md border border-amber-500/30 flex items-center justify-center hover:bg-black/80 hover:border-amber-400/50 transition-all disabled:opacity-30 disabled:cursor-not-allowed"
             >
               <RotateCw className="w-6 h-6 text-amber-300" />
             </button>

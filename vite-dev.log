@@ -2488,3 +2488,6 @@ Error: connect ECONNREFUSED 127.0.0.1:5002
     at TCPConnectWrap.afterConnect [as oncomplete] (node:net:1637:16)
 4:17:08 PM [vite] (client) page reload ios/App/App/public/index.html
 4:29:36 PM [vite] (client) page reload ios/App/App/public/index.html
+4:36:56 PM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+4:37:02 PM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
+4:37:12 PM [vite] (client) page reload ios/App/App/public/index.html
