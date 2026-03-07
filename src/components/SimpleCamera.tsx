@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { X, RotateCw, Check, RotateCcw, Play, Pause, Sparkles, Clock } from 'lucide-react';
+import { X, RotateCw, Check, Play, Pause, Sparkles, Clock, Camera as CameraIcon } from 'lucide-react';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 
 interface SimpleCameraProps {
@@ -28,6 +28,7 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
   const [isPlaying, setIsPlaying] = useState(true);
   const [isLoadingCamera, setIsLoadingCamera] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [caption, setCaption] = useState('');
 
   // Lock body scroll
   useEffect(() => {
@@ -49,7 +50,6 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
     };
   }, []);
 
-  // Start camera
   useEffect(() => {
     startCamera();
     return () => stopCamera();
@@ -58,44 +58,42 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
   const startCamera = async () => {
     setIsLoadingCamera(true);
     setError(null);
-
     try {
       stopCamera();
-
       if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-        throw new Error('Camera API not supported. Please update your browser.');
+        throw new Error('Camera API not supported.');
       }
-
       const stream = await navigator.mediaDevices.getUserMedia({
         video: { facingMode: cameraFacing, width: { ideal: 1080 }, height: { ideal: 1920 } },
         audio: true,
       });
-
       streamRef.current = stream;
-
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
+        await new Promise((resolve, reject) => {
+          if (!videoRef.current) return reject('Video ref lost');
+          videoRef.current.onloadedmetadata = () => resolve(true);
+          videoRef.current.onerror = () => reject('Video element error');
+          setTimeout(() => reject('Timeout'), 5000);
+        });
         await videoRef.current.play();
       }
-
       setIsLoadingCamera(false);
     } catch (err: any) {
-      console.error('Camera error:', err);
-      setError(err.message || 'Failed to access camera.');
+      console.error(err);
+      setError(err.message || 'Unknown camera error');
       setIsLoadingCamera(false);
     }
   };
 
   const stopCamera = () => {
     if (streamRef.current) {
-      streamRef.current.getTracks().forEach((t) => t.stop());
+      streamRef.current.getTracks().forEach(track => track.stop());
       streamRef.current = null;
     }
   };
 
-  const flipCamera = () => {
-    setCameraFacing((prev) => (prev === 'user' ? 'environment' : 'user'));
-  };
+  const flipCamera = () => setCameraFacing(prev => (prev === 'user' ? 'environment' : 'user'));
 
   const startRecording = async () => {
     if (mode === 'PHOTO') {
@@ -106,10 +104,8 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
           resultType: CameraResultType.Uri,
           source: CameraSource.Camera,
         });
-
         if (result.webPath) {
-          const response = await fetch(result.webPath);
-          const blob = await response.blob();
+          const blob = await (await fetch(result.webPath)).blob();
           if (onPhotoTaken) onPhotoTaken(blob);
           onClose();
         }
@@ -119,42 +115,25 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
       return;
     }
 
-    if (!streamRef.current) return alert('Camera not ready.');
+    if (!streamRef.current) return alert('Camera not ready');
 
     try {
       chunksRef.current = [];
       setDuration(0);
-
-      const options: MediaRecorderOptions = {};
-      if (MediaRecorder.isTypeSupported('video/mp4')) options.mimeType = 'video/mp4';
-      else if (MediaRecorder.isTypeSupported('video/webm;codecs=vp9')) options.mimeType = 'video/webm;codecs=vp9';
-      else options.mimeType = 'video/webm';
-
-      const mediaRecorder = new MediaRecorder(streamRef.current, options);
+      const mediaRecorder = new MediaRecorder(streamRef.current, { mimeType: 'video/webm;codecs=vp8,opus' });
       mediaRecorderRef.current = mediaRecorder;
-
-      mediaRecorder.ondataavailable = (e) => {
-        if (e.data.size > 0) chunksRef.current.push(e.data);
-      };
-
+      mediaRecorder.ondataavailable = e => e.data.size && chunksRef.current.push(e.data);
       mediaRecorder.onstop = () => {
-        const blob = new Blob(chunksRef.current, { type: options.mimeType || 'video/mp4' });
-        const url = URL.createObjectURL(blob);
-        setRecordedVideo({ blob, url });
+        const blob = new Blob(chunksRef.current, { type: 'video/webm' });
+        setRecordedVideo({ blob, url: URL.createObjectURL(blob) });
         chunksRef.current = [];
       };
-
       mediaRecorder.start();
       setIsRecording(true);
 
       const interval = setInterval(() => {
-        setDuration((prev) => {
-          if (videoType === 'littles' && prev + 1 >= 180) {
-            stopRecording();
-            return prev + 1;
-          }
-          return prev + 1;
-        });
+        if (videoType === 'littles' && duration >= 180) stopRecording();
+        setDuration(prev => prev + 1);
       }, 1000);
       (mediaRecorder as any).durationInterval = interval;
     } catch (err) {
@@ -164,9 +143,7 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
 
   const stopRecording = () => {
     if (mediaRecorderRef.current && isRecording) {
-      const interval = (mediaRecorderRef.current as any).durationInterval;
-      if (interval) clearInterval(interval);
-
+      clearInterval((mediaRecorderRef.current as any).durationInterval);
       mediaRecorderRef.current.stop();
       setIsRecording(false);
     }
@@ -181,7 +158,6 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
 
   const confirmVideo = () => {
     if (recordedVideo && onVideoRecorded) onVideoRecorded(recordedVideo.blob);
-    onClose();
   };
 
   const togglePlayPause = () => {
@@ -193,84 +169,96 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
   };
 
   const takePhoto = async () => {
-    if (!videoRef.current) return alert('Camera not ready.');
-
+    if (!videoRef.current || !streamRef.current) return alert('Camera not ready');
     const canvas = document.createElement('canvas');
     canvas.width = videoRef.current.videoWidth;
     canvas.height = videoRef.current.videoHeight;
-
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
-
-    if (cameraFacing === 'user') {
-      ctx.scale(-1, 1);
-      ctx.drawImage(videoRef.current, -canvas.width, 0, canvas.width, canvas.height);
-    } else {
-      ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
-    }
-
-    canvas.toBlob((blob) => {
-      if (blob && onPhotoTaken) {
-        onPhotoTaken(blob);
-        onClose();
-      }
-    }, 'image/jpeg', 0.95);
+    if (cameraFacing === 'user') ctx.scale(-1, 1), ctx.drawImage(videoRef.current, -canvas.width, 0, canvas.width, canvas.height);
+    else ctx.drawImage(videoRef.current, 0, 0, canvas.width, canvas.height);
+    canvas.toBlob(blob => blob && onPhotoTaken && (onPhotoTaken(blob), onClose()), 'image/jpeg', 0.95);
   };
 
-  const formatDuration = (s: number) => {
-    const m = Math.floor(s / 60);
-    const sec = s % 60;
-    return `${m}:${sec.toString().padStart(2, '0')}`;
-  };
+  const formatDuration = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 
-  // Preview screen
+  // Video preview + post section
   if (recordedVideo) {
     return (
       <div className="fixed inset-0 bg-black z-50">
         <video ref={previewVideoRef} src={recordedVideo.url} autoPlay loop playsInline className="w-full h-full object-cover" />
-        <button onClick={togglePlayPause} className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black/50 p-4 rounded-full z-50">
-          {isPlaying ? <Pause className="w-8 h-8 text-white" /> : <Play className="w-8 h-8 text-white" />}
+        <button onClick={retakeVideo} className="absolute top-6 left-4 p-3 bg-black/50 rounded-full">
+          <RotateCw className="w-6 h-6 text-white" />
         </button>
-        <div className="absolute bottom-8 left-0 right-0 flex justify-between px-8 z-50">
-          <button onClick={retakeVideo} className="bg-white/20 p-4 rounded-full">
-            <RotateCcw className="w-6 h-6 text-white" />
-          </button>
-          <button onClick={confirmVideo} className="bg-amber-500 px-8 py-4 rounded-full flex items-center gap-2">
-            <Check className="w-6 h-6 text-white" />
-            <span className="text-white font-semibold">Use Video</span>
-          </button>
+        <button onClick={onClose} className="absolute top-6 right-4 p-3 bg-black/50 rounded-full">
+          <X className="w-6 h-6 text-white" />
+        </button>
+
+        <div className="absolute bottom-16 left-0 right-0 flex flex-col items-center gap-4 px-8">
+          <textarea
+            placeholder="Add a caption..."
+            value={caption}
+            onChange={e => setCaption(e.target.value)}
+            className="w-full bg-black/60 text-white rounded-lg p-3 placeholder-gray-300"
+          />
+          <button onClick={confirmVideo} className="bg-amber-500 px-6 py-3 rounded-full text-white font-semibold w-full">Post Video</button>
         </div>
       </div>
     );
   }
 
-  // Main camera
+  // Main camera view
   return (
     <div className="fixed inset-0 bg-black z-50">
-      {isLoadingCamera && !error && <p className="text-white">Starting Camera...</p>}
-      {error && <p className="text-red-500">{error}</p>}
-      <video ref={videoRef} autoPlay playsInline muted className={`w-full h-full object-cover ${cameraFacing === 'user' ? 'scale-x-[-1]' : ''}`} />
-
-      {/* Header */}
+      {/* Top bar */}
       <div className="absolute top-0 left-0 right-0 flex justify-between p-4 z-50">
-        <button onClick={onClose} className="p-3 rounded-full bg-black/50">
+        <button onClick={onClose} className="p-3 bg-black/50 rounded-full">
           <X className="w-6 h-6 text-white" />
         </button>
-        <div className="flex gap-2 bg-black/50 rounded-full p-1">
-          <button onClick={() => setMode('VIDEO')} className={mode === 'VIDEO' ? 'bg-amber-500 text-white px-6 py-2 rounded-full' : 'text-white/70 px-6 py-2 rounded-full'}>VIDEO</button>
-          <button onClick={() => setMode('PHOTO')} className={mode === 'PHOTO' ? 'bg-amber-500 text-white px-6 py-2 rounded-full' : 'text-white/70 px-6 py-2 rounded-full'}>PHOTO</button>
-        </div>
-        <button onClick={flipCamera} disabled={isRecording} className="p-4 rounded-full bg-black/50">
-          <RotateCw className="w-7 h-7 text-white" />
+        <button onClick={flipCamera} className="p-3 bg-black/50 rounded-full">
+          <RotateCw className="w-6 h-6 text-white" />
         </button>
       </div>
 
-      {/* Recording button */}
-      <div className="absolute bottom-8 left-0 right-0 flex justify-center">
-        <button onClick={isRecording ? stopRecording : startRecording} disabled={!streamRef.current} className="w-20 h-20 rounded-full border-4 border-red-500 flex items-center justify-center">
-          <div className={isRecording ? 'w-8 h-8 bg-white rounded-sm' : 'w-16 h-16 bg-red-500 rounded-full'} />
-        </button>
+      {/* Video element */}
+      <video ref={videoRef} autoPlay playsInline muted className={`absolute inset-0 w-full h-full object-cover ${cameraFacing==='user'?'scale-x-[-1]':''}`} />
+
+      {/* Mode tabs */}
+      <div className="absolute bottom-32 left-0 right-0 flex justify-center gap-4 z-50">
+        <button onClick={() => setMode('VIDEO')} className={`px-6 py-2 rounded-full ${mode==='VIDEO'?'bg-amber-500 text-white':'bg-black/50 text-white/70'}`}>VIDEO</button>
+        <button onClick={() => setMode('PHOTO')} className={`px-6 py-2 rounded-full ${mode==='PHOTO'?'bg-amber-500 text-white':'bg-black/50 text-white/70'}`}>PHOTO</button>
       </div>
+
+      {/* Video type selection */}
+      {mode==='VIDEO' && !isRecording && (
+        <div className="absolute bottom-56 left-0 right-0 flex justify-center gap-4">
+          <button onClick={()=>setVideoType('littles')} className={`px-4 py-2 rounded-lg ${videoType==='littles'?'bg-white/20 text-white':'bg-black/20 text-gray-400'}`}><Sparkles className="w-4 h-4 inline"/> Littles</button>
+          <button onClick={()=>setVideoType('length')} className={`px-4 py-2 rounded-lg ${videoType==='length'?'bg-green-300/20 text-green-300':'bg-black/20 text-gray-400'}`}><Clock className="w-4 h-4 inline"/> Length</button>
+        </div>
+      )}
+
+      {/* Bottom record/photo button */}
+      <div className="absolute bottom-8 left-0 right-0 flex justify-center z-50">
+        {mode==='VIDEO'?(
+          <button onClick={isRecording?stopRecording:startRecording} className="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center">
+            <div className={`${isRecording?'w-8 h-8 bg-white rounded-sm':'w-16 h-16 bg-red-500 rounded-full'}`}/>
+          </button>
+        ):(
+          <button onClick={takePhoto} className="w-20 h-20 rounded-full border-4 border-white flex items-center justify-center">
+            <div className="w-16 h-16 bg-white rounded-full"/>
+          </button>
+        )}
+      </div>
+
+      {/* Recording indicator */}
+      {isRecording && (
+        <div className="absolute top-24 left-0 right-0 flex justify-center">
+          <div className="bg-red-600 px-6 py-2 rounded-full flex items-center gap-2">
+            <div className="w-3 h-3 bg-white rounded-full animate-pulse"></div>
+            <span className="text-white font-semibold">{formatDuration(duration)}</span>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
