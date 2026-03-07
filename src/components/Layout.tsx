@@ -6,7 +6,6 @@ export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Show back button on all pages except home
   const showBackButton = location.pathname !== '/';
 
   return (
@@ -26,12 +25,12 @@ export default function Layout() {
       </header>
 
       {/* Main content */}
-      <main className="flex-1 overflow-auto p-4">
+      <main className="flex-1 overflow-auto p-4 mb-20">
         <Outlet />
       </main>
 
       {/* Bottom Tabs */}
-      <nav className="bg-gray-800 text-white flex justify-around p-3 border-t border-gray-700">
+      <nav className="fixed bottom-0 left-0 w-full bg-gray-800 text-white flex justify-around p-3 border-t border-gray-700">
         <button onClick={() => navigate('/')} className="flex flex-col items-center">
           <Home className="w-6 h-6" />
           <span className="text-xs">Home</span>
