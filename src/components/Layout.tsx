@@ -23,13 +23,13 @@ export default function Layout() {
 
   if (isLoading) return <div>Loading...</div>;
 
-  // Pages that should NOT show back button
+  // Show back button for all pages except these
   const noBackPaths = ['/', '/login', '/profile-setup'];
   const showBackButton = !noBackPaths.includes(location.pathname);
 
   return (
-    <div className="flex flex-col min-h-screen">
-      {/* Header */}
+    <div className="flex flex-col min-h-screen pb-[calc(4rem+env(safe-area-inset-bottom))]">
+      {/* Header with optional back button */}
       <header className="bg-gray-900 text-white p-4 flex items-center shadow-md">
         {showBackButton && (
           <button
@@ -43,7 +43,7 @@ export default function Layout() {
       </header>
 
       {/* Page content */}
-      <main className="flex-1 overflow-auto pb-[calc(64px+env(safe-area-inset-bottom))]">
+      <main className="flex-1 overflow-auto">
         <Outlet />
       </main>
 
