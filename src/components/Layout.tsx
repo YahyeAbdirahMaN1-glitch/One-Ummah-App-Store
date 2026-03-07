@@ -1,3 +1,4 @@
+// src/components/Layout.tsx
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import { Home, MessageCircle, Users, Settings, ArrowLeft } from 'lucide-react';
 
@@ -9,9 +10,9 @@ export default function Layout() {
   const showBackButton = location.pathname !== '/';
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-gray-900 text-white">
       {/* Header */}
-      <header className="bg-gray-900 text-white p-4 flex items-center justify-between">
+      <header className="bg-gray-900 text-white p-4 flex items-center justify-between border-b border-gray-800">
         {showBackButton && (
           <button
             onClick={() => navigate(-1)}
@@ -21,10 +22,11 @@ export default function Layout() {
           </button>
         )}
         <h1 className="text-xl font-bold text-center flex-1">One-Ummah</h1>
+        <div className="w-20">{/* placeholder for spacing */}</div>
       </header>
 
       {/* Main content */}
-      <main className="flex-1 p-4 bg-gray-900 text-white overflow-auto">
+      <main className="flex-1 overflow-auto p-4">
         <Outlet />
       </main>
 
