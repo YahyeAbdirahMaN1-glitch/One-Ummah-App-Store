@@ -8,13 +8,14 @@ export default function Layout() {
   const navigate = useNavigate();
   const location = useLocation();
 
+  // Redirect if not authenticated
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
       navigate('/login');
     }
   }, [isLoading, isAuthenticated, navigate]);
 
-  // Check if profile setup is needed
+  // Redirect to profile setup if needed
   useEffect(() => {
     if (user && !user.name && location.pathname !== '/profile-setup') {
       navigate('/profile-setup');
@@ -25,11 +26,12 @@ export default function Layout() {
     return <div>Loading...</div>;
   }
 
+  const showBackButton = location.pathname !== '/';
+
   return (
     <div style={{ paddingBottom: "70px" }}>
-
       {/* Back Button */}
-      {location.pathname !== "/" && (
+      {showBackButton && (
         <button
           onClick={() => navigate(-1)}
           style={{
@@ -86,7 +88,6 @@ export default function Layout() {
           <Settings size={24} />
         </button>
       </nav>
-
     </div>
   );
 }
