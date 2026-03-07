@@ -1,67 +1,50 @@
-import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-import { Home, Clock, MessageCircle, Users, Settings, ArrowLeft } from 'lucide-react';
-import { useAuth } from '../hooks/useAuth';
-import { useEffect } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Home, MessageCircle, Users, Settings, ArrowLeft } from 'lucide-react';
 
 export default function Layout() {
-  const { isAuthenticated, isLoading, user } = useAuth();
-  const location = useLocation();
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!isLoading && !isAuthenticated) navigate('/login');
-  }, [isLoading, isAuthenticated, navigate]);
-
-  // Redirect to profile setup if needed
-  useEffect(() => {
-    if (user && !user.name && location.pathname !== '/profile-setup') {
-      navigate('/profile-setup');
-    }
-  }, [user, location.pathname, navigate]);
-
-  if (isLoading) return <div>Loading...</div>;
-
-  // Show back button for all pages except these
-  const noBackPaths = ['/', '/login', '/profile-setup'];
-  const showBackButton = !noBackPaths.includes(location.pathname);
+  // Show back button on all pages except home
+  const showBackButton = location.pathname !== '/';
 
   return (
     <div className="flex flex-col min-h-screen">
-      {/* Header with optional back button */}
-      <header className="bg-gray-900 text-white p-4 flex items-center shadow-md">
+      {/* Header */}
+      <header className="bg-gray-900 text-white p-4 flex items-center justify-between">
         {showBackButton && (
           <button
             onClick={() => navigate(-1)}
-            className="mr-4 p-1 hover:bg-gray-700 rounded"
+            className="flex items-center gap-1 hover:opacity-80"
           >
-            <ArrowLeft size={24} />
+            <ArrowLeft className="w-5 h-5" /> Back
           </button>
         )}
-        <h1 className="text-xl font-bold">One Ummah</h1>
+        <h1 className="text-xl font-bold text-center flex-1">One-Ummah</h1>
       </header>
 
-      {/* Page content */}
-      <main className="flex-1 overflow-auto">
+      {/* Main content */}
+      <main className="flex-1 p-4 bg-gray-900 text-white overflow-auto">
         <Outlet />
       </main>
 
-      {/* Bottom navigation */}
-      <nav className="h-16 flex justify-around items-center border-t border-gray-200 bg-white">
-        <button onClick={() => navigate('/')}>
-          <Home size={24} />
+      {/* Bottom Tabs */}
+      <nav className="bg-gray-800 text-white flex justify-around p-3 border-t border-gray-700">
+        <button onClick={() => navigate('/')} className="flex flex-col items-center">
+          <Home className="w-6 h-6" />
+          <span className="text-xs">Home</span>
         </button>
-        <button onClick={() => navigate('/prayer-times')}>
-          <Clock size={24} />
+        <button onClick={() => navigate('/friends')} className="flex flex-col items-center">
+          <Users className="w-6 h-6" />
+          <span className="text-xs">Friends</span>
         </button>
-        <button onClick={() => navigate('/messages')}>
-          <MessageCircle size={24} />
+        <button onClick={() => navigate('/messages')} className="flex flex-col items-center">
+          <MessageCircle className="w-6 h-6" />
+          <span className="text-xs">Messages</span>
         </button>
-        <button onClick={() => navigate('/friends')}>
-          <Users size={24} />
-        </button>
-        <button onClick={() => navigate('/settings')}>
-          <Settings size={24} />
+        <button onClick={() => navigate('/settings')} className="flex flex-col items-center">
+          <Settings className="w-6 h-6" />
+          <span className="text-xs">Settings</span>
         </button>
       </nav>
     </div>
