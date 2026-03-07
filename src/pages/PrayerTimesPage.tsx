@@ -182,7 +182,7 @@ export default function PrayerTimesPage() {
       try {
         schedulePrayerNotifications();
         setNotificationsEnabled(true);
-        toast.success('Prayer notifications enabled! You will be notified 5 minutes before each prayer.');
+        toast.success('Prayer notifications enabled! You will be notified 15 minutes before and at each prayer time.');
         console.log('[PrayerTimes] Notifications successfully enabled');
       } catch (error) {
         console.error('[PrayerTimes] Failed to schedule notifications:', error);
@@ -211,16 +211,17 @@ export default function PrayerTimesPage() {
       const [hours, minutes] = prayer.time.split(':').map(Number);
       const prayerMinutes = hours * 60 + minutes;
 
-      // Schedule notification 5 minutes before
-      const minutesUntilReminder = prayerMinutes - currentTime - 5;
+      // Schedule notification 15 minutes before
+      const minutesUntilReminder = prayerMinutes - currentTime - 15;
       if (minutesUntilReminder > 0) {
         const timeout = setTimeout(() => {
           sendPrayerNotification(
-            `${prayer.name} in 5 minutes`,
-            `${prayer.name} prayer time is in 5 minutes (${prayer.time})`
+            `${prayer.name} in 15 minutes`,
+            `${prayer.name} prayer time is in 15 minutes (${prayer.time})`
           );
         }, minutesUntilReminder * 60 * 1000);
         notificationTimersRef.current.push(timeout);
+        console.log(`[PrayerTimes] Scheduled 15-min reminder for ${prayer.name} at ${prayer.time}`);
       }
 
       // Schedule notification at prayer time
@@ -233,6 +234,7 @@ export default function PrayerTimesPage() {
           );
         }, minutesUntilPrayer * 60 * 1000);
         notificationTimersRef.current.push(timeout);
+        console.log(`[PrayerTimes] Scheduled prayer time notification for ${prayer.name} at ${prayer.time}`);
       }
     });
   };
@@ -355,7 +357,7 @@ export default function PrayerTimesPage() {
               </p>
               {notificationsEnabled && (
                 <p className="text-xs text-green-400 text-center mt-2">
-                  ✓ You'll be notified 5 minutes before each prayer and at prayer time
+                  ✓ You'll be notified 15 minutes before each prayer and at prayer time
                 </p>
               )}
             </div>

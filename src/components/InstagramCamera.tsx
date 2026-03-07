@@ -446,12 +446,14 @@ export default function InstagramCamera({ onClose, onVideoRecorded }: InstagramC
         </div>
       )}
 
-      {/* Recording Indicator - One Ummah Premium Style - BIGGER AND MORE VISIBLE */}
+      {/* Recording Indicator - Stylish & Clear Design */}
       {isRecording && (
         <div className="absolute top-6 left-1/2 transform -translate-x-1/2 z-50">
-          <div className="flex items-center gap-3 bg-gradient-to-r from-red-600 via-red-500 to-red-600 px-6 py-4 rounded-2xl shadow-[0_0_30px_rgba(239,68,68,0.8)] border-2 border-red-300/50 animate-pulse-slow">
-            <div className="w-4 h-4 bg-white rounded-full animate-pulse shadow-[0_0_12px_rgba(255,255,255,1)]"></div>
-            <span className="text-white font-black text-2xl tracking-wider drop-shadow-[0_2px_8px_rgba(0,0,0,0.8)]">
+          <div className="flex items-center gap-2.5 bg-black/85 backdrop-blur-md px-5 py-2.5 rounded-full shadow-[0_4px_20px_rgba(0,0,0,0.6)] border border-red-500/30">
+            {/* REC dot */}
+            <div className="w-2.5 h-2.5 bg-red-500 rounded-full animate-pulse shadow-[0_0_8px_rgba(239,68,68,0.9)]"></div>
+            {/* Timer */}
+            <span className="text-white font-semibold text-base tracking-wide">
               {formatDuration(duration)} / {getMaxDuration()}
             </span>
           </div>

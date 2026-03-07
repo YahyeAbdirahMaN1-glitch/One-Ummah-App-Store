@@ -2545,3 +2545,21 @@ Started vite server in mode: development
 9:12:55 PM [vite] (client) hmr update /src/index.css, /src/components/InstagramCamera.tsx
 9:13:17 PM [vite] (client) hmr update /src/pages/HomePage.tsx, /src/index.css
 9:13:27 PM [vite] (client) page reload ios/App/App/public/index.html
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 457 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.7:4500/
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 490 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.15:4500/
+Started vite server in mode: development
+
+  VITE v7.3.1  ready in 449 ms
+
+  ➜  Local:   http://localhost:4500/
+  ➜  Network: http://172.17.0.9:4500/
