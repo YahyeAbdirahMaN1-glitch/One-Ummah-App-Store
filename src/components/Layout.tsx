@@ -1,4 +1,3 @@
-// Layout.jsx
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Home, Clock, MessageCircle, Users, Settings, ArrowLeft } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
@@ -28,7 +27,7 @@ export default function Layout() {
   const showBackButton = !noBackPaths.includes(location.pathname);
 
   return (
-    <div className="flex flex-col min-h-screen pb-[calc(4rem+env(safe-area-inset-bottom))]">
+    <div className="flex flex-col min-h-screen">
       {/* Header with optional back button */}
       <header className="bg-gray-900 text-white p-4 flex items-center shadow-md">
         {showBackButton && (
@@ -48,7 +47,7 @@ export default function Layout() {
       </main>
 
       {/* Bottom navigation */}
-      <nav className="fixed bottom-0 left-0 right-0 h-16 flex justify-around items-center border-t border-gray-200 bg-white pb-[env(safe-area-inset-bottom)]">
+      <nav className="h-16 flex justify-around items-center border-t border-gray-200 bg-white">
         <button onClick={() => navigate('/')}>
           <Home size={24} />
         </button>
