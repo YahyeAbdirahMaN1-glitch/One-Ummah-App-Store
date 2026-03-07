@@ -1,4 +1,3 @@
-// src/App.tsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Toaster } from './components/ui/sonner';
@@ -38,9 +37,10 @@ function App() {
           <Route path="/privacy" element={<PrivacyPolicyPage />} />
           <Route path="/terms" element={<TermsOfServicePage />} />
 
-          {/* Protected routes with Layout (header, back button, bottom tabs) */}
+          {/* Protected routes inside Layout */}
           <Route element={<Layout />}>
             <Route path="/" element={<HomePage />} />
+            <Route path="/prayer-times" element={<PrayerTimesPage />} />
             <Route path="/profile-setup" element={<ProfileSetupPage />} />
             <Route path="/profile/:userId" element={<ProfilePage />} />
             <Route path="/profile-settings" element={<ProfileSettingsPage />} />
@@ -50,12 +50,9 @@ function App() {
             <Route path="/friends" element={<FriendsPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/report-problem" element={<ReportProblemPage />} />
-
-            {/* Prayer Times inside Layout now */}
-            <Route path="/prayer-times" element={<PrayerTimesPage />} />
           </Route>
 
-          {/* Catch-all */}
+          {/* Catch all */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </BrowserRouter>
