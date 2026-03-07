@@ -120,7 +120,7 @@ export default function ProfileSettingsPage() {
             </div>
             {gender === 'female' && (
               <p className="text-xs text-amber-300/70 mt-2">
-                ✨ Your profile photo will automatically include a hijab overlay for modesty
+                ✨ Hijab is necessary my amazing Sisters
               </p>
             )}
           </div>
