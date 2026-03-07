@@ -1,12 +1,13 @@
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import { Home, Clock, MessageCircle, Users, Settings, ArrowLeft } from 'lucide-react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Home, Clock, MessageCircle, Users, Settings } from 'lucide-react';
 import { useAuth } from '../hooks/useAuth';
 import { useEffect } from 'react';
+import BackButton from './BackButton'; // Make sure BackButton.jsx exists
 
 export default function Layout() {
   const { isAuthenticated, isLoading, user } = useAuth();
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
 
   // Redirect if not authenticated
   useEffect(() => {
@@ -22,52 +23,24 @@ export default function Layout() {
     }
   }, [user, location.pathname, navigate]);
 
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+  if (isLoading) return <div>Loading...</div>;
 
   const showBackButton = location.pathname !== '/';
 
   return (
-    <div style={{ paddingBottom: "70px" }}>
+    <div className="pb-[calc(60px+env(safe-area-inset-bottom))]">
       {/* Back Button */}
       {showBackButton && (
-        <button
-          onClick={() => navigate(-1)}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: "6px",
-            padding: "10px",
-            border: "none",
-            background: "none",
-            fontSize: "16px",
-            cursor: "pointer"
-          }}
-        >
-          <ArrowLeft size={20} />
-          Back
-        </button>
+        <div className="pt-[env(safe-area-inset-top)] px-4">
+          <BackButton />
+        </div>
       )}
 
       {/* Page Content */}
       <Outlet />
 
       {/* Bottom Navigation */}
-      <nav
-        style={{
-          position: "fixed",
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: "60px",
-          display: "flex",
-          justifyContent: "space-around",
-          alignItems: "center",
-          borderTop: "1px solid #ddd",
-          background: "#fff"
-        }}
-      >
+      <nav className="fixed bottom-0 left-0 right-0 h-16 flex justify-around items-center border-t border-gray-200 bg-white pb-[env(safe-area-inset-bottom)]">
         <button onClick={() => navigate("/")}>
           <Home size={24} />
         </button>
