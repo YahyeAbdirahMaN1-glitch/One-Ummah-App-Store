@@ -440,16 +440,22 @@ export default function HomePage() {
   };
 
   const handleDeletePost = async (postId: string) => {
+    console.log('[Delete] Button clicked', { postId, userId: user?.id });
+    
     if (!user) {
+      console.error('[Delete] No user logged in');
       toast.error('Please sign in to delete posts');
       return;
     }
 
+    console.log('[Delete] Showing confirmation dialog');
     if (!window.confirm('Are you sure you want to delete this post?')) {
+      console.log('[Delete] User cancelled');
       return;
     }
 
     try {
+      console.log('[Delete] Starting delete request...');
       toast.loading('Deleting post...');
 
       const response = await CapacitorHttp.post({
@@ -458,25 +464,39 @@ export default function HomePage() {
         data: { postId, userId: user.id },
       });
 
+      console.log('[Delete] Response:', {
+        status: response.status,
+        data: response.data
+      });
+
       if (response.status === 200) {
         // Remove from UI
+        console.log('[Delete] Success! Removing post from UI');
         setPosts(posts.filter(post => post.id !== postId));
         toast.dismiss();
         toast.success('Post deleted successfully!');
       } else if (response.status === 403) {
+        console.warn('[Delete] Permission denied');
         toast.dismiss();
         toast.error('You can only delete your own posts');
       } else if (response.status === 404) {
+        console.warn('[Delete] Post not found');
         toast.dismiss();
         toast.error('Post not found');
       } else {
+        console.error('[Delete] Unexpected status:', response.status);
         toast.dismiss();
         toast.error('Failed to delete post');
       }
-    } catch (error) {
-      console.error('Delete post error:', error);
+    } catch (error: any) {
+      console.error('[Delete] Error:', error);
+      console.error('[Delete] Error details:', {
+        message: error.message,
+        name: error.name,
+        stack: error.stack
+      });
       toast.dismiss();
-      toast.error('Failed to delete post');
+      toast.error(`Failed to delete post: ${error.message || 'Unknown error'}`);
     }
   };
 
