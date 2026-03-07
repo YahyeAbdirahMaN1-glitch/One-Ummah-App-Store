@@ -370,4 +370,11 @@ export default function SimpleCamera({ onClose, onVideoRecorded, onPhotoTaken }:
         <div className="text-center mt-4">
           {!streamRef.current && !isLoadingCamera && !error && <p className="text-amber-400 text-sm animate-pulse">Waiting for camera access...</p>}
           {mode === 'VIDEO' && !isRecording && streamRef.current && (
-            <p className="text-white/70 text-sm">{videoType === 'littles' ? 'Tap to record short video (15s-3min)' : 'Tap to record long video (
+            <p className="text-white/70 text-sm">{videoType === 'littles' ? 'Tap to record short video (15s-3min)' : 'Tap to record long video (3min+)'}</p>
+          )}
+          {mode === 'PHOTO' && streamRef.current && <p className="text-white/70 text-sm">Tap to capture photo</p>}
+        </div>
+      </div>
+    </div>
+  );
+}
