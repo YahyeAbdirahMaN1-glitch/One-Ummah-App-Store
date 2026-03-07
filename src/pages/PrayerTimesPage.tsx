@@ -1,4 +1,4 @@
-// PrayerTimesPage.jsx
+// src/pages/PrayerTimesPage.tsx
 import { useState, useEffect, useRef } from 'react';
 import { Search, MapPin, Bell, BellOff, Locate } from 'lucide-react';
 import { Card } from '../components/ui/card';
@@ -35,12 +35,10 @@ export default function PrayerTimesPage() {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
-
         try {
           const geoResponse = await fetch(
             `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
           );
-          if (!geoResponse.ok) throw new Error('Failed to get location name');
           const geoData = await geoResponse.json();
           const detectedCity =
             geoData.address.city || geoData.address.town || geoData.address.village || 'Unknown';
@@ -58,13 +56,7 @@ export default function PrayerTimesPage() {
       (error) => {
         console.error('Geolocation error:', error);
         setLoadingLocation(false);
-        if (error.code === error.PERMISSION_DENIED) {
-          toast.error('Location permission denied. Enable location access in your browser settings.');
-        } else if (error.code === error.POSITION_UNAVAILABLE) {
-          toast.error('Location information unavailable. Please enter your city manually.');
-        } else {
-          toast.error('Failed to get your location. Please enter your city manually.');
-        }
+        toast.error('Failed to get location. Please enter city manually.');
       },
       { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
@@ -78,8 +70,9 @@ export default function PrayerTimesPage() {
     countryName: string
   ) => {
     try {
-      const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`);
-      if (!response.ok) throw new Error('Failed to fetch prayer times');
+      const response = await fetch(
+        `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`
+      );
       const data = await response.json();
       const timings = data.data.timings;
 
@@ -94,7 +87,7 @@ export default function PrayerTimesPage() {
       toast.success(`Prayer times loaded for ${cityName}, ${countryName}`);
     } catch (error) {
       console.error('Error fetching prayer times:', error);
-      toast.error('Failed to load prayer times. Please try again.');
+      toast.error('Failed to load prayer times');
     }
   };
 
@@ -112,7 +105,6 @@ export default function PrayerTimesPage() {
           country
         )}`
       );
-      if (!response.ok) throw new Error('Failed to fetch prayer times');
       const data = await response.json();
       const timings = data.data.timings;
 
@@ -127,7 +119,7 @@ export default function PrayerTimesPage() {
       toast.success(`Prayer times loaded for ${city}, ${country}`);
     } catch (error) {
       console.error('Error fetching prayer times:', error);
-      toast.error('Failed to load prayer times. Please try again.');
+      toast.error('Failed to load prayer times');
     } finally {
       setLoading(false);
     }
@@ -203,124 +195,71 @@ export default function PrayerTimesPage() {
   }, []);
 
   return (
-    <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 flex-1">
-      {/* Header */}
-      <div className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-white py-6 px-4 shadow-lg">
-        <h1 className="text-3xl font-bold text-center">Prayer Times</h1>
-        <p className="text-center text-amber-100 mt-2">Find prayer times for your location</p>
-      </div>
+    <div className="flex-1 bg-gradient-to-br from-gray-900 via-black to-gray-900 p-4">
+      {/* Location / Search */}
+      <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-amber-500/20 p-6 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="text-sm text-gray-400 mb-1 block">City</label>
+            <Input
+              placeholder="e.g., London"
+              value={city}
+              onChange={(e) => setCity(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && fetchPrayerTimes()}
+              className="bg-gray-900/50 border-gray-700 text-white"
+            />
+          </div>
+          <div>
+            <label className="text-sm text-gray-400 mb-1 block">Country</label>
+            <Input
+              placeholder="e.g., United Kingdom"
+              value={country}
+              onChange={(e) => setCountry(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && fetchPrayerTimes()}
+              className="bg-gray-900/50 border-gray-700 text-white"
+            />
+          </div>
+        </div>
 
-      {/* Main Content */}
-      <div className="max-w-4xl mx-auto p-4 space-y-6">
-        {/* Search Section */}
+        <div className="mt-4 flex gap-2">
+          <Button onClick={useCurrentLocation} disabled={loadingLocation || loading}>
+            <Locate className="w-4 h-4 mr-2" />
+            {loadingLocation ? 'Getting Location...' : 'Use My Location'}
+          </Button>
+          <Button onClick={fetchPrayerTimes} disabled={loading || loadingLocation}>
+            <Search className="w-4 h-4 mr-2" />
+            {loading ? 'Loading...' : 'Search City'}
+          </Button>
+        </div>
+      </Card>
+
+      {/* Prayer Times */}
+      {prayerTimes.length > 0 && (
         <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-amber-500/20 p-6">
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 text-amber-400 mb-4">
-              <MapPin className="w-5 h-5" />
-              <h2 className="text-xl font-semibold">Location</h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="text-sm text-gray-400 mb-1 block">City</label>
-                <Input
-                  placeholder="e.g., London"
-                  value={city}
-                  onChange={(e) => setCity(e.target.value)}
-                  className="bg-gray-900/50 border-gray-700 text-white"
-                  onKeyDown={(e) => e.key === 'Enter' && fetchPrayerTimes()}
-                />
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-2xl font-bold text-amber-400">Today's Prayer Times</h2>
+            <Button onClick={toggleNotifications} variant="outline">
+              {notificationsEnabled ? (
+                <>
+                  <Bell className="w-4 h-4 mr-2" /> On
+                </>
+              ) : (
+                <>
+                  <BellOff className="w-4 h-4 mr-2" /> Off
+                </>
+              )}
+            </Button>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            {prayerTimes.map((prayer) => (
+              <div key={prayer.name} className="bg-gray-900/80 rounded-xl p-4 border border-amber-500/20 hover:border-amber-500/40">
+                <h3 className="text-lg font-semibold text-amber-300 mb-2 text-center">{prayer.name}</h3>
+                <p className="text-3xl font-bold text-white text-center">{prayer.time}</p>
               </div>
-              <div>
-                <label className="text-sm text-gray-400 mb-1 block">Country</label>
-                <Input
-                  placeholder="e.g., United Kingdom"
-                  value={country}
-                  onChange={(e) => setCountry(e.target.value)}
-                  className="bg-gray-900/50 border-gray-700 text-white"
-                  onKeyDown={(e) => e.key === 'Enter' && fetchPrayerTimes()}
-                />
-              </div>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              <Button
-                onClick={useCurrentLocation}
-                disabled={loadingLocation || loading}
-                variant="outline"
-                className="bg-gradient-to-r from-green-600 to-green-500 hover:from-green-700 hover:to-green-600 text-white border-green-500"
-              >
-                <Locate className="w-4 h-4 mr-2" />
-                {loadingLocation ? 'Getting Location...' : 'Use My Location'}
-              </Button>
-
-              <Button
-                onClick={fetchPrayerTimes}
-                disabled={loading || loadingLocation}
-                className="bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-700 hover:to-amber-600 text-white"
-              >
-                <Search className="w-4 h-4 mr-2" />
-                {loading ? 'Loading...' : 'Search City'}
-              </Button>
-            </div>
+            ))}
           </div>
         </Card>
-
-        {/* Prayer Times Display */}
-        {prayerTimes.length > 0 && (
-          <Card className="bg-gradient-to-br from-gray-800 to-gray-900 border-amber-500/20 p-6">
-            <div className="flex items-center justify-between mb-6">
-              <h2 className="text-2xl font-bold text-amber-400">Today's Prayer Times</h2>
-              <Button
-                onClick={toggleNotifications}
-                variant="outline"
-                className={`${
-                  notificationsEnabled
-                    ? 'bg-amber-500 text-white border-amber-500'
-                    : 'bg-gray-800 text-gray-300 border-gray-700'
-                } hover:bg-amber-600`}
-              >
-                {notificationsEnabled ? (
-                  <>
-                    <Bell className="w-4 h-4 mr-2" />
-                    Notifications On
-                  </>
-                ) : (
-                  <>
-                    <BellOff className="w-4 h-4 mr-2" />
-                    Notifications Off
-                  </>
-                )}
-              </Button>
-            </div>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {prayerTimes.map((prayer) => (
-                <div
-                  key={prayer.name}
-                  className="bg-gradient-to-br from-gray-900/80 to-gray-800/80 rounded-xl p-4 border border-amber-500/20 hover:border-amber-500/40 transition-all"
-                >
-                  <div className="text-center">
-                    <h3 className="text-lg font-semibold text-amber-300 mb-2">{prayer.name}</h3>
-                    <p className="text-3xl font-bold text-white">{prayer.time}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 p-4 bg-gray-900/50 rounded-lg border border-gray-700 text-center">
-              <p className="text-sm text-gray-400">
-                Prayer times for <span className="text-amber-400 font-semibold">{city}, {country}</span>
-              </p>
-              {notificationsEnabled && (
-                <p className="text-xs text-green-400 mt-2">
-                  ✓ You'll be notified 15 minutes before each prayer and at prayer time
-                </p>
-              )}
-            </div>
-          </Card>
-        )}
-      </div>
+      )}
     </div>
   );
 }
