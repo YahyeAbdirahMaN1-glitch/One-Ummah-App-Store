@@ -1,3 +1,4 @@
+// PrayerTimesPage.jsx
 import { useState, useEffect, useRef } from 'react';
 import { Search, MapPin, Bell, BellOff, Locate } from 'lucide-react';
 import { Card } from '../components/ui/card';
@@ -21,6 +22,7 @@ export default function PrayerTimesPage() {
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const notificationTimersRef = useRef<NodeJS.Timeout[]>([]);
 
+  // Get current location
   const useCurrentLocation = async () => {
     if (!navigator.geolocation) {
       toast.error('Geolocation is not supported by your browser');
@@ -33,28 +35,21 @@ export default function PrayerTimesPage() {
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         const { latitude, longitude } = position.coords;
-        
+
         try {
-          // Get location name from coordinates using reverse geocoding
           const geoResponse = await fetch(
             `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
           );
-          
           if (!geoResponse.ok) throw new Error('Failed to get location name');
-          
           const geoData = await geoResponse.json();
-          const detectedCity = geoData.address.city || geoData.address.town || geoData.address.village || 'Unknown';
+          const detectedCity =
+            geoData.address.city || geoData.address.town || geoData.address.village || 'Unknown';
           const detectedCountry = geoData.address.country || 'Unknown';
-          
           setCity(detectedCity);
           setCountry(detectedCountry);
-          
-          // Automatically fetch prayer times
           await fetchPrayerTimesByCoordinates(latitude, longitude, detectedCity, detectedCountry);
-          
         } catch (error) {
           console.error('Error getting location name:', error);
-          // Still try to get prayer times with coordinates
           await fetchPrayerTimesByCoordinates(latitude, longitude, 'Your location', 'Detected');
         } finally {
           setLoadingLocation(false);
@@ -63,31 +58,28 @@ export default function PrayerTimesPage() {
       (error) => {
         console.error('Geolocation error:', error);
         setLoadingLocation(false);
-        
         if (error.code === error.PERMISSION_DENIED) {
-          toast.error('Location permission denied. Please enable location access in your browser settings.');
+          toast.error('Location permission denied. Enable location access in your browser settings.');
         } else if (error.code === error.POSITION_UNAVAILABLE) {
           toast.error('Location information unavailable. Please enter your city manually.');
         } else {
           toast.error('Failed to get your location. Please enter your city manually.');
         }
       },
-      {
-        enableHighAccuracy: true,
-        timeout: 10000,
-        maximumAge: 0
-      }
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
     );
   };
 
-  const fetchPrayerTimesByCoordinates = async (lat: number, lon: number, cityName: string, countryName: string) => {
+  // Fetch prayer times by coordinates
+  const fetchPrayerTimesByCoordinates = async (
+    lat: number,
+    lon: number,
+    cityName: string,
+    countryName: string
+  ) => {
     try {
-      const response = await fetch(
-        `https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`
-      );
-
+      const response = await fetch(`https://api.aladhan.com/v1/timings?latitude=${lat}&longitude=${lon}&method=2`);
       if (!response.ok) throw new Error('Failed to fetch prayer times');
-
       const data = await response.json();
       const timings = data.data.timings;
 
@@ -106,6 +98,7 @@ export default function PrayerTimesPage() {
     }
   };
 
+  // Fetch prayer times by city + country
   const fetchPrayerTimes = async () => {
     if (!city.trim() || !country.trim()) {
       toast.error('Please enter both city and country');
@@ -115,13 +108,11 @@ export default function PrayerTimesPage() {
     setLoading(true);
     try {
       const response = await fetch(
-        `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(
-          city
-        )}&country=${encodeURIComponent(country)}`
+        `https://api.aladhan.com/v1/timingsByCity?city=${encodeURIComponent(city)}&country=${encodeURIComponent(
+          country
+        )}`
       );
-
       if (!response.ok) throw new Error('Failed to fetch prayer times');
-
       const data = await response.json();
       const timings = data.data.timings;
 
@@ -142,99 +133,65 @@ export default function PrayerTimesPage() {
     }
   };
 
+  // Toggle notifications
   const toggleNotifications = async () => {
-    console.log('[PrayerTimes] Toggle notifications clicked', { 
-      current: notificationsEnabled, 
-      permission,
-      prayerTimesCount: prayerTimes.length,
-      isSupported: 'Notification' in window
-    });
-
     if (!notificationsEnabled) {
-      // Check if Notification API is supported
       if (!('Notification' in window)) {
-        console.error('[PrayerTimes] Notification API not supported');
         toast.error('Notifications are not supported on this device/browser');
         return;
       }
-
       if (prayerTimes.length === 0) {
-        console.warn('[PrayerTimes] No prayer times loaded');
         toast.error('Please fetch prayer times first');
         return;
       }
-
-      // Request permission first
-      console.log('[PrayerTimes] Requesting notification permission...');
       toast.info('Please allow notifications when prompted');
-      
       const granted = await requestPermission();
-      console.log('[PrayerTimes] Permission result:', granted);
-      
       if (!granted) {
-        console.warn('[PrayerTimes] Permission not granted');
-        toast.error('Notification permission denied. Please enable notifications in Settings → One Ummah → Notifications');
+        toast.error('Notification permission denied. Enable notifications in Settings');
         return;
       }
-
-      // Schedule notifications
-      console.log('[PrayerTimes] Scheduling prayer notifications...');
-      try {
-        schedulePrayerNotifications();
-        setNotificationsEnabled(true);
-        toast.success('Prayer notifications enabled! You will be notified 15 minutes before and at each prayer time.');
-        console.log('[PrayerTimes] Notifications successfully enabled');
-      } catch (error) {
-        console.error('[PrayerTimes] Failed to schedule notifications:', error);
-        toast.error('Failed to schedule notifications. Please try again.');
-      }
+      schedulePrayerNotifications();
+      setNotificationsEnabled(true);
+      toast.success('Prayer notifications enabled!');
     } else {
-      // Clear all timers
-      console.log('[PrayerTimes] Disabling notifications, timers count:', notificationTimersRef.current.length);
       notificationTimersRef.current.forEach(clearTimeout);
       notificationTimersRef.current = [];
       setNotificationsEnabled(false);
       toast.success('Prayer notifications disabled');
-      console.log('[PrayerTimes] Notifications disabled');
     }
   };
 
+  // Schedule notifications
   const schedulePrayerNotifications = () => {
-    // Clear existing timers
     notificationTimersRef.current.forEach(clearTimeout);
     notificationTimersRef.current = [];
 
     const now = new Date();
-    const currentTime = now.getHours() * 60 + now.getMinutes();
+    const currentMinutes = now.getHours() * 60 + now.getMinutes();
 
     prayerTimes.forEach((prayer) => {
       const [hours, minutes] = prayer.time.split(':').map(Number);
       const prayerMinutes = hours * 60 + minutes;
 
-      // Schedule notification 15 minutes before
-      const minutesUntilReminder = prayerMinutes - currentTime - 15;
-      if (minutesUntilReminder > 0) {
+      // 15 minutes before
+      const beforeMinutes = prayerMinutes - currentMinutes - 15;
+      if (beforeMinutes > 0) {
         const timeout = setTimeout(() => {
           sendPrayerNotification(
             `${prayer.name} in 15 minutes`,
-            `${prayer.name} prayer time is in 15 minutes (${prayer.time})`
+            `${prayer.name} prayer is in 15 minutes (${prayer.time})`
           );
-        }, minutesUntilReminder * 60 * 1000);
+        }, beforeMinutes * 60 * 1000);
         notificationTimersRef.current.push(timeout);
-        console.log(`[PrayerTimes] Scheduled 15-min reminder for ${prayer.name} at ${prayer.time}`);
       }
 
-      // Schedule notification at prayer time
-      const minutesUntilPrayer = prayerMinutes - currentTime;
-      if (minutesUntilPrayer > 0) {
+      // At prayer time
+      const atMinutes = prayerMinutes - currentMinutes;
+      if (atMinutes > 0) {
         const timeout = setTimeout(() => {
-          sendPrayerNotification(
-            `Time for ${prayer.name}`,
-            `It's time for ${prayer.name} prayer (${prayer.time})`
-          );
-        }, minutesUntilPrayer * 60 * 1000);
+          sendPrayerNotification(`Time for ${prayer.name}`, `It's time for ${prayer.name} prayer (${prayer.time})`);
+        }, atMinutes * 60 * 1000);
         notificationTimersRef.current.push(timeout);
-        console.log(`[PrayerTimes] Scheduled prayer time notification for ${prayer.name} at ${prayer.time}`);
       }
     });
   };
@@ -246,7 +203,7 @@ export default function PrayerTimesPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-black to-gray-900">
+    <div className="bg-gradient-to-br from-gray-900 via-black to-gray-900 flex-1">
       {/* Header */}
       <div className="bg-gradient-to-r from-amber-600 via-amber-500 to-amber-600 text-white py-6 px-4 shadow-lg">
         <h1 className="text-3xl font-bold text-center">Prayer Times</h1>
@@ -351,12 +308,12 @@ export default function PrayerTimesPage() {
               ))}
             </div>
 
-            <div className="mt-6 p-4 bg-gray-900/50 rounded-lg border border-gray-700">
-              <p className="text-sm text-gray-400 text-center">
+            <div className="mt-6 p-4 bg-gray-900/50 rounded-lg border border-gray-700 text-center">
+              <p className="text-sm text-gray-400">
                 Prayer times for <span className="text-amber-400 font-semibold">{city}, {country}</span>
               </p>
               {notificationsEnabled && (
-                <p className="text-xs text-green-400 text-center mt-2">
+                <p className="text-xs text-green-400 mt-2">
                   ✓ You'll be notified 15 minutes before each prayer and at prayer time
                 </p>
               )}
